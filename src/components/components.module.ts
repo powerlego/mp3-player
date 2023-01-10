@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MainWindowComponent } from './main-window/main-window.component';
 import { MediaControlsComponent } from './media-controls/media-controls.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { TopBarComponent } from './top-bar/top-bar.component';
 
 
 
@@ -10,13 +11,16 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   declarations: [
     MainWindowComponent,
     MediaControlsComponent,
-    SidebarComponent
+    SidebarComponent,
+    TopBarComponent
   ],
   imports: [
     CommonModule
   ],
   exports: [
-    MainWindowComponent
+    MainWindowComponent,
+    MediaControlsComponent,
+    SidebarComponent,
   ]
 })
 export class ComponentsModule { }
