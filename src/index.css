@@ -2,7 +2,6 @@
 @tailwind base;
 @tailwind components;
 
-
 *,
 *::before,
 *::after {
@@ -10,44 +9,56 @@
   margin: 0;
   padding: 0;
 }
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
 
-@layer components{
-  .app{
-    grid-template-areas: 
-      "top-bar top-bar"
-      "side-bar content"
-      "bottom-bar bottom-bar";
+#root {
+  position: relative;
+  isolation: isolate;
+  z-index: 0;
+}
+
+@layer components {
+  .app {
+    display: grid;
     grid-template-columns: auto 1fr;
-    grid-template-rows: auto 1fr auto;
     height: 100%;
+    min-height: 100%;
+    width: 100%;
+    position: relative;
+  }
+  .media-controls {
+    @apply fixed bottom-0 left-0 w-full h-32 bg-gray-400 dark:bg-gray-800 z-30;
   }
   .top-navigation {
     @apply flex flex-row items-center justify-evenly
-    bg-gray-300 dark:bg-gray-700 bg-opacity-90
-    w-full h-16
-    m-0
+    bg-gray-300 dark:bg-gray-700 z-10 w-full h-16 m-0 sticky top-0 bottom-0
     shadow-lg;
   }
 
-  .content-container {
-    @apply flex flex-col
-    bg-gray-300 dark:bg-gray-700
-    m-0
-    h-full w-full
-    overflow-clip;
+  .content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    @apply bg-gray-300 dark:bg-gray-700;
   }
 
   .content-list {
-    @apply flex flex-col items-center 
-    h-full w-full 
-    mt-0 ml-0 mx-auto px-0 pb-12 
-    overflow-y-clip;
-
+    @apply flex flex-col items-start justify-start w-full overflow-y-scroll;
   }
 
-  .sidebar{
-    grid-area: "side-bar";
-    @apply relative h-full m-0 mb-32 w-56 bg-gray-200 dark:bg-gray-900 flex flex-auto flex-col overflow-y-scroll;
+  .sidebar {
+    @apply m-0 w-56 bg-gray-200 dark:bg-gray-900 flex flex-col z-20;
+  }
+
+  .sidebar__container{
+    @apply sticky top-0 bottom-0;
   }
 
   .post {
@@ -95,75 +106,8 @@
   .timestamp {
     @apply text-xs text-left font-semibold text-gray-500 dark:text-gray-600 ml-2;
   }
-
-  .bottom-bar {
-    @apply flex flex-row items-center justify-between 
-    fixed left-88 right-8 bottom-2 
-    rounded-lg shadow-lg 
-    bg-gray-400 dark:bg-gray-600 px-2
-    h-12;
-  }
-
-  .channel-bar {
-    @apply w-80 h-auto m-0 ml-16 bg-gray-200 dark:bg-gray-800
-     overflow-hidden;
-  }
-
-  .channel-container {
-    @apply flex flex-col items-center justify-start 
-    p-1 m-0;
-  }
-
-  .channel-block {
-    @apply flex items-center justify-center 
-    h-16 
-    m-0 p-0;
-  }
-
-  .channel-block-text {
-    @apply text-lg tracking-wider font-bold 
-    text-gray-600 dark:text-gray-400 
-    mr-auto ml-4 my-auto align-middle;
-  }
-
-  .dropdown {
-    @apply m-0 w-full px-2 pb-2
-    transition duration-300 ease-in-out;
-  }
-
-  .dropdown-header {
-    @apply flex flex-row items-center justify-evenly
-    mx-0 text-gray-500
-    cursor-pointer;
-  }
-
-  .dropdown-header-text {
-    @apply text-gray-500  text-opacity-90 
-    text-lg font-semibold
-    cursor-default;
-  }
-
-  .dropdown-header-text-selected {
-    @apply text-blue-500 text-opacity-90 text-lg font-bold;
-  }
-
-  .dropdown-selection {
-    @apply flex flex-row items-center justify-evenly
-    mt-1 mr-auto ml-2
-    transition duration-300 ease-in-out
-    cursor-pointer;
-  }
-
-  .dropdown-selection-text {
-    @apply text-gray-500 font-semibold tracking-wide
-    mr-auto 
-    transition duration-300 ease-in-out 
-    hover:text-pink-500 dark:hover:text-gray-500
-    cursor-pointer;
-  }
 }
 @tailwind utilities;
-
 
 ::-webkit-scrollbar {
   background-color: transparent;
