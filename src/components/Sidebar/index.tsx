@@ -3,8 +3,10 @@ import React from "react";
 function Sidebar() {
   return (
     <div className="sidebar">
-      <i>A</i>
-      <i>B</i>
+      <div className="sidebar__container">
+        <i>A</i>
+        <i>B</i>
+      </div>
     </div>
   );
 }
