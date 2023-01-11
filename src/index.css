@@ -12,8 +12,8 @@
 body {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
 }
 
 #root {
@@ -24,15 +24,11 @@ body {
 
 @layer components {
   .app {
-    display: grid;
     grid-template-columns: auto 1fr;
-    height: 100%;
-    min-height: 100%;
-    width: 100%;
-    position: relative;
+    @apply grid h-screen w-full min-h-screen relative overflow-y-hidden;
   }
   .media-controls {
-    @apply fixed bottom-0 left-0 w-full h-32 bg-gray-400 dark:bg-gray-800 z-30;
+    @apply fixed bottom-0 left-0 w-full h-32 bg-gray-350 dark:bg-gray-750 z-30;
   }
   .top-navigation {
     @apply flex flex-row items-center justify-evenly
@@ -41,72 +37,35 @@ body {
   }
 
   .content {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    overflow: hidden;
-    @apply bg-gray-300 dark:bg-gray-700;
+    @apply bg-gray-300 dark:bg-gray-700 relative flex flex-col h-full w-full overflow-hidden;
   }
 
   .content-list {
-    @apply flex flex-col items-start justify-start w-full overflow-y-scroll;
+    @apply flex flex-col items-start justify-start h-full w-full overflow-y-scroll;
+  }
+
+  .content-item{
+    @apply w-full text-gray-800 dark:text-white text-center;
   }
 
   .sidebar {
-    @apply m-0 w-56 bg-gray-200 dark:bg-gray-900 flex flex-col z-20;
+    @apply m-0 w-56 bg-gray-200 dark:bg-gray-800 z-20 text-gray-800 dark:text-white;
   }
 
-  .sidebar__container{
-    @apply sticky top-0 bottom-0;
+  .sidebar__container {
+    @apply sticky top-0 bottom-0 flex flex-col;
   }
 
-  .post {
-    @apply w-full
-    flex flex-row items-center justify-evenly
-    py-4 px-8 m-0
+  .top-navigation-icon {
+    @apply text-gray-500
+    mr-3 ml-4
+    transition duration-300 ease-in-out 
+    hover:text-stone-400
     cursor-pointer;
   }
 
-  .post-selected {
-    @apply bg-green-400 dark:bg-gray-900
-    shadow-md;
-  }
-
-  .post-content {
-    @apply w-4/5 
-    flex flex-col justify-start 
-    ml-auto;
-  }
-
-  .post-text {
-    @apply text-lg text-left text-gray-800 dark:text-white 
-    mr-auto whitespace-normal;
-  }
-
-  .post-owner {
-    @apply text-left font-semibold text-gray-800 dark:text-white mr-2 cursor-pointer;
-  }
-
-  .avatar-wrapper {
-    @apply flex flex-col items-center
-    w-12 
-    m-0 ml-auto mb-auto;
-  }
-
-  .avatar {
-    @apply flex-none
-    w-12 h-full 
-    rounded-full shadow-md
-    object-cover bg-gray-100 
-    mb-auto mt-0 mx-0 
-    cursor-pointer;
-  }
-
-  .timestamp {
-    @apply text-xs text-left font-semibold text-gray-500 dark:text-gray-600 ml-2;
-  }
 }
+
 @tailwind utilities;
 
 ::-webkit-scrollbar {
