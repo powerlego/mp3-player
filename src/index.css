@@ -30,6 +30,15 @@ body {
   .media-controls {
     @apply fixed bottom-0 left-0 w-full h-32 bg-gray-350 dark:bg-gray-750 z-30;
   }
+
+  .media-controls__container {
+    @apply flex flex-row items-center justify-center h-full w-full;
+  }
+
+  .media-icon {
+    @apply fill-gray-800 dark:fill-white bg-white dark:bg-gray-600 h-14 w-14 rounded-full
+    m-4 hover:h-16 hover:w-16 transition-all duration-300 ease-in-out cursor-pointer;
+  }
   .top-navigation {
     @apply flex flex-row items-center justify-evenly
     bg-gray-300 dark:bg-gray-700 z-10 w-full h-16 m-0 sticky top-0 bottom-0
@@ -44,7 +53,7 @@ body {
     @apply flex flex-col items-start justify-start h-full w-full overflow-y-scroll;
   }
 
-  .content-item{
+  .content-item {
     @apply w-full text-gray-800 dark:text-white text-center;
   }
 
@@ -63,7 +72,6 @@ body {
     hover:text-stone-400
     cursor-pointer;
   }
-
 }
 
 @tailwind utilities;
