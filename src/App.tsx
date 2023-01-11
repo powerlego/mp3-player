@@ -6,7 +6,7 @@ import Sidebar from './components/Sidebar';
 
 function App() {
   return (
-    <div className="app flex">
+    <div className="app">
       <Sidebar />
       <MediaControls />
       <MainWindow />
