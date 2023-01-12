@@ -7,19 +7,30 @@ import { BsFillSkipStartFill } from "react-icons/bs";
 import { BiShuffle } from "react-icons/bi";
 import { TbRepeat } from "react-icons/tb";
 import { TbRepeatOnce } from "react-icons/tb";
+import "./MediaControls.css";
 
 function MediaControls() {
   return (
     <footer className="media-controls">
-      <div className="w-56 h-full bg-gray-200"></div>
-      <div className="media-controls__container">
-        <ShuffleButton />
-        <SkipBackButton />
-        <PlayButton />
-        <SkipForwardButton />
-        <RepeatButton />
+      <div className="w-1/4 h-full bg-gray-200"></div>
+      <div className="media-controls__center">
+        <div className="media-controls__controls">
+          <ShuffleButton />
+          <SkipBackButton />
+          <PlayButton />
+          <SkipForwardButton />
+          <RepeatButton />
+        </div>
+        <div className="media-controls__progress">
+          <div className="media-controls__progress__time"> 99:99 </div>
+          <ProgressBar percentage={50} />
+          <div className="media-controls__progress__time"> 99:99 </div>
+        </div>
       </div>
-      <div className="w-56 h-full bg-gray-200"></div>
+      <div className="w-1/4 h-full bg-gray-200">
+        <div className="media-controls__mute" />
+        <div className="media-controls__volume"></div>
+      </div>
     </footer>
   );
 }
@@ -34,6 +45,25 @@ function ShuffleButton() {
       ) : (
         <BiShuffle className="media-icon shuffle-button" />
       )}
+    </div>
+  );
+}
+
+type ProgressBarProps = {
+  percentage: number;
+};
+
+function ProgressBar({ percentage }: ProgressBarProps) {
+  const fillerStyle = {
+    width: `${percentage}%`,
+  };
+
+  return (
+    <div className="media-controls__progress__bar">
+      <div
+        className="media-controls__progress__bar__progress"
+        style={fillerStyle}
+      ></div>
     </div>
   );
 }
