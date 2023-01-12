@@ -36,25 +36,37 @@ body {
   }
 
   .media-icon {
+    
+    background-color: rgb(from var(--color) / 1);
+
     @apply fill-gray-800 dark:fill-white hover:fill-gray-600 hover:dark:fill-gray-200 transition-all duration-300 ease-in-out
-    m-2 cursor-pointer;
+    m-2 cursor-pointer drop-shadow dark:drop-shadow-dark;
   }
 
   .skip-button{
-    @apply w-10 h-10;
+    @apply w-10 h-10 dark:drop-shadow-dark-lg drop-shadow-lg;
   }
 
   .play-button{
-    @apply w-14 h-14;
+    @apply w-14 h-14 dark:drop-shadow-dark-lg drop-shadow-lg;
   }
 
   .repeat-button{
-    @apply w-8 h-8 fill-none dark:fill-none hover:fill-none hover:dark:fill-none stroke-2 stroke-gray-800 dark:stroke-white hover:stroke-gray-600 hover:dark:stroke-gray-200;
+    @apply w-8 h-8 fill-none dark:fill-none hover:fill-none hover:dark:fill-none stroke-2 stroke-gray-450 dark:stroke-gray-550 hover:stroke-gray-500  hover:dark:stroke-gray-500;
   }
 
   .shuffle-button{
-    @apply w-8 h-8;
+    @apply w-8 h-8 fill-gray-450 dark:fill-gray-550 hover:fill-gray-500 hover:dark:fill-gray-500;
   }
+
+  .shuffling {
+    @apply fill-green-450 dark:fill-green-350 hover:fill-green-500 hover:dark:fill-green-450;
+  }
+
+  .repeating {
+    @apply stroke-green-450 dark:stroke-green-350 hover:stroke-green-500 hover:dark:stroke-green-450;
+  }
+
 
   .top-navigation {
     @apply flex flex-row items-center justify-evenly
