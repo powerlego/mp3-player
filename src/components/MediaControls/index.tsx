@@ -11,13 +11,15 @@ import { TbRepeatOnce } from "react-icons/tb";
 function MediaControls() {
   return (
     <footer className="media-controls">
+      <div className="w-56 h-full bg-gray-200"></div>
       <div className="media-controls__container">
         <ShuffleButton />
-        <BsFillSkipStartFill className="media-icon skip-button" />
+        <SkipBackButton />
         <PlayButton />
         <SkipForwardButton />
         <RepeatButton />
       </div>
+      <div className="w-56 h-full bg-gray-200"></div>
     </footer>
   );
 }
@@ -62,6 +64,14 @@ function SkipForwardButton() {
   return (
     <div onClick={() => console.log("skipForward")}>
       <BsFillSkipEndFill className="media-icon skip-button" />
+    </div>
+  );
+}
+
+function SkipBackButton() {
+  return (
+    <div onClick={() => console.log("skipBack")}>
+      <BsFillSkipStartFill className="media-icon skip-button" />
     </div>
   );
 }
