@@ -3,6 +3,9 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   theme: {
     extend: {
+      spacing:{
+        '1/8': '12.5%',
+      },
       dropShadow: {
         dark: [
           "0 1px 2px rgb(255 255 255 / 0.1)",
