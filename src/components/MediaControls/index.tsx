@@ -1,18 +1,15 @@
 import React from "react";
 import { useState } from "react";
-import { FaPlayCircle } from "react-icons/fa";
-import { FaPauseCircle } from "react-icons/fa";
-import { BsFillSkipEndFill } from "react-icons/bs";
-import { BsFillSkipStartFill } from "react-icons/bs";
+import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
+import { BsFillSkipEndFill, BsFillSkipStartFill } from "react-icons/bs";
 import { BiShuffle } from "react-icons/bi";
-import { TbRepeat } from "react-icons/tb";
-import { TbRepeatOnce } from "react-icons/tb";
+import { TbRepeat, TbRepeatOnce } from "react-icons/tb";
 import "./MediaControls.css";
 
-function MediaControls() {
+function MediaControlsBar() {
   return (
     <footer className="media-controls">
-      <div className="w-1/4 h-full bg-gray-200"></div>
+      <div className="m-0 flex h-full w-56 bg-gray-200"></div>
       <div className="media-controls__center">
         <div className="media-controls__controls">
           <ShuffleButton />
@@ -21,13 +18,9 @@ function MediaControls() {
           <SkipForwardButton />
           <RepeatButton />
         </div>
-        <div className="media-controls__progress">
-          <div className="media-controls__progress__time"> 99:99 </div>
-          <ProgressBar percentage={50} />
-          <div className="media-controls__progress__time"> 99:99 </div>
-        </div>
+        <TrackProgress />
       </div>
-      <div className="w-1/4 h-full bg-gray-200">
+      <div className="m-0 flex h-full w-56 bg-gray-200">
         <div className="media-controls__mute" />
         <div className="media-controls__volume"></div>
       </div>
@@ -35,16 +28,12 @@ function MediaControls() {
   );
 }
 
-function ShuffleButton() {
-  const [isShuffle, setIsShuffle] = useState(false);
-  const handleShuffle = () => setIsShuffle(!isShuffle);
+function TrackProgress() {
   return (
-    <div onClick={() => handleShuffle()}>
-      {isShuffle ? (
-        <BiShuffle className="media-icon shuffle-button shuffling" />
-      ) : (
-        <BiShuffle className="media-icon shuffle-button" />
-      )}
+    <div className="media-controls__progress">
+      <div className="media-controls__progress__time"> 99:99 </div>
+      <ProgressBar percentage={50} />
+      <div className="media-controls__progress__time"> 99:99 </div>
     </div>
   );
 }
@@ -68,32 +57,16 @@ function ProgressBar({ percentage }: ProgressBarProps) {
   );
 }
 
-function RepeatButton() {
-  const [repeat, setRepeat] = useState(0);
-  const handleRepeat = () => {
-    if (repeat === 2) {
-      setRepeat(0);
-    } else {
-      setRepeat(repeat + 1);
-    }
-  };
+function ShuffleButton() {
+  const [isShuffle, setIsShuffle] = useState(false);
+  const handleShuffle = () => setIsShuffle(!isShuffle);
   return (
-    <div onClick={() => handleRepeat()}>
-      {repeat === 1 ? (
-        <TbRepeat className="media-icon repeat-button repeating" />
-      ) : repeat === 2 ? (
-        <TbRepeatOnce className="media-icon repeat-button repeating" />
+    <div onClick={() => handleShuffle()}>
+      {isShuffle ? (
+        <BiShuffle className="media-icon shuffle-button shuffling" />
       ) : (
-        <TbRepeat className="media-icon repeat-button" />
+        <BiShuffle className="media-icon shuffle-button" />
       )}
-    </div>
-  );
-}
-
-function SkipForwardButton() {
-  return (
-    <div onClick={() => console.log("skipForward")}>
-      <BsFillSkipEndFill className="media-icon skip-button" />
     </div>
   );
 }
@@ -119,4 +92,33 @@ function PlayButton() {
   );
 }
 
-export default MediaControls;
+function SkipForwardButton() {
+  return (
+    <div onClick={() => console.log("skipForward")}>
+      <BsFillSkipEndFill className="media-icon skip-button" />
+    </div>
+  );
+}
+function RepeatButton() {
+  const [repeat, setRepeat] = useState(0);
+  const handleRepeat = () => {
+    if (repeat === 2) {
+      setRepeat(0);
+    } else {
+      setRepeat(repeat + 1);
+    }
+  };
+  return (
+    <div onClick={() => handleRepeat()}>
+      {repeat === 1 ? (
+        <TbRepeat className="media-icon repeat-button repeating" />
+      ) : repeat === 2 ? (
+        <TbRepeatOnce className="media-icon repeat-button repeating" />
+      ) : (
+        <TbRepeat className="media-icon repeat-button" />
+      )}
+    </div>
+  );
+}
+
+export default MediaControlsBar;
