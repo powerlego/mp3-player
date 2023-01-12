@@ -48,11 +48,13 @@ function ProgressBar({ percentage }: ProgressBarProps) {
   };
 
   return (
-    <div className="media-controls__progress__bar">
+    <div className="media-controls__progress__bar group">
       <div
-        className="media-controls__progress__bar__progress"
+        className="media-controls__progress__bar__progress flex items-center justify-end group-hover:bg-green-500 dark:group-hover:bg-green-500"
         style={fillerStyle}
-      ></div>
+      >
+        <div className="media-controls__progress__bar__scrubber group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250" />
+      </div>
     </div>
   );
 }

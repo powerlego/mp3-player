@@ -14,20 +14,23 @@
   }
 
   .media-icon {
-    @apply m-2 cursor-pointer fill-gray-800 drop-shadow transition-all duration-300 ease-in-out
-    hover:fill-gray-600 dark:fill-white dark:drop-shadow-dark hover:dark:fill-gray-200;
+    @apply m-2 cursor-pointer  fill-gray-450 transition duration-300
+  ease-in-out hover:fill-gray-550 dark:fill-gray-550 hover:dark:fill-gray-150;
   }
 
   .skip-button {
-    @apply h-10 w-10 drop-shadow-lg dark:drop-shadow-dark-lg;
+    @apply h-10 w-10;
   }
 
   .play-button {
-    @apply h-14 w-14 drop-shadow-lg dark:drop-shadow-dark-lg;
+    @apply h-14 w-14;
   }
 
+  .playing {
+    @apply fill-gray-800 dark:fill-gray-150;
+  }
   .repeat-button {
-    @apply h-8 w-8 fill-none stroke-gray-450 stroke-2 hover:fill-none hover:stroke-gray-500 dark:fill-none dark:stroke-gray-550 hover:dark:fill-none  hover:dark:stroke-gray-500;
+    @apply h-8 w-8 fill-none stroke-gray-450 stroke-2 hover:fill-none hover:stroke-gray-550 dark:fill-none dark:stroke-gray-550 hover:dark:fill-none  hover:dark:stroke-gray-150;
   }
 
   .repeating {
@@ -35,7 +38,7 @@
   }
 
   .shuffle-button {
-    @apply h-8 w-8 fill-gray-450 hover:fill-gray-500 dark:fill-gray-550 hover:dark:fill-gray-500;
+    @apply h-8 w-8;
   }
 
   .shuffling {
@@ -51,10 +54,14 @@
   }
 
   .media-controls__progress__bar__progress {
-    @apply h-full rounded-full bg-gray-800 dark:bg-gray-250;
+    @apply h-full rounded-full bg-gray-550 dark:bg-gray-250;
+  }
+
+  .media-controls__progress__bar__scrubber {
+    @apply h-5 w-5 scale-0 rounded-full hover:bg-gray-550 hover:dark:bg-gray-250;
   }
 
   .media-controls__progress__time {
-    @apply m-1 text-gray-550 dark:text-gray-350;
+    @apply m-1 text-gray-700 dark:text-gray-350;
   }
 }
