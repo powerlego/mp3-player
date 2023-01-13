@@ -102,13 +102,23 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
     }
   };
 
-  fillerStyle = {
-    width: `${this.state.currentTimePos}`,
-  };
-
   render(): React.ReactNode {
     const { progressRef } = this.props;
-    const { currentTimePos } = this.state;
+    const { currentTimePos, isDraggingProgress } = this.state;
+    let indicatorClassNames = "media-controls__progress__bar__scrubber ";
+
+    let progressClassNames = "media-controls__progress__bar__progress ";
+
+    if (isDraggingProgress) {
+      indicatorClassNames +=
+        "media-controls__progress__bar__scrubber__dragging";
+      progressClassNames += "media-controls__progress__bar__progress__dragging";
+    } else {
+      indicatorClassNames +=
+        "group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250";
+      progressClassNames +=
+        "group-hover:bg-green-500 dark:group-hover:bg-green-500";
+    }
     return (
       <div
         className="media-controls__progress__container group "
@@ -117,9 +127,12 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
         ref={progressRef}
       >
         <div className="media-controls__progress__bar ">
-          <div className="media-controls__progress__bar__scrubber group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250" style={{left: currentTimePos}} />
           <div
-            className="media-controls__progress__bar__progress group-hover:bg-green-500 dark:group-hover:bg-green-500"
+            className={indicatorClassNames}
+            style={{ left: currentTimePos }}
+          />
+          <div
+            className={progressClassNames}
             style={{ width: currentTimePos }}
           ></div>
         </div>

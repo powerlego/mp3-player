@@ -11,10 +11,18 @@
   }
 
   .media-controls__progress__bar__progress {
-    @apply box-border h-full rounded-full bg-gray-550 dark:bg-gray-250 absolute z-10;
+    @apply absolute z-10 box-border h-full rounded-full bg-gray-550 dark:bg-gray-250;
+  }
+
+  .media-controls__progress__bar__progress__dragging {
+    @apply bg-green-500 dark:bg-green-500;
   }
 
   .media-controls__progress__bar__scrubber {
-    @apply box-border absolute -top-2 -ml-2.5 h-5 w-5 scale-0 rounded-full hover:bg-gray-550 hover:dark:bg-gray-250 shadow z-20;
+    @apply absolute -top-2 z-20 -ml-2.5 box-border h-5 w-5 scale-0 rounded-full shadow shadow-gray-800 dark:shadow-gray-250;
+  }
+
+  .media-controls__progress__bar__scrubber__dragging{
+    @apply scale-100 bg-gray-550 dark:bg-gray-250;
   }
 }
