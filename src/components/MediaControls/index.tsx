@@ -4,8 +4,8 @@ import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 import { BsFillSkipEndFill, BsFillSkipStartFill } from "react-icons/bs";
 import { BiShuffle } from "react-icons/bi";
 import { TbRepeat, TbRepeatOnce } from "react-icons/tb";
+import TrackProgress from "../TrackProgress";
 import "./MediaControls.css";
-import { getPosX } from "../../utils";
 
 function MediaControlsBar() {
   return (
@@ -26,120 +26,6 @@ function MediaControlsBar() {
         <div className="media-controls__volume"></div>
       </div>
     </footer>
-  );
-}
-
-function TrackProgress() {
-  return (
-    <div className="media-controls__progress">
-      <div className="media-controls__progress__time"> 99:99 </div>
-      <ProgressBar />
-      <div className="media-controls__progress__time"> 99:99 </div>
-    </div>
-  );
-}
-
-interface TimePosInfo {
-  currentTime: number;
-  currentTimePos: string;
-}
-
-function ProgressBar() {
-  const [currentTimePos, setCurrentTimePos] = useState("");
-  const [isDragging, setIsDragging] = useState(false);
-  const [timeOnMouseMove, setTimeOnMouseMove] = useState(0);
-  const progressRef = React.useRef<HTMLDivElement>(null);
-
-  const getCurrentProgress = (
-    event: MouseEvent | React.MouseEvent | TouchEvent | React.TouchEvent
-  ): TimePosInfo => {
-    const rect = progressRef.current!.getBoundingClientRect();
-    const maxRelativePos = rect.width;
-
-    let relativePos = getPosX(event) - rect.left;
-
-    if (relativePos < 0) {
-      relativePos = 0;
-    } else if (relativePos > maxRelativePos) {
-      relativePos = maxRelativePos;
-    }
-
-    const currentTime = (relativePos / maxRelativePos) * 100;
-    const currentTimePos = `${currentTime.toFixed(2)}%`;
-    return { currentTime, currentTimePos };
-  };
-
-  const handleMouseDownOrTouchStart = (
-    event: React.MouseEvent | React.TouchEvent
-  ): void => {
-    event.stopPropagation();
-    const { currentTime, currentTimePos } = getCurrentProgress(event);
-
-    if (isFinite(currentTime)) {
-      setTimeOnMouseMove(currentTime);
-      setCurrentTimePos(currentTimePos);
-      setIsDragging(true);
-      if (event.nativeEvent instanceof MouseEvent) {
-        window.addEventListener("mousemove", handleMouseOrTouchMove);
-        window.addEventListener("mouseup", handleMouseOrTouchUp);
-      } else {
-        window.addEventListener("touchmove", handleMouseOrTouchMove);
-        window.addEventListener("touchend", handleMouseOrTouchUp);
-      }
-    }
-  };
-
-  const handleMouseOrTouchMove = (event: MouseEvent | TouchEvent) => {
-    if (event instanceof MouseEvent) {
-      event.preventDefault();
-    }
-    event.stopPropagation();
-    const windowSelection: Selection | null = window.getSelection();
-    if (windowSelection && windowSelection.type === "Range") {
-      windowSelection.empty();
-    }
-
-    if (isDragging) {
-      const { currentTime, currentTimePos } = getCurrentProgress(event);
-      if (isFinite(currentTime)) {
-        setTimeOnMouseMove(currentTime);
-        setCurrentTimePos(currentTimePos);
-      }
-    }
-  };
-
-  const handleMouseOrTouchUp = (event: MouseEvent | TouchEvent) => {
-    event.stopPropagation();
-    setIsDragging(false);
-
-    if (event instanceof MouseEvent) {
-      window.removeEventListener("mousemove", handleMouseOrTouchMove);
-      window.removeEventListener("mouseup", handleMouseOrTouchUp);
-    } else {
-      window.removeEventListener("touchmove", handleMouseOrTouchMove);
-      window.removeEventListener("touchend", handleMouseOrTouchUp);
-    }
-  };
-
-  const fillerStyle = {
-    width: `${currentTimePos}`,
-  };
-
-  return (
-    <div
-      className="media-controls__progress__container group "
-      onTouchStart={handleMouseDownOrTouchStart}
-      onMouseDown={handleMouseDownOrTouchStart}
-      ref={progressRef}
-    >
-      <div className="media-controls__progress__bar ">
-        <div
-          className="media-controls__progress__bar__progress flex items-center justify-end group-hover:bg-green-500 dark:group-hover:bg-green-500"
-          style={fillerStyle}
-        ></div>
-        <div className="media-controls__progress__bar__scrubber group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250" />
-      </div>
-    </div>
   );
 }
 

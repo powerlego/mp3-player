@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+
+@layer components {
+  .media-controls__progress {
+    @apply flex w-full flex-row items-center justify-center;
+  }
+
+  .media-controls__progress__time {
+    @apply m-1 text-gray-700 dark:text-gray-350;
+  }
+}

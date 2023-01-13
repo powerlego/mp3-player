@@ -45,27 +45,5 @@
     @apply fill-green-450 hover:fill-green-500 dark:fill-green-350 hover:dark:fill-green-450;
   }
 
-  .media-controls__progress {
-    @apply flex w-full flex-row items-center justify-center;
-  }
-
-  .media-controls__progress__container {
-    @apply flex h-2 w-3/4 flex-row items-center justify-center p-5;
-  }
-
-  .media-controls__progress__bar {
-    @apply flex h-2 w-full flex-row items-center rounded-full bg-gray-450 dark:bg-gray-600;
-  }
-
-  .media-controls__progress__bar__progress {
-    @apply h-full rounded-full bg-gray-550 dark:bg-gray-250;
-  }
-
-  .media-controls__progress__bar__scrubber {
-    @apply -ml-2.5 h-5 w-5 scale-0 rounded-full hover:bg-gray-550 hover:dark:bg-gray-250;
-  }
-
-  .media-controls__progress__time {
-    @apply m-1 text-gray-700 dark:text-gray-350;
-  }
+  
 }
