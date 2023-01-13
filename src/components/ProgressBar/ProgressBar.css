@@ -1,21 +1,20 @@
 @tailwind base;
 @tailwind components;
 
-@layer components{
-    .media-controls__progress__container {
-    @apply flex h-2 w-3/4 flex-row items-center justify-center p-5;
+@layer components {
+  .media-controls__progress__container {
+    @apply flex h-5 w-3/4 flex-row items-center justify-center;
   }
 
   .media-controls__progress__bar {
-    @apply flex h-2 w-full flex-row items-center rounded-full bg-gray-450 dark:bg-gray-600;
+    @apply relative box-border h-1 w-full rounded-full bg-gray-450 dark:bg-gray-600;
   }
 
   .media-controls__progress__bar__progress {
-    @apply h-full rounded-full bg-gray-550 dark:bg-gray-250;
+    @apply box-border h-full rounded-full bg-gray-550 dark:bg-gray-250 absolute z-10;
   }
 
   .media-controls__progress__bar__scrubber {
-    @apply -ml-2.5 h-5 w-5 scale-0 rounded-full hover:bg-gray-550 hover:dark:bg-gray-250;
+    @apply box-border absolute -top-2 -ml-2.5 h-5 w-5 scale-0 rounded-full hover:bg-gray-550 hover:dark:bg-gray-250  shadow z-20;
   }
-
 }

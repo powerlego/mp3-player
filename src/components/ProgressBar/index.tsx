@@ -76,10 +76,10 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
     }
 
     event.stopPropagation();
-    // const windowSelection: Selection | null = window.getSelection();
-    // if (windowSelection && windowSelection.type === "Range") {
-    //   windowSelection.empty();
-    // }
+    const windowSelection: Selection | null = window.getSelection();
+    if (windowSelection && windowSelection.type === "Range") {
+      windowSelection.empty();
+    }
     if (this.state.isDraggingProgress) {
       const { currentTime, currentTimePos } = this.getCurrentProgress(event);
       console.log(currentTimePos);
@@ -108,7 +108,7 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
 
   render(): React.ReactNode {
     const { progressRef } = this.props;
-    const {currentTimePos} = this.state;
+    const { currentTimePos } = this.state;
     return (
       <div
         className="media-controls__progress__container group "
@@ -117,11 +117,11 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
         ref={progressRef}
       >
         <div className="media-controls__progress__bar ">
+          <div className="media-controls__progress__bar__scrubber group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250" style={{left: currentTimePos}} />
           <div
-            className="media-controls__progress__bar__progress flex items-center justify-end group-hover:bg-green-500 dark:group-hover:bg-green-500"
-            style={{width: currentTimePos}}
+            className="media-controls__progress__bar__progress group-hover:bg-green-500 dark:group-hover:bg-green-500"
+            style={{ width: currentTimePos }}
           ></div>
-          <div className="media-controls__progress__bar__scrubber group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250" />
         </div>
       </div>
     );
