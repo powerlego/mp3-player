@@ -7,6 +7,6 @@
   }
 
   .media-controls__progress__time {
-    @apply m-1 text-gray-700 dark:text-gray-350;
+    @apply m-1 text-gray-700 dark:text-gray-350 mx-4;
   }
 }
