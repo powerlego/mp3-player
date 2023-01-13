@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       spacing:{
         '1/8': '12.5%',
+        '2.5': '0.625rem',
       },
       dropShadow: {
         dark: [
