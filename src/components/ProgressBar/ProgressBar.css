@@ -15,6 +15,6 @@
   }
 
   .media-controls__progress__bar__scrubber {
-    @apply box-border absolute -top-2 -ml-2.5 h-5 w-5 scale-0 rounded-full hover:bg-gray-550 hover:dark:bg-gray-250  shadow z-20;
+    @apply box-border absolute -top-2 -ml-2.5 h-5 w-5 scale-0 rounded-full hover:bg-gray-550 hover:dark:bg-gray-250 shadow z-20;
   }
 }
