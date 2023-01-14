@@ -93,7 +93,6 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
     }
     if (this.state.isDraggingProgress) {
       const { currentTime, currentTimePos } = this.getCurrentProgress(event);
-      console.log(currentTimePos);
       this.timeOnMouseMove = currentTime;
       this.setState({ currentTimePos: currentTimePos });
     }
