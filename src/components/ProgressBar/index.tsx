@@ -8,7 +8,9 @@ interface ProgressBarState {
 }
 
 interface ProgressBarForwardRefProps {
+  audio: HTMLAudioElement;
   progressUpdateInterval?: number;
+  srcDuration?: number;
 }
 
 interface ProgressBarProps extends ProgressBarForwardRefProps {
@@ -21,12 +23,19 @@ interface TimePosInfo {
 }
 
 class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
+  audio?: HTMLAudioElement;
+
   timeOnMouseMove = 0;
 
   state: ProgressBarState = {
     isDraggingProgress: false,
     currentTimePos: "0%",
   };
+
+  getDuration(): number {
+    const { audio, srcDuration } = this.props;
+    return typeof srcDuration === "undefined" ? audio.duration : srcDuration;
+  }
 
   getCurrentProgress = (
     event: MouseEvent | React.MouseEvent | TouchEvent | React.TouchEvent
@@ -42,9 +51,11 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
     } else if (relativePos > maxRelativePos) {
       relativePos = maxRelativePos;
     }
-
-    const currentTime = (relativePos / maxRelativePos) * 100;
-    const currentTimePos = `${currentTime.toFixed(2)}%`;
+    const duration = this.getDuration();
+    const currentTime = (duration * relativePos) / maxRelativePos;
+    const currentTimePos = `${((relativePos / maxRelativePos) * 100).toFixed(
+      2
+    )}%`;
     return { currentTime, currentTimePos };
   };
 

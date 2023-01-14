@@ -7,7 +7,11 @@ import { TbRepeat, TbRepeatOnce } from "react-icons/tb";
 import TrackProgress from "../TrackProgress";
 import "./MediaControls.css";
 
-function MediaControlsBar() {
+interface MediaControlsBarProps {
+  audio: HTMLAudioElement;
+}
+
+function MediaControlsBar({ audio }: MediaControlsBarProps) {
   return (
     <footer className="media-controls">
       <div className="m-0 flex h-full w-56 bg-gray-200"></div>
@@ -19,7 +23,7 @@ function MediaControlsBar() {
           <SkipForwardButton />
           <RepeatButton />
         </div>
-        <TrackProgress />
+        <TrackProgress audio={audio} />
       </div>
       <div className="m-0 flex h-full w-56 bg-gray-200">
         <div className="media-controls__mute" />
