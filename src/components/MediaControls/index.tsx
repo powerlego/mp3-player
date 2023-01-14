@@ -9,9 +9,10 @@ import "./MediaControls.css";
 
 interface MediaControlsBarProps {
   audio: HTMLAudioElement;
+  onPlay?: ()=>void
 }
 
-function MediaControlsBar({ audio }: MediaControlsBarProps) {
+function MediaControlsBar({ audio, onPlay }: MediaControlsBarProps) {
   return (
     <footer className="media-controls">
       <div className="m-0 flex h-full w-56 bg-gray-200"></div>
@@ -19,7 +20,7 @@ function MediaControlsBar({ audio }: MediaControlsBarProps) {
         <div className="media-controls__controls">
           <ShuffleButton />
           <SkipBackButton />
-          <PlayButton />
+          <PlayButton onPlay={onPlay} audio={audio} />
           <SkipForwardButton />
           <RepeatButton />
         </div>
@@ -55,11 +56,16 @@ function SkipBackButton() {
   );
 }
 
-function PlayButton() {
+interface PlayButtonProps{
+  audio?: HTMLAudioElement;
+  onPlay?: ()=>void;
+}
+
+function PlayButton({audio, onPlay}: PlayButtonProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   return (
-    <div onClick={() => setIsPlaying(!isPlaying)}>
-      {isPlaying ? (
+    <div onClick={onPlay}>
+      {!audio!.paused ? (
         <FaPauseCircle className="media-icon play-button" />
       ) : (
         <FaPlayCircle className="media-icon play-button" />
