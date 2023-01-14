@@ -1,5 +1,5 @@
 import React from "react";
-
+import { TIME_FORMAT } from "./constants";
 export const getPosX = (
   event: TouchEvent | React.TouchEvent | MouseEvent | React.MouseEvent
 ): number => {
@@ -11,5 +11,42 @@ export const getPosX = (
     return event.nativeEvent.clientX;
   } else {
     return event.nativeEvent.touches[0].clientX;
+  }
+};
+
+const addHeadingZero = (num: number): string => {
+  return num > 9 ? num.toString() : `0${num}`;
+};
+
+export const getDisplayTimeBySeconds = (
+  seconds: number,
+  totalSeconds: number,
+  timeFormat: TIME_FORMAT
+): string => {
+  if (!isFinite(seconds)) {
+    return "";
+  }
+
+  const min = Math.floor(seconds / 60);
+  const minStr = addHeadingZero(min);
+  const secStr = addHeadingZero(Math.floor(seconds % 60));
+  const minStrForHour = addHeadingZero(Math.floor(min % 60));
+  const hourStr = Math.floor(min / 60);
+
+  const mmSs = `${minStr}:${secStr}`;
+  const hhMmSs = `${hourStr}:${minStrForHour}:${secStr}`;
+
+  if (timeFormat === "auto") {
+    if (totalSeconds >= 3600) {
+      return hhMmSs;
+    } else {
+      return mmSs;
+    }
+  } else if (timeFormat === "mm:ss") {
+    return mmSs;
+  } else if (timeFormat === "hh:mm:ss") {
+    return hhMmSs;
+  }else{
+    return mmSs;
   }
 };
