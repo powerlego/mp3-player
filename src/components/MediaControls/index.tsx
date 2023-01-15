@@ -84,19 +84,23 @@ class PlayButton extends React.Component<PlayButtonProps> {
   };
   render() {
     const { onPlay, playing } = this.props;
-    let classNames = "media-icon play-button";
-
-    if (this.isAudioAvailable()) classNames += " has-media";
-
-    return (
-      <div onClick={onPlay}>
-        {playing ? (
-          <FaPauseCircle className={classNames} />
-        ) : (
-          <FaPlayCircle className={classNames} />
-        )}
-      </div>
-    );
+    if (!this.isAudioAvailable()) {
+      return (
+        <div>
+          <FaPauseCircle className="media-icon play-button" />
+        </div>
+      );
+    } else {
+      return (
+        <div onClick={onPlay}>
+          {playing ? (
+            <FaPauseCircle className="media-icon play-button has-media" />
+          ) : (
+            <FaPlayCircle className="media-icon play-button has-media" />
+          )}
+        </div>
+      );
+    }
   }
 }
 
