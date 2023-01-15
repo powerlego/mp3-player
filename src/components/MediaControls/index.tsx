@@ -9,7 +9,7 @@ import "./MediaControls.css";
 
 interface MediaControlsBarProps {
   audio: HTMLAudioElement;
-  onPlay?: () => void;
+  togglePlay: (e: React.SyntheticEvent) => void;
 }
 
 class MediaControlsBar extends React.Component<MediaControlsBarProps> {
@@ -21,7 +21,7 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
   };
 
   render() {
-    const { audio, onPlay } = this.props;
+    const { audio, togglePlay } = this.props;
     return (
       <footer className="media-controls">
         <div className="m-0 flex h-full w-56 bg-gray-200"></div>
@@ -29,11 +29,8 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
           <div className="media-controls__controls">
             <ShuffleButton />
             <SkipBackButton />
-            {this.isPlaying() ? (
-              <PlayButton onPlay={onPlay} playing={true} audio={audio} />
-            ) : (
-              <PlayButton onPlay={onPlay} playing={false} audio={audio} />
-            )}
+            <PlayButton togglePlay={togglePlay} audio={audio} />
+            
             <SkipForwardButton />
             <RepeatButton />
           </div>
@@ -70,12 +67,17 @@ function SkipBackButton() {
 }
 
 interface PlayButtonProps {
-  playing: boolean;
   audio?: HTMLAudioElement;
-  onPlay?: () => void;
+  togglePlay?: (e: React.SyntheticEvent) => void;
 }
 
 class PlayButton extends React.Component<PlayButtonProps> {
+  isPlaying = (): boolean => {
+    const { audio } = this.props;
+    if (!audio) return false;
+
+    return !audio.paused && !audio.ended;
+  };
   isAudioAvailable = (): boolean => {
     const { audio } = this.props;
     if (!audio) return false;
@@ -83,7 +85,7 @@ class PlayButton extends React.Component<PlayButtonProps> {
     return true;
   };
   render() {
-    const { onPlay, playing } = this.props;
+    const { togglePlay } = this.props;
     if (!this.isAudioAvailable()) {
       return (
         <div>
@@ -92,8 +94,8 @@ class PlayButton extends React.Component<PlayButtonProps> {
       );
     } else {
       return (
-        <div onClick={onPlay}>
-          {playing ? (
+        <div onClick={togglePlay}>
+          {this.isPlaying() ? (
             <FaPauseCircle className="media-icon play-button has-media" />
           ) : (
             <FaPlayCircle className="media-icon play-button has-media" />
