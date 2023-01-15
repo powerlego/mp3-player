@@ -4,25 +4,28 @@ import MediaControlsBar from "./components/MediaControls";
 import Sidebar from "./components/Sidebar";
 import testAudioFile from "./assets/audio/test.mp3";
 
-function App() {
-  const testAudio = new Audio(testAudioFile);
-  const [playing, setPlaying] = useState(false);
-  const handlePlaying = () => {
-    if (playing) {
-      testAudio.pause();
-    } else {
-      testAudio.play();
-    }
-    setPlaying(!playing);
-    console.log(!playing);
+class App extends React.Component {  
+  testAudio = new Audio(testAudioFile);
+  testAudioRef = React.createRef<HTMLAudioElement>();
+
+  togglePlay = (e: React.SyntheticEvent): void => {
+    e.stopPropagation();
   };
-  testAudio.controls = false;
-  return (
-    <div className="app">
-      <Sidebar />
-      <MediaControlsBar audio={testAudio} onPlay={handlePlaying} />
-      <MainWindow />
-    </div>
-  );
+
+  componentDidMount() {
+    this.forceUpdate();
+  }
+  render() {
+    return (
+      <div>
+        <audio src={this.testAudio.src} ref={this.testAudioRef} />
+        <div className="app">
+          <Sidebar />
+          <MediaControlsBar audio={this.testAudioRef.current!} />
+          <MainWindow />
+        </div>
+      </div>
+    );
+  }
 }
 export default App;
