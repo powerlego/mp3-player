@@ -1,5 +1,7 @@
 import React from "react";
 import { TIME_FORMAT } from "./constants";
+
+type throttleFunction<T> = (arg: T) => void;
 export const getPosX = (
   event: TouchEvent | React.TouchEvent | MouseEvent | React.MouseEvent
 ): number => {
@@ -50,3 +52,18 @@ export const getDisplayTimeBySeconds = (
     return mmSs;
   }
 };
+
+
+export function throttle<K>(
+  func: throttleFunction<K>,
+  limit: number
+): throttleFunction<K> {
+  let inThrottle = false;
+  return (arg) => {
+    if (!inThrottle) {
+      func(arg);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+}
