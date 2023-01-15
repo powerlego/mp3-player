@@ -1,5 +1,5 @@
 import React, { Component, forwardRef } from "react";
-import { getPosX } from "../../utils";
+import { getPosX, throttle } from "../../utils";
 import "./ProgressBar.css";
 
 interface ProgressBarState {
@@ -24,8 +24,15 @@ interface TimePosInfo {
 
 class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
   audio?: HTMLAudioElement;
+  progressUpdateInterval: number = 0;
+
+  hasAddedAudioEventListener = false;
 
   timeOnMouseMove = 0;
+
+  static defaultProps = {
+    progressUpdateInterval: 20,
+  };
 
   state: ProgressBarState = {
     isDraggingProgress: false,
@@ -101,7 +108,23 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
   handleMouseOrTouchUp = (event: MouseEvent | TouchEvent) => {
     event.stopPropagation();
     this.setState({ isDraggingProgress: false });
-    console.log("mouse up");
+    event.stopPropagation();
+    const newTime = this.timeOnMouseMove;
+    const { audio } = this.props;
+    const newProps: { isDraggingProgress: boolean; currentTimePos?: string } = {
+      isDraggingProgress: false,
+    };
+    if (
+      audio.readyState === audio.HAVE_NOTHING ||
+      audio.readyState === audio.HAVE_METADATA ||
+      !isFinite(newTime)
+    ) {
+      newProps.currentTimePos = "0%";
+    } else {
+      audio.currentTime = newTime;
+    }
+
+    this.setState(newProps);
 
     if (event instanceof MouseEvent) {
       window.removeEventListener("mousemove", this.handleMouseOrTouchMove);
@@ -111,6 +134,34 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
       window.removeEventListener("touchend", this.handleMouseOrTouchUp);
     }
   };
+
+  handleAudioTimeUpdate = throttle((e: Event): void => {
+    const { isDraggingProgress } = this.state;
+    const audio = e.target as HTMLAudioElement;
+    if (isDraggingProgress) return;
+
+    const { currentTime } = audio;
+    const duration = this.getDuration();
+
+    this.setState({
+      currentTimePos: `${((currentTime / duration) * 100 || 0).toFixed(2)}%`,
+    });
+  }, this.progressUpdateInterval);
+
+  componentDidUpdate(): void {
+    const { audio } = this.props;
+    if (audio && !this.hasAddedAudioEventListener) {
+      this.audio = audio;
+      this.hasAddedAudioEventListener = true;
+      audio.addEventListener("timeupdate", this.handleAudioTimeUpdate);
+    }
+  }
+
+  componentWillUnmount(): void {
+    if (this.audio && this.hasAddedAudioEventListener) {
+      this.audio.removeEventListener("timeupdate", this.handleAudioTimeUpdate);
+    }
+  }
 
   render(): React.ReactNode {
     const { progressRef } = this.props;
