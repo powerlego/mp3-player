@@ -15,10 +15,9 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <audio src={this.audio.src} ref={this.audioRef} />
         <div className="app">
           <Sidebar />
-          <MediaControlsBar audio={this.audioRef.current!} togglePlay={this.togglePlay} />
+          <MediaControlsBar src={this.audio.src} />
           <MainWindow />
         </div>
       </div>
