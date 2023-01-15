@@ -6,6 +6,7 @@ import svgrPlugin from "vite-plugin-svgr";
 
 export default defineConfig({
   envPrefix: "REACT_APP_",
+  assetsInclude: ["src/assets/**/*"],
   plugins: [
     react(),
     envCompatible(),

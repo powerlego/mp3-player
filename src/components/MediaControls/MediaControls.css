@@ -26,6 +26,10 @@
     @apply h-14 w-14;
   }
 
+  .has-media {
+    @apply fill-gray-600 hover:fill-gray-550 dark:fill-gray-250 hover:dark:fill-gray-350;
+  }
+
   .playing {
     @apply fill-gray-800 dark:fill-gray-150;
   }
