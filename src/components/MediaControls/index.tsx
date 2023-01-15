@@ -9,31 +9,44 @@ import "./MediaControls.css";
 
 interface MediaControlsBarProps {
   audio: HTMLAudioElement;
-  onPlay?: ()=>void
+  onPlay?: () => void;
 }
 
-function MediaControlsBar({ audio, onPlay }: MediaControlsBarProps) {
-  return (
-    <footer className="media-controls">
-      <div className="m-0 flex h-full w-56 bg-gray-200"></div>
-      <div className="media-controls__center">
-        <div className="media-controls__controls">
-          <ShuffleButton />
-          <SkipBackButton />
-          <PlayButton onPlay={onPlay} audio={audio} />
-          <SkipForwardButton />
-          <RepeatButton />
+class MediaControlsBar extends React.Component<MediaControlsBarProps> {
+  isPlaying = (): boolean => {
+    const { audio } = this.props;
+    if (!audio) return false;
+
+    return !audio.paused && !audio.ended;
+  };
+
+  render() {
+    const { audio, onPlay } = this.props;
+    return (
+      <footer className="media-controls">
+        <div className="m-0 flex h-full w-56 bg-gray-200"></div>
+        <div className="media-controls__center">
+          <div className="media-controls__controls">
+            <ShuffleButton />
+            <SkipBackButton />
+            {this.isPlaying() ? (
+              <PlayButton onPlay={onPlay} playing={true} audio={audio} />
+            ) : (
+              <PlayButton onPlay={onPlay} playing={false} audio={audio} />
+            )}
+            <SkipForwardButton />
+            <RepeatButton />
+          </div>
+          <TrackProgress audio={audio} />
         </div>
-        <TrackProgress audio={audio} />
-      </div>
-      <div className="m-0 flex h-full w-56 bg-gray-200">
-        <div className="media-controls__mute" />
-        <div className="media-controls__volume"></div>
-      </div>
-    </footer>
-  );
+        <div className="m-0 flex h-full w-56 bg-gray-200">
+          <div className="media-controls__mute" />
+          <div className="media-controls__volume"></div>
+        </div>
+      </footer>
+    );
+  }
 }
-
 function ShuffleButton() {
   const [isShuffle, setIsShuffle] = useState(false);
   const handleShuffle = () => setIsShuffle(!isShuffle);
@@ -56,22 +69,35 @@ function SkipBackButton() {
   );
 }
 
-interface PlayButtonProps{
+interface PlayButtonProps {
+  playing: boolean;
   audio?: HTMLAudioElement;
-  onPlay?: ()=>void;
+  onPlay?: () => void;
 }
 
-function PlayButton({audio, onPlay}: PlayButtonProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  return (
-    <div onClick={onPlay}>
-      {!audio!.paused ? (
-        <FaPauseCircle className="media-icon play-button" />
-      ) : (
-        <FaPlayCircle className="media-icon play-button" />
-      )}
-    </div>
-  );
+class PlayButton extends React.Component<PlayButtonProps> {
+  isAudioAvailable = (): boolean => {
+    const { audio } = this.props;
+    if (!audio) return false;
+    if (audio.src === "") return false;
+    return true;
+  };
+  render() {
+    const { onPlay, playing } = this.props;
+    let classNames = "media-icon play-button";
+
+    if (this.isAudioAvailable()) classNames += " has-media";
+
+    return (
+      <div onClick={onPlay}>
+        {playing ? (
+          <FaPauseCircle className={classNames} />
+        ) : (
+          <FaPlayCircle className={classNames} />
+        )}
+      </div>
+    );
+  }
 }
 
 function SkipForwardButton() {
