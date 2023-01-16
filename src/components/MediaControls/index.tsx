@@ -112,13 +112,13 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
                                     <SkipForwardButton />
                                     <RepeatButton />
                                 </div>
+                                <TrackProgress
+                                    audio={audio}
+                                    defaultCurrentTime={defaultCurrentTime}
+                                    defaultDuration={defaultDuration}
+                                    timeFormat= {timeFormat}
+                                />
                             </div>
-                            <TrackProgress
-                                audio={audio}
-                                defaultCurrentTime={defaultCurrentTime}
-                                defaultDuration={defaultDuration}
-                                timeFormat= {timeFormat}
-                            />
                             <div className="m-0 flex h-full w-56 bg-gray-200">
                                 <div className="media-controls__mute" />
                                 <div className="media-controls__volume"></div>
