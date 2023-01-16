@@ -21,16 +21,16 @@ class TrackProgress extends Component<TrackProgressProps> {
             return null;
         }
         return (
-            <div className="media-controls__progress">
+            <div className="media-controls-progress">
                 <CurrentTime
-                    className="media-controls__progress__time"
+                    className="media-controls-progress-time"
                     audio={audio}
                     timeFormat={timeFormat}
                     defaultCurrentTime={defaultCurrentTime}
                 />
                 <ProgressBar ref={this.progressRef} audio={audio} />
                 <Duration
-                    className="media-controls__progress__time"
+                    className="media-controls-progress-time"
                     audio={audio}
                     timeFormat={timeFormat}
                     defaultDuration={defaultDuration}

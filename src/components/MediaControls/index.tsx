@@ -104,8 +104,8 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
                     ? (
                         <div className="media-controls">
                             <div className="m-0 flex h-full w-56 bg-gray-200"></div>
-                            <div className="media-controls__center">
-                                <div className="media-controls__controls">
+                            <div className="media-controls-center">
+                                <div className="media-controls-controls">
                                     <ShuffleButton />
                                     <SkipBackButton />
                                     <PlayButton togglePlay={this.togglePlay} audio={audio} />
@@ -120,8 +120,8 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
                                 />
                             </div>
                             <div className="m-0 flex h-full w-56 bg-gray-200">
-                                <div className="media-controls__mute" />
-                                <div className="media-controls__volume"></div>
+                                <div className="media-controls-mute" />
+                                <div className="media-controls-volume"></div>
                             </div>
                         </div>
                     )

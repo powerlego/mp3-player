@@ -9,10 +9,10 @@
         @apply flex h-32 w-full flex-row justify-between;
     }
 
-    .media-controls__center {
+    .media-controls-center {
         @apply flex h-full w-full flex-1 flex-col items-center justify-start;
     }
-    .media-controls__controls {
+    .media-controls-controls {
         @apply mt-2 mb-1 flex flex-row items-center justify-center;
     }
 
