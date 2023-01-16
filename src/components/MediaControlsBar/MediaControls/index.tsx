@@ -19,7 +19,7 @@ export default class MediaControls extends React.Component<MediaControlsProps> {
             <div className="media-controls-controls">
                 <ShuffleButton/>
                 <SkipBackButton aria-label={i18nAriaLabels?.previous}/>
-                <PlayButton togglePlay={togglePlay} audio={audio} />
+                <PlayButton togglePlay={togglePlay} audio={audio} i18nAriaLabels={i18nAriaLabels} />
                 <SkipForwardButton aria-label={i18nAriaLabels?.next} />
                 <RepeatButton />
             </div>
@@ -51,6 +51,7 @@ function SkipBackButton() {
 interface PlayButtonProps {
     audio?: HTMLAudioElement;
     togglePlay?: (e: React.SyntheticEvent) => void;
+    i18nAriaLabels?: I18nAriaLabels;
 }
 
 interface PlayButtonState {
@@ -108,7 +109,7 @@ class PlayButton extends React.Component<PlayButtonProps, PlayButtonState> {
     }
 
     render() {
-        const { togglePlay } = this.props;
+        const { togglePlay, i18nAriaLabels } = this.props;
         const { isPlaying } = this.state;
         if (!this.isAudioAvailable()) {
             return (
@@ -122,10 +123,16 @@ class PlayButton extends React.Component<PlayButtonProps, PlayButtonState> {
                 <div onClick={togglePlay}>
                     {isPlaying
                         ? (
-                            <FaPauseCircle className="media-icon play-button has-media" />
+                            <FaPauseCircle
+                                className="media-icon play-button has-media"
+                                aria-label={i18nAriaLabels?.play}
+                            />
                         )
                         : (
-                            <FaPlayCircle className="media-icon play-button has-media" />
+                            <FaPlayCircle
+                                className="media-icon play-button has-media"
+                                aria-label={i18nAriaLabels?.pause}
+                            />
                         )}
                 </div>
             );

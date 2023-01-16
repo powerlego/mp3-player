@@ -32,10 +32,12 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
             play: "Play",
             pause: "Pause",
             rewind: "Rewind",
-            forward: "Forward",
+            shuffle: "Shuffle",
+            shuffleOn: "Shuffle enabled",
             previous: "Previous",
             next: "Skip",
             loop: "Disable loop",
+            loopOnce: "Enable loop once",
             loopOff: "Enable loop",
             volume: "Mute",
             volumeMute: "Unmute",
@@ -98,6 +100,7 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
                                     defaultCurrentTime={defaultCurrentTime}
                                     defaultDuration={defaultDuration}
                                     timeFormat= {timeFormat}
+                                    i18nAriaLabels={i18nAriaLabels}
                                 />
                             </div>
                             <div className="m-0 flex h-full w-56 bg-gray-200">
