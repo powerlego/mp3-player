@@ -157,7 +157,17 @@ interface PlayButtonProps {
     togglePlay?: (e: React.SyntheticEvent) => void;
 }
 
-class PlayButton extends React.Component<PlayButtonProps> {
+interface PlayButtonState {
+    isPlaying: boolean;
+}
+
+class PlayButton extends React.Component<PlayButtonProps, PlayButtonState> {
+
+    addedEventListeners = false;
+
+    state: PlayButtonState = {
+        isPlaying: false,
+    };
     isPlaying = (): boolean => {
         const { audio } = this.props;
         if (!audio) {return false;}
@@ -170,8 +180,40 @@ class PlayButton extends React.Component<PlayButtonProps> {
         if (audio.src === "") {return false;}
         return true;
     };
+
+    addEventListeners = () => {
+        const { audio } = this.props;
+        if (!audio) {return;}
+        audio.addEventListener("play", () => {this.setState({ isPlaying: true });});
+        audio.addEventListener("pause", () => {this.setState({ isPlaying: false });});
+        audio.addEventListener("ended", () => {this.setState({ isPlaying: false });});
+        this.addedEventListeners = true;
+    };
+
+    removeEventListeners = () => {
+        const { audio } = this.props;
+        if (!audio) {return;}
+        audio.removeEventListener("play", () => {this.setState({ isPlaying: true });});
+        audio.removeEventListener("pause", () => {this.setState({ isPlaying: false });});
+        audio.removeEventListener("ended", () => {this.setState({ isPlaying: false });});
+        this.addedEventListeners = false;
+    };
+
+    componentDidMount() {
+        this.addEventListeners();
+    }
+
+    componentDidUpdate() {
+        this.addEventListeners();
+    }
+
+    componentWillUnmount() {
+        this.removeEventListeners();
+    }
+
     render() {
         const { togglePlay } = this.props;
+        const { isPlaying } = this.state;
         if (!this.isAudioAvailable()) {
             return (
                 <div>
@@ -182,7 +224,7 @@ class PlayButton extends React.Component<PlayButtonProps> {
         else {
             return (
                 <div onClick={togglePlay}>
-                    {this.isPlaying()
+                    {isPlaying
                         ? (
                             <FaPauseCircle className="media-icon play-button has-media" />
                         )
