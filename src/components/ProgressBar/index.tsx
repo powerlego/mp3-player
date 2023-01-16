@@ -41,7 +41,8 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
 
     getCurrentProgress = (event: MouseEvent | React.MouseEvent | TouchEvent | React.TouchEvent): TimePosInfo => {
         const { progressRef } = this.props;
-        const rect = progressRef.current!.getBoundingClientRect();
+        if(!progressRef.current) { return { currentTime: 0, currentTimePos: "0%" }; }
+        const rect = progressRef.current.getBoundingClientRect();
         const maxRelativePos = rect.width;
 
         let relativePos = getPosX(event) - rect.left;
