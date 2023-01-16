@@ -1,12 +1,11 @@
-import React, { ReactNode } from "react";
-import { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 import { BsFillSkipEndFill, BsFillSkipStartFill } from "react-icons/bs";
 import { BiShuffle } from "react-icons/bi";
 import { TbRepeat, TbRepeatOnce } from "react-icons/tb";
-import TrackProgress from "../TrackProgress";
 import { AUDIO_PRELOAD_ATTRIBUTE, TIME_FORMAT } from "../../constants";
 import "./MediaControls.css";
+import TrackProgress from "../TrackProgress";
 
 interface I18nAriaLabels {
     player?: string;
@@ -41,6 +40,8 @@ interface MediaControlsBarProps {
 class MediaControlsBar extends React.Component<MediaControlsBarProps> {
     static defaultProps: MediaControlsBarProps = {
         timeFormat: "auto",
+        defaultCurrentTime: "--:--",
+        defaultDuration: "--:--",
         i18nAriaLabels: {
             player: "Audio player",
             progressControl: "Audio progress control",
@@ -93,11 +94,12 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
     };
 
     render() {
-        const { src, timeFormat } = this.props;
+        const { src, timeFormat, defaultCurrentTime, defaultDuration } = this.props;
         const audio = this.audio.current;
+        if(!timeFormat) {return null;}
         return (
-            <footer className="media-container">
-                <audio ref={this.audio} src={src} />
+            <div className="media-container">
+                <audio ref={this.audio} src={src} controls={false} />
                 {audio && audio.src
                     ? (
                         <div className="media-controls">
@@ -110,8 +112,13 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
                                     <SkipForwardButton />
                                     <RepeatButton />
                                 </div>
-                                <TrackProgress audio={audio} timeFormat={timeFormat} />
                             </div>
+                            <TrackProgress
+                                audio={audio}
+                                defaultCurrentTime={defaultCurrentTime}
+                                defaultDuration={defaultDuration}
+                                timeFormat= {timeFormat}
+                            />
                             <div className="m-0 flex h-full w-56 bg-gray-200">
                                 <div className="media-controls__mute" />
                                 <div className="media-controls__volume"></div>
@@ -121,7 +128,7 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
                     : (
                         <p>No audio source provided. Please provide a valid audio source.</p>
                     )}
-            </footer>
+            </div>
         );
     }
 }
@@ -131,12 +138,8 @@ function ShuffleButton() {
     return (
         <div onClick={() => handleShuffle()}>
             {isShuffle
-                ? (
-                    <BiShuffle className="media-icon shuffle-button shuffling" />
-                )
-                : (
-                    <BiShuffle className="media-icon shuffle-button" />
-                )}
+                ? (<BiShuffle className="media-icon shuffle-button shuffling" />)
+                : (<BiShuffle className="media-icon shuffle-button" />)}
         </div>
     );
 }
