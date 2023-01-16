@@ -141,13 +141,13 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
         if (audio && !this.hasAddedAudioEventListener) {
             this.audio = audio;
             this.hasAddedAudioEventListener = true;
-            audio.addEventListener("timeupdate", this.handleAudioTimeUpdate);
+            audio.addEventListener("timeupdate", (e:Event)=>{this.handleAudioTimeUpdate(e);});
         }
     }
 
     componentWillUnmount(): void {
         if (this.audio && this.hasAddedAudioEventListener) {
-            this.audio.removeEventListener("timeupdate", this.handleAudioTimeUpdate);
+            this.audio.removeEventListener("timeupdate", (e:Event)=>{this.handleAudioTimeUpdate(e);});
         }
     }
 
