@@ -2,7 +2,7 @@ import React from "react";
 import MainWindow from "./components/MainWindow";
 import MediaControlsBar from "./components/MediaControls";
 import Sidebar from "./components/Sidebar";
-import testAudioFile from "./assets/audio/test.mp3";
+import testAudioFile from "./assets/audio/Hymn-For-The-Weekend.mp3";
 
 class App extends React.Component {
     audio = new Audio(testAudioFile);
