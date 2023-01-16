@@ -29,7 +29,6 @@ export default class Duration extends Component<
                 ? getDisplayTimeBySeconds(audio.duration, audio.duration, timeFormat)
                 : defaultDuration,
         };
-        console.log(audio);
     }
 
     state: DurationState = {
