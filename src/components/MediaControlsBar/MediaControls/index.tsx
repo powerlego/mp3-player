@@ -74,8 +74,7 @@ class PlayButton extends React.Component<PlayButtonProps, PlayButtonState> {
     isAudioAvailable = (): boolean => {
         const { audio } = this.props;
         if (!audio) {return false;}
-        if (audio.src === "") {return false;}
-        console.log("audio.src", audio.src);
+        if (audio.src === "" || audio.src === window.location.href) {return false;}
         return true;
     };
 
@@ -112,7 +111,6 @@ class PlayButton extends React.Component<PlayButtonProps, PlayButtonState> {
     render() {
         const { togglePlay, i18nAriaLabels } = this.props;
         const { isPlaying } = this.state;
-        console.log(this.isAudioAvailable());
         if (!this.isAudioAvailable()) {
             return (
                 <div>
