@@ -7,7 +7,7 @@ import "./TrackProgress.css";
 import { I18nAriaLabels } from "../../../types";
 
 interface TrackProgressProps {
-    audio: HTMLAudioElement;
+    audio: HTMLAudioElement | null;
     defaultCurrentTime?: ReactNode;
     defaultDuration?: ReactNode;
     timeFormat?: TIME_FORMAT;

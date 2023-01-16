@@ -3,7 +3,7 @@ import { FaVolumeUp } from "react-icons/fa";
 import VolumeBar from "./VolumeBar";
 
 interface VolumeControlsProps {
-    audio: HTMLAudioElement;
+    audio: HTMLAudioElement | null;
 }
 
 interface VolumeControlsState {
@@ -23,6 +23,7 @@ class VolumeControls extends Component<VolumeControlsProps, VolumeControlsState>
         const { audio } = this.props;
         const { value } = e.target;
         const volume = Number(value) / 100;
+        if (!audio) {return;}
         audio.volume = volume;
         this.setState({ volume });
     };
@@ -30,6 +31,7 @@ class VolumeControls extends Component<VolumeControlsProps, VolumeControlsState>
     toggleMute = (): void => {
         const { audio } = this.props;
         const { muted } = this.state;
+        if(!audio) {return;}
         audio.muted = !muted;
         this.setState({ muted: !muted });
     };

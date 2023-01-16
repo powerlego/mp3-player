@@ -11,7 +11,7 @@ class App extends React.Component {
         return (
             <div className="app">
                 <Sidebar />
-                <MediaControlsBar src={this.audio.src} />
+                <MediaControlsBar src="" />
                 <MainWindow />
             </div>
         );

@@ -3,7 +3,7 @@ import { TIME_FORMAT } from "../../../../constants";
 import { getDisplayTimeBySeconds } from "../../../../utils";
 
 interface CurrentTimeProps {
-  audio?: HTMLAudioElement;
+  audio?: HTMLAudioElement | null;
   defaultCurrentTime: ReactNode;
   timeFormat: TIME_FORMAT;
   className?: string;

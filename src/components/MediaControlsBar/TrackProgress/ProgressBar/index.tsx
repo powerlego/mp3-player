@@ -8,7 +8,7 @@ interface ProgressBarState {
 }
 
 interface ProgressBarForwardRefProps {
-    audio: HTMLAudioElement;
+    audio: HTMLAudioElement | null;
     progressUpdateInterval?: number;
     srcDuration?: number;
     i18nProgressBar?: string;
@@ -37,6 +37,7 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
 
     getDuration(): number {
         const { audio, srcDuration } = this.props;
+        if (!audio) { return 0; }
         return typeof srcDuration === "undefined" ? audio.duration : srcDuration;
     }
 
@@ -107,6 +108,7 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
         const newProps: { isDraggingProgress: boolean; currentTimePos?: string } = {
             isDraggingProgress: false,
         };
+        if(!audio) { return; }
         if (audio.readyState === audio.HAVE_NOTHING || audio.readyState === audio.HAVE_METADATA || !isFinite(newTime)) {
             newProps.currentTimePos = "0%";
         }

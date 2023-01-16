@@ -85,33 +85,27 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
         return (
             <div className="media-container" aria-label={i18nAriaLabels?.player}>
                 <audio ref={this.audio} src={src} controls={false} />
-                {audio && audio.src
-                    ? (
-                        <div className="media-controls">
-                            <div className="m-0 flex h-full w-56 bg-gray-200"></div>
-                            <div className="media-controls-center">
-                                <MediaControls
-                                    togglePlay={this.togglePlay}
-                                    audio={audio}
-                                    i18nAriaLabels={i18nAriaLabels}
-                                />
-                                <TrackProgress
-                                    audio={audio}
-                                    defaultCurrentTime={defaultCurrentTime}
-                                    defaultDuration={defaultDuration}
-                                    timeFormat= {timeFormat}
-                                    i18nAriaLabels={i18nAriaLabels}
-                                />
-                            </div>
-                            <div className="m-0 flex h-full w-56 bg-gray-200">
-                                <div className="media-controls-mute" />
-                                <div className="media-controls-volume"></div>
-                            </div>
-                        </div>
-                    )
-                    : (
-                        <p>No audio source provided. Please provide a valid audio source.</p>
-                    )}
+                <div className="media-controls">
+                    <div className="m-0 flex h-full w-56 bg-gray-200"></div>
+                    <div className="media-controls-center">
+                        <MediaControls
+                            togglePlay={this.togglePlay}
+                            audio={audio}
+                            i18nAriaLabels={i18nAriaLabels}
+                        />
+                        <TrackProgress
+                            audio={audio}
+                            defaultCurrentTime={defaultCurrentTime}
+                            defaultDuration={defaultDuration}
+                            timeFormat= {timeFormat}
+                            i18nAriaLabels={i18nAriaLabels}
+                        />
+                    </div>
+                    <div className="m-0 flex h-full w-56 bg-gray-200">
+                        <div className="media-controls-mute" />
+                        <div className="media-controls-volume"></div>
+                    </div>
+                </div>
             </div>
         );
     }

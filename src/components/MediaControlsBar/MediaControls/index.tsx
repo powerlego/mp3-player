@@ -6,7 +6,7 @@ import { TbRepeat, TbRepeatOnce } from "react-icons/tb";
 import { I18nAriaLabels } from "../../../types";
 
 interface MediaControlsProps {
-    audio: HTMLAudioElement;
+    audio: HTMLAudioElement | null;
     togglePlay?: (e: React.SyntheticEvent) => void;
     i18nAriaLabels?: I18nAriaLabels;
 }
@@ -49,7 +49,7 @@ function SkipBackButton() {
 }
 
 interface PlayButtonProps {
-    audio?: HTMLAudioElement;
+    audio?: HTMLAudioElement | null;
     togglePlay?: (e: React.SyntheticEvent) => void;
     i18nAriaLabels?: I18nAriaLabels;
 }
@@ -75,6 +75,7 @@ class PlayButton extends React.Component<PlayButtonProps, PlayButtonState> {
         const { audio } = this.props;
         if (!audio) {return false;}
         if (audio.src === "") {return false;}
+        console.log("audio.src", audio.src);
         return true;
     };
 
@@ -111,6 +112,7 @@ class PlayButton extends React.Component<PlayButtonProps, PlayButtonState> {
     render() {
         const { togglePlay, i18nAriaLabels } = this.props;
         const { isPlaying } = this.state;
+        console.log(this.isAudioAvailable());
         if (!this.isAudioAvailable()) {
             return (
                 <div>
