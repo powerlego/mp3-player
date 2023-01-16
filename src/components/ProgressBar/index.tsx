@@ -128,7 +128,6 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
         const { isDraggingProgress } = this.state;
         const audio = e.target as HTMLAudioElement;
         if (isDraggingProgress) {return;}
-
         const { currentTime } = audio;
         const duration = this.getDuration();
 

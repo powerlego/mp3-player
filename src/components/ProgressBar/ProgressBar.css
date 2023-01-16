@@ -2,27 +2,27 @@
 @tailwind components;
 
 @layer components {
-  .media-controls__progress__container {
-    @apply flex h-5 w-3/4 flex-row items-center justify-center;
-  }
+    .media-controls__progress__container {
+        @apply flex h-5 w-3/4 flex-row items-center justify-center;
+    }
 
-  .media-controls__progress__bar {
-    @apply relative box-border h-1 w-full rounded-full bg-gray-450 dark:bg-gray-600;
-  }
+    .media-controls__progress__bar {
+        @apply relative box-border h-1 w-full rounded-full bg-gray-450 dark:bg-gray-600;
+    }
 
-  .media-controls__progress__bar__progress {
-    @apply absolute z-10 box-border h-full rounded-full bg-gray-550 dark:bg-gray-250;
-  }
+    .media-controls__progress__bar__progress {
+        @apply absolute z-10 box-border h-full rounded-full bg-gray-550 dark:bg-gray-250;
+    }
 
-  .media-controls__progress__bar__progress__dragging {
-    @apply bg-green-500 dark:bg-green-500;
-  }
+    .media-controls__progress__bar__progress__dragging {
+        @apply bg-green-500 dark:bg-green-500;
+    }
 
-  .media-controls__progress__bar__scrubber {
-    @apply absolute -top-2 z-20 -ml-2.5 box-border h-5 w-5 scale-0 rounded-full shadow shadow-gray-800 dark:shadow-gray-250;
-  }
+    .media-controls__progress__bar__scrubber {
+        @apply absolute -top-2 z-20 -ml-2.5 box-border h-5 w-5 scale-0 rounded-full shadow shadow-gray-800 dark:shadow-gray-250;
+    }
 
-  .media-controls__progress__bar__scrubber__dragging{
-    @apply scale-100 bg-gray-550 dark:bg-gray-250;
-  }
+    .media-controls__progress__bar__scrubber__dragging {
+        @apply scale-100 bg-gray-550 dark:bg-gray-250;
+    }
 }
