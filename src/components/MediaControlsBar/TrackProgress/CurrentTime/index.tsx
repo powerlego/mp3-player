@@ -1,6 +1,6 @@
 import React, { Component, ReactNode } from "react";
-import { TIME_FORMAT } from "../../constants";
-import { getDisplayTimeBySeconds } from "../../utils";
+import { TIME_FORMAT } from "../../../../constants";
+import { getDisplayTimeBySeconds } from "../../../../utils";
 
 interface CurrentTimeProps {
   audio?: HTMLAudioElement;

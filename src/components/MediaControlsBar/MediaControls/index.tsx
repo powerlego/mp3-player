@@ -1,137 +1,33 @@
-import React, { ReactNode, useState } from "react";
+import React, { useState } from "react";
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 import { BsFillSkipEndFill, BsFillSkipStartFill } from "react-icons/bs";
 import { BiShuffle } from "react-icons/bi";
 import { TbRepeat, TbRepeatOnce } from "react-icons/tb";
-import { AUDIO_PRELOAD_ATTRIBUTE, TIME_FORMAT } from "../../constants";
-import "./MediaControls.css";
-import TrackProgress from "../TrackProgress";
+import { I18nAriaLabels } from "../../../types";
 
-interface I18nAriaLabels {
-    player?: string;
-    progressControl?: string;
-    volumeControl?: string;
-    play?: string;
-    pause?: string;
-    rewind?: string;
-    forward?: string;
-    previous?: string;
-    next?: string;
-    loop?: string;
-    loopOff?: string;
-    volume?: string;
-    volumeMute?: string;
-}
-interface MediaControlsBarProps {
-    src?: string;
-    progressUpdateInterval?: number;
-
-    /**
-     * HTML5 Audio tag preload property
-     */
-    preload?: AUDIO_PRELOAD_ATTRIBUTE;
+interface MediaControlsProps {
+    audio: HTMLAudioElement;
+    togglePlay?: (e: React.SyntheticEvent) => void;
     i18nAriaLabels?: I18nAriaLabels;
-    defaultCurrentTime?: ReactNode;
-    defaultDuration?: ReactNode;
-    timeFormat?: TIME_FORMAT;
-    volume?: number;
 }
 
-class MediaControlsBar extends React.Component<MediaControlsBarProps> {
-    static defaultProps: MediaControlsBarProps = {
-        timeFormat: "auto",
-        defaultCurrentTime: "--:--",
-        defaultDuration: "--:--",
-        i18nAriaLabels: {
-            player: "Audio player",
-            progressControl: "Audio progress control",
-            volumeControl: "Volume control",
-            play: "Play",
-            pause: "Pause",
-            rewind: "Rewind",
-            forward: "Forward",
-            previous: "Previous",
-            next: "Skip",
-            loop: "Disable loop",
-            loopOff: "Enable loop",
-            volume: "Mute",
-            volumeMute: "Unmute",
-        },
-    };
-
-    audio = React.createRef<HTMLAudioElement>();
-    togglePlay = (e: React.SyntheticEvent): void => {
-        e.stopPropagation();
-        const audio = this.audio.current;
-        if (!audio) {return;}
-        if ((audio.paused || audio.ended) && audio.src) {
-            this.playAudioPromise();
-        }
-        else if (!audio.paused) {
-            audio.pause();
-        }
-    };
-
-    playAudioPromise = (): void => {
-        const audio = this.audio.current;
-        if (!audio) {return;}
-        const playPromise = audio.play();
-        // playPromise is null in IE 11
-
-        playPromise.then(null).catch((err) => {
-            console.log(err);
-        });
-    };
-
-    componentDidMount() {
-        this.forceUpdate();
-    }
-    isPlaying = (): boolean => {
-        const audio = this.audio.current;
-        if (!audio) {return false;}
-
-        return !audio.paused && !audio.ended;
-    };
+export default class MediaControls extends React.Component<MediaControlsProps> {
 
     render() {
-        const { src, timeFormat, defaultCurrentTime, defaultDuration } = this.props;
-        const audio = this.audio.current;
-        if(!timeFormat) {return null;}
+        const { audio, togglePlay, i18nAriaLabels } = this.props;
         return (
-            <div className="media-container">
-                <audio ref={this.audio} src={src} controls={false} />
-                {audio && audio.src
-                    ? (
-                        <div className="media-controls">
-                            <div className="m-0 flex h-full w-56 bg-gray-200"></div>
-                            <div className="media-controls-center">
-                                <div className="media-controls-controls">
-                                    <ShuffleButton />
-                                    <SkipBackButton />
-                                    <PlayButton togglePlay={this.togglePlay} audio={audio} />
-                                    <SkipForwardButton />
-                                    <RepeatButton />
-                                </div>
-                                <TrackProgress
-                                    audio={audio}
-                                    defaultCurrentTime={defaultCurrentTime}
-                                    defaultDuration={defaultDuration}
-                                    timeFormat= {timeFormat}
-                                />
-                            </div>
-                            <div className="m-0 flex h-full w-56 bg-gray-200">
-                                <div className="media-controls-mute" />
-                                <div className="media-controls-volume"></div>
-                            </div>
-                        </div>
-                    )
-                    : (
-                        <p>No audio source provided. Please provide a valid audio source.</p>
-                    )}
+            <div className="media-controls-controls">
+                <ShuffleButton/>
+                <SkipBackButton aria-label={i18nAriaLabels?.previous}/>
+                <PlayButton togglePlay={togglePlay} audio={audio} />
+                <SkipForwardButton aria-label={i18nAriaLabels?.next} />
+                <RepeatButton />
             </div>
         );
     }
 }
+
+
 function ShuffleButton() {
     const [isShuffle, setIsShuffle] = useState(false);
     const handleShuffle = () => setIsShuffle(!isShuffle);
@@ -271,4 +167,4 @@ function RepeatButton() {
     );
 }
 
-export default MediaControlsBar;
+

@@ -1,5 +1,5 @@
 import React, { Component, forwardRef } from "react";
-import { getPosX, throttle } from "../../utils";
+import { getPosX, throttle } from "../../../../utils";
 import "./ProgressBar.css";
 
 interface ProgressBarState {
@@ -11,6 +11,7 @@ interface ProgressBarForwardRefProps {
     audio: HTMLAudioElement;
     progressUpdateInterval?: number;
     srcDuration?: number;
+    i18nProgressBar?: string;
 }
 
 interface ProgressBarProps extends ProgressBarForwardRefProps {
@@ -153,8 +154,11 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
     }
 
     render(): React.ReactNode {
-        const { progressRef } = this.props;
+        const { progressRef , i18nProgressBar } = this.props;
         const { currentTimePos, isDraggingProgress } = this.state;
+        if(!currentTimePos) {
+            return null;
+        }
         let indicatorClassNames = "media-controls-progress-bar-scrubber ";
 
         let progressClassNames = "media-controls-progress-bar-progress ";
@@ -172,7 +176,11 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
                 className="media-controls-progress-container group "
                 onTouchStart={this.handleMouseDownOrTouchStart}
                 onMouseDown={this.handleMouseDownOrTouchStart}
+                aria-label={i18nProgressBar}
                 ref={progressRef}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={Number(currentTimePos.split("%")[0])}
             >
                 <div className="media-controls-progress-bar ">
                     <div className={indicatorClassNames} style={{ left: currentTimePos }} />
