@@ -59,10 +59,10 @@ export default class CurrentTime extends Component<
         if (audio && !this.hasAddedAudioEventListener) {
             this.audio = audio;
             this.hasAddedAudioEventListener = true;
-            audio.addEventListener("timeupdate", this.handleAudioCurrentTimeChange);
+            audio.addEventListener("timeupdate", (e:Event) => {this.handleAudioCurrentTimeChange(e);});
             audio.addEventListener(
                 "loadedmetadata",
-                this.handleAudioCurrentTimeChange
+                (e:Event) => {this.handleAudioCurrentTimeChange(e);}
             );
         }
     };
@@ -79,11 +79,11 @@ export default class CurrentTime extends Component<
         if (this.audio && this.hasAddedAudioEventListener) {
             this.audio.removeEventListener(
                 "timeupdate",
-                this.handleAudioCurrentTimeChange
+                (e:Event) => {this.handleAudioCurrentTimeChange(e);}
             );
             this.audio.removeEventListener(
                 "loadedmetadata",
-                this.handleAudioCurrentTimeChange
+                (e:Event) => {this.handleAudioCurrentTimeChange(e);}
             );
         }
     }

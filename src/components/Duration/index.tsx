@@ -1,4 +1,4 @@
-import React, { Component,ReactNode } from "react";
+import React,{ Component,ReactNode } from "react";
 import { TIME_FORMAT } from "../../constants";
 import { getDisplayTimeBySeconds } from "../../utils";
 
@@ -29,6 +29,7 @@ export default class Duration extends Component<
                 ? getDisplayTimeBySeconds(audio.duration, audio.duration, timeFormat)
                 : defaultDuration,
         };
+        console.log(audio);
     }
 
     state: DurationState = {
@@ -56,8 +57,8 @@ export default class Duration extends Component<
         if (audio && !this.hasAddedAudioEventListener) {
             this.audio = audio;
             this.hasAddedAudioEventListener = true;
-            audio.addEventListener("durationchange", this.handleAudioDurationChange);
-            audio.addEventListener("abort", this.handleAudioDurationChange);
+            audio.addEventListener("durationchange", (e:Event)=>{this.handleAudioDurationChange(e);});
+            audio.addEventListener("abort", (e:Event)=>{this.handleAudioDurationChange(e);});
         }
     };
 
@@ -73,13 +74,13 @@ export default class Duration extends Component<
         if (this.audio && this.hasAddedAudioEventListener) {
             this.audio.removeEventListener(
                 "durationchange",
-                this.handleAudioDurationChange
+                (e:Event)=>{this.handleAudioDurationChange(e);}
             );
-            this.audio.removeEventListener("abort", this.handleAudioDurationChange);
+            this.audio.removeEventListener("abort", (e:Event) =>{this.handleAudioDurationChange(e);});
         }
     }
 
-    render() {
+    render(): ReactNode {
         return <div className={this.props.className}>{this.state.duration}</div>;
     }
 }

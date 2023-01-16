@@ -13,9 +13,13 @@ interface TrackProgressProps {
 }
 
 class TrackProgress extends Component<TrackProgressProps> {
+
     progressRef = React.createRef<HTMLDivElement>();
     render() {
         const { audio, timeFormat, defaultCurrentTime, defaultDuration } = this.props;
+        if(!timeFormat) {
+            return null;
+        }
         return (
             <div className="media-controls__progress">
                 <CurrentTime
