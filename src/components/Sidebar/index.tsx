@@ -1,14 +1,16 @@
 import React from "react";
 
-function Sidebar() {
-  return (
-    <div className="sidebar">
-      <div className="sidebar__container">
-        <i>A</i>
-        <i>B</i>
-      </div>
-    </div>
-  );
+class Sidebar extends React.Component {
+    render () {
+        return (
+            <div className="sidebar">
+                <div className="sidebar__container">
+                    <i>A</i>
+                    <i>B</i>
+                </div>
+            </div>
+        );
+    }
 }
 
 export default Sidebar;

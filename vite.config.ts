@@ -8,7 +8,9 @@ export default defineConfig({
   envPrefix: "REACT_APP_",
   assetsInclude: ["src/assets/**/*"],
   plugins: [
-    react(),
+    react({
+      fastRefresh: true,
+    }),
     envCompatible(),
     tsconfigPaths(),
     svgrPlugin({
