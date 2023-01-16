@@ -12,7 +12,6 @@ module.exports = {
     printWidth: 120,
     tabs: false,
     "quote-props": "as-needed",
-    parser: "typescript",
     
 
 };
