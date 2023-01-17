@@ -4,6 +4,7 @@ import { BsFillSkipEndFill, BsFillSkipStartFill } from "react-icons/bs";
 import { BiShuffle } from "react-icons/bi";
 import { TbRepeat, TbRepeatOnce } from "react-icons/tb";
 import { I18nAriaLabels } from "../../../types";
+import "./MediaControls.css";
 
 interface MediaControlsProps {
     audio: HTMLAudioElement | null;
