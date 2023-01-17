@@ -9,22 +9,34 @@
             dark:bg-gray-750;
     }
     .media-controls {
-        @apply h-32 w-full 
-            flex flex-row justify-between;
+        @apply flex h-32 
+            w-full flex-row justify-between;
     }
 
     .media-controls-center {
-        @apply h-full w-full
-            flex flex-1 flex-col items-center justify-start;
+        @apply flex h-full
+            w-full flex-1 flex-col items-center justify-start;
     }
 
     .media-icon {
-        @apply cursor-pointer
-            m-2 
+        @apply m-2
+            cursor-pointer 
             fill-gray-450
-            hover:fill-gray-550 
-            dark:fill-gray-550 
-            hover:dark:fill-gray-150
-            transition duration-300 ease-in-out;
+            transition 
+            duration-300 
+            ease-in-out
+            hover:fill-gray-550 dark:fill-gray-550 hover:dark:fill-gray-150;
+    }
+
+    div.has-media {
+        @apply bg-gray-600 
+            dark:bg-gray-250;
+    }
+
+    svg.has-media {
+        @apply fill-gray-600
+            hover:fill-gray-550
+            dark:fill-gray-250
+            hover:dark:fill-gray-350;
     }
 }
