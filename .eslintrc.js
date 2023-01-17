@@ -21,10 +21,8 @@ module.exports = {
         "coverage/",
         "public/",
         ".eslintrc.js",
-        "vitest.config.js",
-        "tailwind.config.js",
-        "postcss.config.js",
-        "prettier.config.js",
+        "*.config.js",
+        "*.config.ts",
     ],
     parserOptions: {
         ecmaFeatures: {
@@ -50,7 +48,7 @@ module.exports = {
         quotes: ["error", "double"],
         semi: ["error", "always"],
         "func-call-spacing": ["error", "never"],
-        "function-paren-newline": ["error", "multiline"],
+        "function-paren-newline": ["error", "multiline-arguments"],
         "no-lonely-if": "error",
         "no-tabs": "error",
         "no-trailing-spaces": "error",
