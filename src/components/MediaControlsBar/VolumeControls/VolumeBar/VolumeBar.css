@@ -3,7 +3,7 @@
 
 @layer components {
     .media-controls-volume-container {
-        @apply flex h-5 w-3/4 flex-row items-center justify-center;
+        @apply flex h-5 w-full flex-row flex-1 items-center justify-center mr-5 ml-2;
     }
 
     .media-controls-volume-bar {

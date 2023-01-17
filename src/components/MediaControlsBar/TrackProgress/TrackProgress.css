@@ -3,7 +3,7 @@
 
 @layer components {
     .media-controls-progress {
-        @apply flex w-full flex-row items-center justify-center;
+        @apply flex w-full flex-row items-center justify-center h-full;
     }
 
     .media-controls-progress-time {

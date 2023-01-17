@@ -3,7 +3,7 @@
 
 @layer components {
     .media-controls-progress-container {
-        @apply flex h-5 w-3/4 flex-row items-center justify-center;
+        @apply flex h-5 w-3/4 flex-row flex-1 items-center justify-center;
     }
 
     .media-controls-progress-bar {
