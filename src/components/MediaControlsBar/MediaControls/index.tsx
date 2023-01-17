@@ -19,7 +19,7 @@ export default class MediaControls extends React.Component<MediaControlsProps> {
             <div className="media-controls-controls">
                 <ShuffleButton/>
                 <SkipBackButton aria-label={i18nAriaLabels?.previous}/>
-                <PlayButton togglePlay={togglePlay} audio={audio} i18nAriaLabels={i18nAriaLabels} />
+                <PlayButton audio={audio} i18nAriaLabels={i18nAriaLabels} togglePlay={togglePlay} />
                 <SkipForwardButton aria-label={i18nAriaLabels?.next} />
                 <RepeatButton />
             </div>
@@ -124,14 +124,14 @@ class PlayButton extends React.Component<PlayButtonProps, PlayButtonState> {
                     {isPlaying
                         ? (
                             <FaPauseCircle
-                                className="media-icon play-button has-media"
                                 aria-label={i18nAriaLabels?.play}
+                                className="media-icon play-button has-media"
                             />
                         )
                         : (
                             <FaPlayCircle
-                                className="media-icon play-button has-media"
                                 aria-label={i18nAriaLabels?.pause}
+                                className="media-icon play-button has-media"
                             />
                         )}
                 </div>

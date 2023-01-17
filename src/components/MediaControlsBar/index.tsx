@@ -4,8 +4,9 @@ import "./MediaControlsBar.css";
 import TrackProgress from "./TrackProgress";
 import MediaControls from "./MediaControls";
 import { I18nAriaLabels } from "../../types";
+import VolumeControls from "./VolumeControls";
 
-interface MediaControlsBarProps {
+type MediaControlsBarProps = {
     src?: string;
     progressUpdateInterval?: number;
 
@@ -83,28 +84,25 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
         const audio = this.audio.current;
         if(!timeFormat) {return null;}
         return (
-            <div className="media-container" aria-label={i18nAriaLabels?.player}>
-                <audio ref={this.audio} src={src} controls={false} />
+            <div aria-label={i18nAriaLabels?.player} className="media-container">
+                <audio controls={false} ref={this.audio} src={src} />
                 <div className="media-controls">
-                    <div className="m-0 flex h-full w-56 bg-gray-200"></div>
+                    <div className="m-0 flex h-full w-56 bg-gray-200" />
                     <div className="media-controls-center">
                         <MediaControls
-                            togglePlay={this.togglePlay}
                             audio={audio}
                             i18nAriaLabels={i18nAriaLabels}
+                            togglePlay={this.togglePlay}
                         />
                         <TrackProgress
                             audio={audio}
                             defaultCurrentTime={defaultCurrentTime}
                             defaultDuration={defaultDuration}
-                            timeFormat= {timeFormat}
                             i18nAriaLabels={i18nAriaLabels}
+                            timeFormat= {timeFormat}
                         />
                     </div>
-                    <div className="m-0 flex h-full w-56 bg-gray-200">
-                        <div className="media-controls-mute" />
-                        <div className="media-controls-volume"></div>
-                    </div>
+                    <VolumeControls audio={audio} i18nAriaLabels={i18nAriaLabels} />
                 </div>
             </div>
         );

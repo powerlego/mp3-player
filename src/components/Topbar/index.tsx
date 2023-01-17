@@ -19,10 +19,10 @@ function ThemeIcon(): JSX.Element {
         <span onClick={handleMode}>
             {darkTheme
                 ? (
-                    <FaSun size="24" className="top-navigation-icon" />
+                    <FaSun className="top-navigation-icon" size="24" />
                 )
                 : (
-                    <FaMoon size="24" className="top-navigation-icon" />
+                    <FaMoon className="top-navigation-icon" size="24" />
                 )}
         </span>
     );
