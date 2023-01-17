@@ -172,6 +172,16 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
 
         clearTimeout(this.volumeAnimationTimer);
     }
+    isAudioAvailable = (): boolean => {
+        const { audio } = this.props;
+        if (!audio) {
+            return false;
+        }
+        if (audio.src === "" || audio.src === window.location.href) {
+            return false;
+        }
+        return true;
+    };
 
     render(): React.ReactNode {
         const { audio, i18nVolumeControl } = this.props;
@@ -186,35 +196,56 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
 
         let volumeClassNames = "media-controls-volume-bar-fill ";
 
-        if (isDraggingVolume) {
-            indicatorClassNames += "media-controls-volume-bar-scrubber-dragging";
-            volumeClassNames += "media-controls-volume-bar-fill-dragging";
+        if (!this.isAudioAvailable()) {
+            return (
+                <div
+                    aria-label={i18nVolumeControl}
+                    className="media-controls-volume-container"
+                    ref={this.volumeBar}
+                    role="progressbar"
+                >
+                    <div className="media-controls-volume-bar">
+                        <div
+                            className={indicatorClassNames}
+                            style={{ left: currentVolumePos, transitionDuration: hasVolumeAnimation ? ".1s" : "0s" }}
+                        />
+                        <div className={volumeClassNames} style={{ width: currentVolumePos }} />
+                    </div>
+                </div>
+            );
         }
         else {
-            indicatorClassNames += "group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250";
-            volumeClassNames += "group-hover:bg-green-500 dark:group-hover:bg-green-500";
-        }
-        return (
-            <div
-                aria-label={i18nVolumeControl}
-                aria-valuemax={100}
-                aria-valuemin={0}
-                aria-valuenow={Number((volume * 100).toFixed(0))}
-                className="media-controls-volume-container group"
-                ref={this.volumeBar}
-                role="progressbar"
-                onContextMenu={this.handleContextMenu}
-                onMouseDown={this.handleVolumeControlMouseOrTouchDown}
-                onTouchStart={this.handleVolumeControlMouseOrTouchDown}
-            >
-                <div className="media-controls-volume-bar">
-                    <div
-                        className={indicatorClassNames}
-                        style={{ left: currentVolumePos, transitionDuration: hasVolumeAnimation ? ".1s" : "0s" }}
-                    />
-                    <div className={volumeClassNames} style={{ width: currentVolumePos }} />
+            volumeClassNames += "has-media ";
+            if (isDraggingVolume) {
+                indicatorClassNames += "media-controls-volume-bar-scrubber-dragging";
+                volumeClassNames += "media-controls-volume-bar-fill-dragging";
+            }
+            else {
+                indicatorClassNames += "group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250";
+                volumeClassNames += "group-hover:bg-green-500 dark:group-hover:bg-green-500";
+            }
+            return (
+                <div
+                    aria-label={i18nVolumeControl}
+                    aria-valuemax={100}
+                    aria-valuemin={0}
+                    aria-valuenow={Number((volume * 100).toFixed(0))}
+                    className="media-controls-volume-container group"
+                    ref={this.volumeBar}
+                    role="progressbar"
+                    onContextMenu={this.handleContextMenu}
+                    onMouseDown={this.handleVolumeControlMouseOrTouchDown}
+                    onTouchStart={this.handleVolumeControlMouseOrTouchDown}
+                >
+                    <div className="media-controls-volume-bar">
+                        <div
+                            className={indicatorClassNames}
+                            style={{ left: currentVolumePos, transitionDuration: hasVolumeAnimation ? ".1s" : "0s" }}
+                        />
+                        <div className={volumeClassNames} style={{ width: currentVolumePos }} />
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        }
     }
 }
