@@ -1,5 +1,6 @@
 import React, { Component, SyntheticEvent } from "react";
 import { getPosX } from "../../../../utils";
+import "./VolumeBar.css";
 
 type VolumeBarProps = {
     audio: HTMLAudioElement | null;
@@ -173,11 +174,24 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
 
     render(): React.ReactNode {
         const { audio, i18nVolumeControl } = this.props;
-        const { currentVolumePos, hasVolumeAnimation } = this.state;
+        const { currentVolumePos, hasVolumeAnimation, isDraggingVolume } = this.state;
 
         const { volume } = audio || {};
         if (typeof volume === "undefined") {
             return null;
+        }
+
+        let indicatorClassNames = "media-controls-volume-bar-scrubber ";
+
+        let volumeClassNames = "media-controls-volume-bar-fill ";
+
+        if (isDraggingVolume) {
+            indicatorClassNames += "media-controls-volume-bar-scrubber-dragging";
+            volumeClassNames += "media-controls-volume-bar-fill-dragging";
+        }
+        else {
+            indicatorClassNames += "group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250";
+            volumeClassNames += "group-hover:bg-green-500 dark:group-hover:bg-green-500";
         }
         return (
             <div
@@ -185,7 +199,7 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
                 aria-valuemax={100}
                 aria-valuemin={0}
                 aria-valuenow={Number((volume * 100).toFixed(0))}
-                className="media-controls-volume-bar-container"
+                className="media-controls-volume-container group"
                 ref={this.volumeBar}
                 role="progressbar"
                 onContextMenu={this.handleContextMenu}
@@ -194,10 +208,10 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
             >
                 <div className="media-controls-volume-bar">
                     <div
-                        className="media-controls-volume-bar-indicator"
+                        className={indicatorClassNames}
                         style={{ left: currentVolumePos, transitionDuration: hasVolumeAnimation ? ".1s" : "0s" }}
                     />
-                    <div className="media-controls-volume-bar-fill" style={{ width: currentVolumePos }} />
+                    <div className={volumeClassNames} style={{ width: currentVolumePos }} />
                 </div>
             </div>
         );
