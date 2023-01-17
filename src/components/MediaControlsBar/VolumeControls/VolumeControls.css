@@ -3,7 +3,8 @@
 
 @layer components {
     .media-controls-volume {
-        @apply flex w-1/5 flex-row items-center justify-center;
+        @apply w-1/5 
+            flex flex-row items-center justify-center;
     }
 
     .media-controls-volume-button{
@@ -11,6 +12,7 @@
     }
 
     .volume-button{
-        @apply w-full h-full m-0;
+        @apply m-0
+            w-full h-full;
     }
 }

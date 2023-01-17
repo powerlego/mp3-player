@@ -3,26 +3,43 @@
 
 @layer components {
     .media-controls-volume-container {
-        @apply flex h-5 w-full flex-row flex-1 items-center justify-center mr-5 ml-2;
+        @apply mr-5 ml-2
+            h-5 w-full
+            flex flex-row flex-1 items-center justify-center;
     }
 
     .media-controls-volume-bar {
-        @apply relative box-border h-1 w-full rounded-full bg-gray-450 dark:bg-gray-600;
+        @apply relative 
+            box-border rounded-full
+            h-1 w-full 
+            bg-gray-450
+            dark:bg-gray-600;
     }
 
     .media-controls-volume-bar-fill {
-        @apply absolute z-10 box-border h-full rounded-full bg-gray-550 dark:bg-gray-250;
+        @apply absolute z-10
+            box-border rounded-full 
+            h-full
+            bg-gray-550
+            dark:bg-gray-250;
     }
 
     .media-controls-volume-bar-fill-dragging {
-        @apply bg-green-500 dark:bg-green-500;
+        @apply bg-green-500
+            dark:bg-green-500;
     }
 
     .media-controls-volume-bar-scrubber {
-        @apply absolute -top-2 z-20 -ml-2.5 box-border h-5 w-5 scale-0 rounded-full shadow shadow-gray-800 dark:shadow-gray-250;
+        @apply absolute -top-2 z-20 
+            -ml-2.5
+            box-border rounded-full 
+            h-5 w-5 scale-0 
+            shadow shadow-gray-800 dark:shadow-gray-250;
     }
 
     .media-controls-volume-bar-scrubber-dragging {
-        @apply scale-100 bg-gray-550 dark:bg-gray-250;
+        @apply scale-100
+            bg-gray-550
+            dark:bg-gray-250;
     }
 }

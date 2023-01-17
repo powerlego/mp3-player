@@ -3,10 +3,13 @@
 
 @layer components {
     .media-controls-progress {
-        @apply flex w-full flex-row items-center justify-center h-full;
+        @apply w-full h-full
+            flex flex-row items-center justify-center ;
     }
 
     .media-controls-progress-time {
-        @apply m-1 mx-4 text-gray-700 dark:text-gray-350;
+        @apply m-1 mx-4
+            text-gray-700
+            dark:text-gray-350;
     }
 }
