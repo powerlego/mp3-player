@@ -1,5 +1,5 @@
 import React, { Component, forwardRef } from "react";
-import { getPosX, throttle } from "../../utils";
+import { getPosX, throttle } from "../../../../utils";
 import "./ProgressBar.css";
 
 interface ProgressBarState {
@@ -8,9 +8,10 @@ interface ProgressBarState {
 }
 
 interface ProgressBarForwardRefProps {
-    audio: HTMLAudioElement;
+    audio: HTMLAudioElement | null;
     progressUpdateInterval?: number;
     srcDuration?: number;
+    i18nProgressBar?: string;
 }
 
 interface ProgressBarProps extends ProgressBarForwardRefProps {
@@ -36,12 +37,14 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
 
     getDuration(): number {
         const { audio, srcDuration } = this.props;
+        if (!audio) { return 0; }
         return typeof srcDuration === "undefined" ? audio.duration : srcDuration;
     }
 
     getCurrentProgress = (event: MouseEvent | React.MouseEvent | TouchEvent | React.TouchEvent): TimePosInfo => {
         const { progressRef } = this.props;
-        const rect = progressRef.current!.getBoundingClientRect();
+        if(!progressRef.current) { return { currentTime: 0, currentTimePos: "0%" }; }
+        const rect = progressRef.current.getBoundingClientRect();
         const maxRelativePos = rect.width;
 
         let relativePos = getPosX(event) - rect.left;
@@ -105,6 +108,7 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
         const newProps: { isDraggingProgress: boolean; currentTimePos?: string } = {
             isDraggingProgress: false,
         };
+        if(!audio) { return; }
         if (audio.readyState === audio.HAVE_NOTHING || audio.readyState === audio.HAVE_METADATA || !isFinite(newTime)) {
             newProps.currentTimePos = "0%";
         }
@@ -152,15 +156,18 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
     }
 
     render(): React.ReactNode {
-        const { progressRef } = this.props;
+        const { progressRef, i18nProgressBar } = this.props;
         const { currentTimePos, isDraggingProgress } = this.state;
-        let indicatorClassNames = "media-controls__progress__bar__scrubber ";
+        if(!currentTimePos) {
+            return null;
+        }
+        let indicatorClassNames = "media-controls-progress-bar-scrubber ";
 
-        let progressClassNames = "media-controls__progress__bar__progress ";
+        let progressClassNames = "media-controls-progress-bar-progress ";
 
         if (isDraggingProgress) {
-            indicatorClassNames += "media-controls__progress__bar__scrubber__dragging";
-            progressClassNames += "media-controls__progress__bar__progress__dragging";
+            indicatorClassNames += "media-controls-progress-bar-scrubber-dragging";
+            progressClassNames += "media-controls-progress-bar-progress-dragging";
         }
         else {
             indicatorClassNames += "group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250";
@@ -168,21 +175,25 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
         }
         return (
             <div
-                className="media-controls__progress__container group "
-                onTouchStart={this.handleMouseDownOrTouchStart}
-                onMouseDown={this.handleMouseDownOrTouchStart}
+                aria-label={i18nProgressBar}
+                aria-valuemax={100}
+                aria-valuemin={0}
+                aria-valuenow={Number(currentTimePos.split("%")[0])}
+                className="media-controls-progress-container group "
                 ref={progressRef}
+                onMouseDown={this.handleMouseDownOrTouchStart}
+                onTouchStart={this.handleMouseDownOrTouchStart}
             >
-                <div className="media-controls__progress__bar ">
+                <div className="media-controls-progress-bar ">
                     <div className={indicatorClassNames} style={{ left: currentTimePos }} />
-                    <div className={progressClassNames} style={{ width: currentTimePos }}></div>
+                    <div className={progressClassNames} style={{ width: currentTimePos }} />
                 </div>
             </div>
         );
     }
 }
 
-function ProgressBarForwardRef(props: ProgressBarForwardRefProps,ref: React.Ref<HTMLDivElement>): React.ReactElement {
+function ProgressBarForwardRef(props: ProgressBarForwardRefProps, ref: React.Ref<HTMLDivElement>): React.ReactElement {
     return <ProgressBar {...props} progressRef={ref as React.RefObject<HTMLDivElement>} />;
 }
 

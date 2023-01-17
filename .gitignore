@@ -24,3 +24,4 @@ yarn-error.log*
 package-lock.json
 palettes.json
 src/assets/audio/Hymn-For-The-Weekend.mp3
+dist/

@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+
+@layer components {
+    .media-controls-progress {
+        @apply w-full h-full
+            flex flex-row items-center justify-center ;
+    }
+
+    .media-controls-progress-time {
+        @apply m-1 mx-4
+            text-gray-700
+            dark:text-gray-350;
+    }
+}

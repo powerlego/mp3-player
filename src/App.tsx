@@ -1,6 +1,6 @@
 import React from "react";
 import MainWindow from "./components/MainWindow";
-import MediaControlsBar from "./components/MediaControls";
+import MediaControlsBar from "./components/MediaControlsBar";
 import Sidebar from "./components/Sidebar";
 import testAudioFile from "./assets/audio/Hymn-For-The-Weekend.mp3";
 

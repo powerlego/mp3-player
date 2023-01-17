@@ -1,9 +1,9 @@
 import React,{ Component,ReactNode } from "react";
-import { TIME_FORMAT } from "../../constants";
-import { getDisplayTimeBySeconds } from "../../utils";
+import { TIME_FORMAT } from "../../../../constants";
+import { getDisplayTimeBySeconds } from "../../../../utils";
 
 interface DurationProps {
-  audio?: HTMLAudioElement;
+  audio?: HTMLAudioElement | null;
   defaultDuration: ReactNode;
   timeFormat: TIME_FORMAT;
   className?: string;
