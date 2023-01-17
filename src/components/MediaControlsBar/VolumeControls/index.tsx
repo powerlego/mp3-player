@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { FaVolumeUp } from "react-icons/fa";
 import VolumeBar from "./VolumeBar";
 import { I18nAriaLabels } from "../../../types";
+import "./VolumeControls.css";
 
 interface VolumeControlsProps {
     audio: HTMLAudioElement | null;
@@ -50,7 +51,7 @@ class VolumeControls extends Component<VolumeControlsProps, VolumeControlsState>
                     className="media-controls-volume-button"
                     onClick={this.toggleMute}
                 >
-                    <FaVolumeUp className="media-icon" />
+                    <FaVolumeUp className="media-icon volume-button" />
                 </button>
                 <VolumeBar audio={audio} i18nVolumeControl={i18nAriaLabels?.volumeControl} volume={volume} />
             </div>
