@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+
+@layer components {
+    .media-controls-volume {
+        @apply flex w-full flex-row items-center justify-center;
+    }
+}
