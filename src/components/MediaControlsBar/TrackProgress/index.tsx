@@ -25,17 +25,17 @@ class TrackProgress extends Component<TrackProgressProps> {
         return (
             <div className="media-controls-progress">
                 <CurrentTime
-                    className="media-controls-progress-time"
                     audio={audio}
-                    timeFormat={timeFormat}
+                    className="media-controls-progress-time"
                     defaultCurrentTime={defaultCurrentTime}
-                />
-                <ProgressBar ref={this.progressRef} audio={audio} i18nProgressBar={i18nAriaLabels?.progressControl} />
-                <Duration
-                    className="media-controls-progress-time"
-                    audio={audio}
                     timeFormat={timeFormat}
+                />
+                <ProgressBar audio={audio} i18nProgressBar={i18nAriaLabels?.progressControl} ref={this.progressRef} />
+                <Duration
+                    audio={audio}
+                    className="media-controls-progress-time"
                     defaultDuration={defaultDuration}
+                    timeFormat={timeFormat}
                 />
             </div>
         );

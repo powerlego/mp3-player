@@ -156,7 +156,7 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
     }
 
     render(): React.ReactNode {
-        const { progressRef , i18nProgressBar } = this.props;
+        const { progressRef, i18nProgressBar } = this.props;
         const { currentTimePos, isDraggingProgress } = this.state;
         if(!currentTimePos) {
             return null;
@@ -175,25 +175,25 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
         }
         return (
             <div
-                className="media-controls-progress-container group "
-                onTouchStart={this.handleMouseDownOrTouchStart}
-                onMouseDown={this.handleMouseDownOrTouchStart}
                 aria-label={i18nProgressBar}
-                ref={progressRef}
-                aria-valuemin={0}
                 aria-valuemax={100}
+                aria-valuemin={0}
                 aria-valuenow={Number(currentTimePos.split("%")[0])}
+                className="media-controls-progress-container group "
+                ref={progressRef}
+                onMouseDown={this.handleMouseDownOrTouchStart}
+                onTouchStart={this.handleMouseDownOrTouchStart}
             >
                 <div className="media-controls-progress-bar ">
                     <div className={indicatorClassNames} style={{ left: currentTimePos }} />
-                    <div className={progressClassNames} style={{ width: currentTimePos }}></div>
+                    <div className={progressClassNames} style={{ width: currentTimePos }} />
                 </div>
             </div>
         );
     }
 }
 
-function ProgressBarForwardRef(props: ProgressBarForwardRefProps,ref: React.Ref<HTMLDivElement>): React.ReactElement {
+function ProgressBarForwardRef(props: ProgressBarForwardRefProps, ref: React.Ref<HTMLDivElement>): React.ReactElement {
     return <ProgressBar {...props} progressRef={ref as React.RefObject<HTMLDivElement>} />;
 }
 
