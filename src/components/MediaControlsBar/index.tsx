@@ -19,7 +19,8 @@ type MediaControlsBarProps = {
     defaultDuration?: ReactNode;
     timeFormat?: TIME_FORMAT;
     volume?: number;
-}
+    muted?: boolean;
+};
 
 class MediaControlsBar extends React.Component<MediaControlsBarProps> {
     static defaultProps: MediaControlsBarProps = {
@@ -46,10 +47,15 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
     };
 
     audio = React.createRef<HTMLAudioElement>();
+
+    lastVolume = this.props.volume ? this.props.volume : 1;
+
     togglePlay = (e: React.SyntheticEvent): void => {
         e.stopPropagation();
         const audio = this.audio.current;
-        if (!audio) {return;}
+        if (!audio) {
+            return;
+        }
         if ((audio.paused || audio.ended) && audio.src) {
             this.playAudioPromise();
         }
@@ -60,7 +66,9 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
 
     playAudioPromise = (): void => {
         const audio = this.audio.current;
-        if (!audio) {return;}
+        if (!audio) {
+            return;
+        }
         const playPromise = audio.play();
         // playPromise is null in IE 11
 
@@ -69,12 +77,93 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
         });
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    handlePlay = (e: Event): void => {
+        this.forceUpdate();
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    handlePause = (e: Event): void => {
+        if (!this.audio) {
+            return;
+        }
+        this.forceUpdate();
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    handleEnded = (e: Event): void => {
+        if (!this.audio) {
+            return;
+        }
+        // Remove forceUpdate when stop supporting IE 11
+        this.forceUpdate();
+    };
+
+    handleClickVolumeButton = (): void => {
+        const audio = this.audio.current;
+        if (!audio) {
+            return;
+        }
+        if (audio.volume > 0) {
+            this.lastVolume = audio.volume;
+            audio.volume = 0;
+        }
+        else {
+            audio.volume = this.lastVolume;
+        }
+    };
+
+    handleMuteChange = (): void => {
+        this.forceUpdate();
+    };
+
+    handleClickLoopButton = (): void => {
+        if (!this.audio.current) {
+            return;
+        }
+        this.audio.current.loop = !this.audio.current.loop;
+        this.forceUpdate();
+    };
+
     componentDidMount() {
         this.forceUpdate();
+        const audio = this.audio.current;
+        if (!audio) {
+            return;
+        }
+        if (this.props.muted) {
+            audio.volume = 0;
+        }
+        else {
+            audio.volume = this.lastVolume;
+        }
+
+        // When audio play starts
+        audio.addEventListener("play", this.handlePlay);
+
+        audio.addEventListener("ended", this.handleEnded);
+
+        // When the user pauses playback
+        audio.addEventListener("pause", this.handlePause);
+    }
+
+    componentDidUpdate(prevProps: MediaControlsBarProps): void {
+        const { src } = this.props;
+        if (prevProps.src !== src) {
+            // if (autoPlayAfterSrcChange) {
+            //     this.playAudioPromise();
+            // }
+            // else {
+            // Updating pause icon to play icon
+            this.forceUpdate();
+            // }
+        }
     }
     isPlaying = (): boolean => {
         const audio = this.audio.current;
-        if (!audio) {return false;}
+        if (!audio) {
+            return false;
+        }
 
         return !audio.paused && !audio.ended;
     };
@@ -82,27 +171,30 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
     render() {
         const { src, timeFormat, defaultCurrentTime, defaultDuration, i18nAriaLabels } = this.props;
         const audio = this.audio.current;
-        if(!timeFormat) {return null;}
+        if (!timeFormat) {
+            return null;
+        }
         return (
             <div aria-label={i18nAriaLabels?.player} className="media-container">
                 <audio controls={false} ref={this.audio} src={src} />
                 <div className="media-controls">
                     <div className="m-0 flex h-full w-56 bg-gray-200" />
                     <div className="media-controls-center">
-                        <MediaControls
-                            audio={audio}
-                            i18nAriaLabels={i18nAriaLabels}
-                            togglePlay={this.togglePlay}
-                        />
+                        <MediaControls audio={audio} i18nAriaLabels={i18nAriaLabels} togglePlay={this.togglePlay} />
                         <TrackProgress
                             audio={audio}
                             defaultCurrentTime={defaultCurrentTime}
                             defaultDuration={defaultDuration}
                             i18nAriaLabels={i18nAriaLabels}
-                            timeFormat= {timeFormat}
+                            timeFormat={timeFormat}
                         />
                     </div>
-                    <VolumeControls audio={audio} i18nAriaLabels={i18nAriaLabels} />
+                    <VolumeControls
+                        audio={audio}
+                        i18nAriaLabels={i18nAriaLabels}
+                        onClickedVolumeButton={this.handleClickVolumeButton}
+                        onMuteChange={this.handleMuteChange}
+                    />
                 </div>
             </div>
         );

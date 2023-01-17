@@ -5,6 +5,7 @@ import "./VolumeBar.css";
 type VolumeBarProps = {
     audio: HTMLAudioElement | null;
     volume: number;
+    onMuteChange: () => void;
     i18nVolumeControl?: string;
 };
 
