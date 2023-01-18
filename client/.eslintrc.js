@@ -82,8 +82,6 @@ module.exports = {
         "prefer-const": "error",
         "prefer-arrow-callback": "error",
         "template-curly-spacing": ["error", "never"],
-        "react/jsx-pascal-case": ["error", { allowAllCaps: true }],
-        "react/jsx-uses-react": "error",
         "comma-spacing": ["error", { before: false, after: true }],
         "comma-dangle": ["error", "always-multiline"],
         "@typescript-eslint/naming-convention": [
@@ -97,6 +95,8 @@ module.exports = {
             { selector: "interface", format: ["PascalCase"] },
             { selector: "function", format: ["camelCase", "PascalCase"] },
         ],
+        "react/jsx-pascal-case": ["error", { allowAllCaps: true }],
+        "react/jsx-uses-react": "error",
         "react/jsx-closing-tag-location": "error",
         "react/jsx-closing-bracket-location": ["error", "line-aligned"],
         "react/jsx-newline": ["error", { prevent: true }],
