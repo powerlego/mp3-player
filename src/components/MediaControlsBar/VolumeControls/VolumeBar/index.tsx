@@ -11,7 +11,6 @@ type VolumeBarProps = {
 
 type VolumeBarState = {
     currentVolumePos: string;
-    hasVolumeAnimation: boolean;
     isDraggingVolume: boolean;
 };
 
@@ -27,13 +26,10 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
 
     volumeBar = React.createRef<HTMLDivElement>();
 
-    volumeAnimationTimer = 0;
-
     lastVolume = this.props.volume;
 
     state: VolumeBarState = {
         currentVolumePos: `${((this.lastVolume / 1) * 100 || 0).toFixed(2)}%`,
-        hasVolumeAnimation: false,
         isDraggingVolume: false,
     };
 
@@ -143,13 +139,8 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
             return;
         }
         this.setState({
-            hasVolumeAnimation: true,
             currentVolumePos: `${((volume / 1) * 100 || 0).toFixed(2)}%`,
         });
-        clearTimeout(this.volumeAnimationTimer);
-        this.volumeAnimationTimer = setTimeout(() => {
-            this.setState({ hasVolumeAnimation: false });
-        }, 100);
     };
 
     componentDidUpdate(): void {
@@ -169,8 +160,6 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
                 this.handleAudioVolumeChange(e);
             });
         }
-
-        clearTimeout(this.volumeAnimationTimer);
     }
     isAudioAvailable = (): boolean => {
         const { audio } = this.props;
@@ -185,7 +174,7 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
 
     render(): React.ReactNode {
         const { audio, i18nVolumeControl } = this.props;
-        const { currentVolumePos, hasVolumeAnimation, isDraggingVolume } = this.state;
+        const { currentVolumePos, isDraggingVolume } = this.state;
 
         const { volume } = audio || {};
         if (typeof volume === "undefined") {
@@ -205,10 +194,7 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
                     role="progressbar"
                 >
                     <div className="media-controls-volume-bar">
-                        <div
-                            className={indicatorClassNames}
-                            style={{ left: currentVolumePos, transitionDuration: hasVolumeAnimation ? ".1s" : "0s" }}
-                        />
+                        <div className={indicatorClassNames} style={{ left: currentVolumePos }} />
                         <div className={volumeClassNames} style={{ width: currentVolumePos }} />
                     </div>
                 </div>
@@ -238,10 +224,7 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
                     onTouchStart={this.handleVolumeControlMouseOrTouchDown}
                 >
                     <div className="media-controls-volume-bar">
-                        <div
-                            className={indicatorClassNames}
-                            style={{ left: currentVolumePos, transitionDuration: hasVolumeAnimation ? ".1s" : "0s" }}
-                        />
+                        <div className={indicatorClassNames} style={{ left: currentVolumePos }} />
                         <div className={volumeClassNames} style={{ width: currentVolumePos }} />
                     </div>
                 </div>

@@ -6,6 +6,9 @@ import MediaControls from "./MediaControls";
 import { I18nAriaLabels } from "../../types";
 import VolumeControls from "./VolumeControls";
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
+const jsmediatags = require("jsmediatags");
+
 type MediaControlsBarProps = {
     src?: string;
     progressUpdateInterval?: number;
@@ -22,7 +25,11 @@ type MediaControlsBarProps = {
     muted?: boolean;
 };
 
-class MediaControlsBar extends React.Component<MediaControlsBarProps> {
+type MediaControlsBarState = {
+    songName: string;
+};
+
+class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaControlsBarState> {
     static defaultProps: MediaControlsBarProps = {
         timeFormat: "auto",
         defaultCurrentTime: "--:--",
@@ -44,6 +51,10 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
             volume: "Mute",
             volumeMute: "Unmute",
         },
+    };
+
+    state: MediaControlsBarState = {
+        songName: "",
     };
 
     audio = React.createRef<HTMLAudioElement>();
@@ -125,6 +136,22 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
         this.forceUpdate();
     };
 
+    getMetadata = () => {
+        const audio = this.audio.current;
+        if (!audio) {
+            return;
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+        jsmediatags.read(audio.src, {
+            onSuccess: (tag: any) => {
+                console.log(tag);
+            },
+            onError: (error: any) => {
+                console.log(error);
+            },
+        });
+    };
+
     componentDidMount() {
         this.forceUpdate();
         const audio = this.audio.current;
@@ -137,6 +164,15 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
         else {
             audio.volume = this.lastVolume;
         }
+        // mmb.fetchFromUrl(audio.src)
+        //     .then((metadata) => {
+        //         console.log(metadata);
+        //     })
+        //     .finally(() => {
+        //         this.setState({
+        //             songName: "Song Name",
+        //         });
+        //     });
 
         // When audio play starts
         audio.addEventListener("play", this.handlePlay);
@@ -177,6 +213,7 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps> {
         return (
             <div aria-label={i18nAriaLabels?.player} className="media-container">
                 <audio controls={false} ref={this.audio} src={src} />
+                <button className="h-10 w-10" type="button" onClick={this.getMetadata} />
                 <div className="media-controls">
                     <div className="m-0 flex h-full w-56 bg-gray-200" />
                     <div className="media-controls-center">

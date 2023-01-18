@@ -37,13 +37,17 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
 
     getDuration(): number {
         const { audio, srcDuration } = this.props;
-        if (!audio) { return 0; }
+        if (!audio) {
+            return 0;
+        }
         return typeof srcDuration === "undefined" ? audio.duration : srcDuration;
     }
 
     getCurrentProgress = (event: MouseEvent | React.MouseEvent | TouchEvent | React.TouchEvent): TimePosInfo => {
         const { progressRef } = this.props;
-        if(!progressRef.current) { return { currentTime: 0, currentTimePos: "0%" }; }
+        if (!progressRef.current) {
+            return { currentTime: 0, currentTimePos: "0%" };
+        }
         const rect = progressRef.current.getBoundingClientRect();
         const maxRelativePos = rect.width;
 
@@ -108,7 +112,9 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
         const newProps: { isDraggingProgress: boolean; currentTimePos?: string } = {
             isDraggingProgress: false,
         };
-        if(!audio) { return; }
+        if (!audio) {
+            return;
+        }
         if (audio.readyState === audio.HAVE_NOTHING || audio.readyState === audio.HAVE_METADATA || !isFinite(newTime)) {
             newProps.currentTimePos = "0%";
         }
@@ -131,7 +137,9 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
     handleAudioTimeUpdate = throttle((e: Event): void => {
         const { isDraggingProgress } = this.state;
         const audio = e.target as HTMLAudioElement;
-        if (isDraggingProgress) {return;}
+        if (isDraggingProgress) {
+            return;
+        }
         const { currentTime } = audio;
         const duration = this.getDuration();
 
@@ -145,20 +153,24 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
         if (audio && !this.hasAddedAudioEventListener) {
             this.audio = audio;
             this.hasAddedAudioEventListener = true;
-            audio.addEventListener("timeupdate", (e:Event)=>{this.handleAudioTimeUpdate(e);});
+            audio.addEventListener("timeupdate", (e: Event) => {
+                this.handleAudioTimeUpdate(e);
+            });
         }
     }
 
     componentWillUnmount(): void {
         if (this.audio && this.hasAddedAudioEventListener) {
-            this.audio.removeEventListener("timeupdate", (e:Event)=>{this.handleAudioTimeUpdate(e);});
+            this.audio.removeEventListener("timeupdate", (e: Event) => {
+                this.handleAudioTimeUpdate(e);
+            });
         }
     }
 
     render(): React.ReactNode {
         const { progressRef, i18nProgressBar } = this.props;
         const { currentTimePos, isDraggingProgress } = this.state;
-        if(!currentTimePos) {
+        if (!currentTimePos) {
             return null;
         }
         let indicatorClassNames = "media-controls-progress-bar-scrubber ";
