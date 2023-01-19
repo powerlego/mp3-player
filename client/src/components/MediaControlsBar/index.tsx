@@ -5,6 +5,7 @@ import TrackProgress from "./TrackProgress";
 import MediaControls from "./MediaControls";
 import { CoverArt, I18nAriaLabels, MetaDataPayload } from "../../types";
 import VolumeControls from "./VolumeControls";
+import SongDetails from "./SongDetails";
 
 type MediaControlsBarProps = {
   src?: string;
@@ -244,9 +245,7 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
       <div aria-label={i18nAriaLabels?.player} className="media-container">
         <audio controls={false} ref={this.audio} src={src} />
         <div className="media-controls">
-          <div className="m-0 flex items-center h-full w-auto min-w-56 bg-gray-200">
-            <img className="h-1/2 aspect-square" src={`data:${coverArt.format};base64,${coverArt.data}`} />
-          </div>
+          <SongDetails coverArt={coverArt} songName={this.state.songName} />
           <div className="media-controls-center">
             <MediaControls audio={audio} i18nAriaLabels={i18nAriaLabels} togglePlay={this.togglePlay} />
             <TrackProgress

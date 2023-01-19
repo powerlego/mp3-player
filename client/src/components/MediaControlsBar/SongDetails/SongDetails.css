@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+
+@layer components {
+  .media-controls-song-details {
+    @apply m-0 flex flex-row items-center h-full w-auto min-w-56 ml-5;
+  }
+
+  .media-controls-song-details-text-container {
+    @apply flex flex-col justify-center ml-4;
+  }
+
+  .artist-text {
+    @apply text-sm text-gray-800 dark:text-gray-200 font-medium truncate;
+  }
+
+  .media-controls-song-details-cover-art {
+    @apply relative h-4/5 aspect-square;
+  }
+
+  .media-controls-song-details-expand {
+    @apply absolute right-0 top-0 scale-0;
+  }
+
+  .media-controls-song-details-expand-button {
+    @apply absolute right-0 top-0 object-cover rounded-full bg-opacity-75 dark:bg-opacity-75 bg-gray-350 dark:bg-black
+      w-5 h-5 m-0.5 flex items-center justify-center hover:h-6 hover:w-6;
+  }
+
+  .media-controls-song-details-expand-tooltip {
+    @apply absolute right-1 -top-6 m-0.5 bg-gray-350 dark:bg-black bg-opacity-75
+      dark:bg-opacity-75 rounded-md p-1 text-xs text-gray-800 dark:text-gray-200 opacity-0 
+      transition-opacity duration-300 ease-in;
+  }
+
+  .media-controls-song-details-expand-button-icon {
+    @apply fill-gray-800 dark:fill-gray-200 h-[90%] w-[90%] m-0 opacity-100
+      stroke-gray-800 dark:stroke-gray-200 hover:stroke-1;
+  }
+
+  .media-controls-song-details-cover-art-image {
+    @apply h-full w-full;
+  }
+}
