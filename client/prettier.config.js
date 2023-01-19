@@ -3,9 +3,8 @@ module.exports = {
     // plugins: [require("prettier-plugin-tailwindcss")],
     // tailwindConfig: "./tailwind.config.js",
 
-
     // ...other prettier options
-    tabWidth: 4,
+    tabWidth: 2,
     semi: true,
     singleQuote: false,
     trailingComma: "es5",

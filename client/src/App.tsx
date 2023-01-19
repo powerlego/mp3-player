@@ -5,15 +5,15 @@ import Sidebar from "./components/Sidebar";
 import testAudioFile from "./assets/audio/Hymn-For-The-Weekend.mp3";
 
 class App extends React.Component {
-    audio = new Audio(testAudioFile);
-    render() {
-        return (
-            <div className="app">
-                <Sidebar />
-                <MediaControlsBar src={this.audio.src} />
-                <MainWindow />
-            </div>
-        );
-    }
+  audio = new Audio(testAudioFile);
+  render() {
+    return (
+      <div className="app">
+        <Sidebar />
+        <MediaControlsBar src={this.audio.src} />
+        <MainWindow />
+      </div>
+    );
+  }
 }
 export default App;

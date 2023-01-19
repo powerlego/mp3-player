@@ -15,3 +15,17 @@ export interface I18nAriaLabels {
     volume?: string;
     volumeMute?: string;
 }
+
+export interface MetaDataPayload {
+    status: boolean;
+    message: string;
+    data: {
+        name: string;
+        cover: CoverArt;
+    };
+}
+
+export interface CoverArt {
+    data: string;
+    format: string;
+}
