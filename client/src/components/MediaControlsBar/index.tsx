@@ -72,6 +72,37 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
         }
     };
 
+    handleClick = () => {
+        const { src } = this.props;
+        if (!src) {
+            return;
+        }
+        if (!import.meta.env.REACT_APP_SERVER_URL) {
+            console.log("No server URL provided");
+            return;
+        }
+        const url = new URL(import.meta.env.REACT_APP_SERVER_URL as string);
+        fetch(src)
+            .then(async (res) => {
+                if (res.ok) {
+                    if (res.body) {
+                        url.pathname = "/metadata";
+                        const resText = await res.blob();
+                        const form = new FormData();
+                        form.append("track", resText);
+                        const resp = await fetch(url, {
+                            method: "POST",
+                            body: form,
+                        });
+                        const respText = await resp.text();
+                        console.log(respText);
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     playAudioPromise = (): void => {
         const audio = this.audio.current;
         if (!audio) {
