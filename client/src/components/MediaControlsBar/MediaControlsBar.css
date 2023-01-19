@@ -15,7 +15,7 @@
 
     .media-controls-center {
         @apply flex h-full
-            w-full flex-1 flex-col items-center justify-start;
+            w-auto min-w-2/5 flex-col items-center justify-start;
     }
 
     .media-icon {

@@ -3,7 +3,7 @@
 
 @layer components {
     .media-controls-controls {
-        @apply mt-2 mb-1 
+        @apply mt-2 mb-1 h-3/5
             flex flex-row items-center justify-center;
     }
 
@@ -20,7 +20,7 @@
             dark:fill-gray-150;
     }
     .repeat-button {
-        @apply h-8 w-8 
+        @apply aspect-square h-3/4
             fill-none stroke-gray-450 stroke-2
             hover:fill-none hover:stroke-gray-550
             dark:fill-none dark:stroke-gray-550
