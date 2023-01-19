@@ -3,15 +3,15 @@ import dotenv from "dotenv";
 import cors from "cors";
 import fileUpload from "express-fileupload";
 import { parseBuffer } from "music-metadata";
-import { inspect } from "util";
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
+const corsWhitelist = process.env.CORS_WHITELIST?.split("\n");
 
 const corsOptions = {
-    origin: "http://localhost:3000",
+    origin: corsWhitelist,
     optionsSuccessStatus: 200,
 };
 
@@ -23,6 +23,7 @@ app.use(
 app.use(cors(corsOptions));
 
 app.get("/", (req: Request, res: Response) => {
+    console.log(corsWhitelist);
     res.send("Express + TypeScript Server");
 });
 
