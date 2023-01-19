@@ -14,16 +14,6 @@ module.exports = {
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
   ],
   overrides: [],
-  ignorePatterns: [
-    "node_modules/",
-    "dist/",
-    "build/",
-    "coverage/",
-    "public/",
-    ".eslintrc.js",
-    "*.config.js",
-    "*.config.ts",
-  ],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
