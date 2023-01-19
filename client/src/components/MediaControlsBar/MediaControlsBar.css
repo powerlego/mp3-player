@@ -4,18 +4,18 @@
 @layer components {
   .media-container {
     @apply fixed bottom-0 left-0 z-30 
-      h-32 w-full
+      h-20 w-full
       bg-gray-350
       dark:bg-gray-750;
   }
   .media-controls {
-    @apply flex h-32 
+    @apply flex h-full 
       w-full flex-row justify-between;
   }
 
   .media-controls-center {
     @apply flex h-auto
-      w-auto min-w-2/5 flex-col items-center justify-center;
+      w-full min-w-fit max-w-[40%] flex-col items-center justify-center;
   }
 
   .media-icon {

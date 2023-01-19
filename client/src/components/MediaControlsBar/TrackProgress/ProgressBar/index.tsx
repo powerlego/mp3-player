@@ -174,15 +174,17 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
       return null;
     }
     let indicatorClassNames = "media-controls-progress-bar-scrubber ";
-
+    let indicatorContainerClassNames = "media-controls-progress-bar-scrubber-container ";
     let progressClassNames = "media-controls-progress-bar-progress ";
 
     if (isDraggingProgress) {
       indicatorClassNames += "media-controls-progress-bar-scrubber-dragging";
+      indicatorContainerClassNames += "media-controls-progress-bar-scrubber-container-dragging";
       progressClassNames += "media-controls-progress-bar-progress-dragging";
     }
     else {
-      indicatorClassNames += "group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250";
+      indicatorClassNames += "group-hover:bg-gray-550 dark:group-hover:bg-gray-250";
+      indicatorContainerClassNames += "group-hover:scale-100";
       progressClassNames += "group-hover:bg-green-500 dark:group-hover:bg-green-500";
     }
     return (
@@ -197,7 +199,9 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
         onTouchStart={this.handleMouseDownOrTouchStart}
       >
         <div className="media-controls-progress-bar ">
-          <div className={indicatorClassNames} style={{ left: currentTimePos }} />
+          <div className={indicatorContainerClassNames} style={{ left: currentTimePos }}>
+            <div className={indicatorClassNames} />
+          </div>
           <div className={progressClassNames} style={{ width: currentTimePos }} />
         </div>
       </div>
