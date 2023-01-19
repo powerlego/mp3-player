@@ -23,7 +23,6 @@ app.use(
 app.use(cors(corsOptions));
 
 app.get("/", (req: Request, res: Response) => {
-    console.log(corsWhitelist);
     res.send("Express + TypeScript Server");
 });
 
