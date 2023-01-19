@@ -11,7 +11,15 @@
   }
 
   .artist-text {
-    @apply text-sm text-gray-800 dark:text-gray-200 font-medium truncate;
+    @apply text-sm text-gray-800 dark:text-gray-200 font-normal truncate cursor-default;
+  }
+
+  .artist {
+    @apply hover:underline cursor-pointer;
+  }
+
+  .media-controls-song-details-name {
+    @apply text-base text-gray-800 dark:text-gray-200 font-semibold truncate cursor-default;
   }
 
   .media-controls-song-details-cover-art {
@@ -28,7 +36,7 @@
   }
 
   .media-controls-song-details-expand-tooltip {
-    @apply absolute right-1 -top-6 m-0.5 bg-gray-350 dark:bg-black bg-opacity-75
+    @apply absolute right-1 top-[calc((1.5rem+5px)*-1)] m-0.5 bg-gray-350 dark:bg-black bg-opacity-75
       dark:bg-opacity-75 rounded-md p-1 text-xs text-gray-800 dark:text-gray-200 opacity-0 
       transition-opacity duration-300 ease-in;
   }
