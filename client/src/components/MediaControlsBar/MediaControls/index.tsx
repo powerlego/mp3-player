@@ -31,7 +31,7 @@ function ShuffleButton() {
   const [isShuffle, setIsShuffle] = useState(false);
   const handleShuffle = () => setIsShuffle(!isShuffle);
   return (
-    <div className="h-3/4" onClick={() => handleShuffle()}>
+    <div className="media-icon-container" onClick={() => handleShuffle()}>
       {isShuffle
         ? (
           <BiShuffle className="media-icon shuffle-button shuffling" />
@@ -45,7 +45,7 @@ function ShuffleButton() {
 
 function SkipBackButton() {
   return (
-    <div className="h-3/4" onClick={() => console.log("skipBack")}>
+    <div className="media-icon-skip-container" onClick={() => console.log("skipBack")}>
       <BsFillSkipStartFill className="media-icon skip-button" />
     </div>
   );
@@ -137,14 +137,14 @@ class PlayButton extends React.Component<PlayButtonProps, PlayButtonState> {
     const { isPlaying } = this.state;
     if (!this.isAudioAvailable()) {
       return (
-        <div>
+        <div className="media-icon-play-container">
           <FaPauseCircle className="media-icon play-button" />
         </div>
       );
     }
     else {
       return (
-        <div onClick={togglePlay}>
+        <div className="media-icon-play-container" onClick={togglePlay}>
           {isPlaying
             ? (
               <FaPauseCircle aria-label={i18nAriaLabels?.play} className="media-icon play-button has-media" />
@@ -160,7 +160,7 @@ class PlayButton extends React.Component<PlayButtonProps, PlayButtonState> {
 
 function SkipForwardButton() {
   return (
-    <div className="h-3/4" onClick={() => console.log("skipForward")}>
+    <div className="media-icon-skip-container" onClick={() => console.log("skipForward")}>
       <BsFillSkipEndFill className="media-icon skip-button" />
     </div>
   );
@@ -176,7 +176,7 @@ function RepeatButton() {
     }
   };
   return (
-    <div className="h-3/4" onClick={() => handleRepeat()}>
+    <div className="media-icon-container" onClick={() => handleRepeat()}>
       {repeat === 1
         ? (
           <TbRepeat className="media-icon repeat-button repeating" />

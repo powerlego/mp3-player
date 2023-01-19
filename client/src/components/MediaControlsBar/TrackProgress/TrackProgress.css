@@ -2,14 +2,15 @@
 @tailwind components;
 
 @layer components {
-    .media-controls-progress {
-        @apply w-full h-2/5
-            flex flex-row items-center justify-center;
-    }
+  .media-controls-progress {
+    @apply w-full h-1/3
+      flex flex-row items-center justify-center;
+  }
 
-    .media-controls-progress-time {
-        @apply m-1 mx-4
-            text-gray-700
-            dark:text-gray-350;
-    }
+  .media-controls-progress-time {
+    @apply m-1 mx-2
+      text-sm
+      text-gray-700
+      dark:text-gray-350;
+  }
 }

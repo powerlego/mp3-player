@@ -2,46 +2,58 @@
 @tailwind components;
 
 @layer components {
-    .media-controls-controls {
-        @apply mt-2 mb-1 h-3/5
-            flex flex-row items-center justify-center;
-    }
+  .media-controls-controls {
+    @apply mt-2 mb-1 h-1/3
+      flex flex-row items-center justify-center;
+  }
 
-    .skip-button {
-        @apply h-10 w-10;
-    }
+  .skip-button {
+    @apply h-full w-full;
+  }
 
-    .play-button {
-        @apply h-14 w-14;
-    }
+  .media-icon-container {
+    @apply h-4/5 aspect-square m-2;
+  }
 
-    .playing {
-        @apply fill-gray-800
-            dark:fill-gray-150;
-    }
-    .repeat-button {
-        @apply aspect-square h-3/4
-            fill-none stroke-gray-450 stroke-2
-            hover:fill-none hover:stroke-gray-550
-            dark:fill-none dark:stroke-gray-550
-            hover:dark:fill-none hover:dark:stroke-gray-150;
-    }
+  .media-icon-skip-container {
+    @apply h-[90%] aspect-square m-2;
+  }
 
-    .repeating {
-        @apply stroke-green-450
-            hover:stroke-green-500
-            dark:stroke-green-350 
-            hover:dark:stroke-green-450;
-    }
+  .media-icon-play-container {
+    @apply h-full aspect-square m-2;
+  }
 
-    .shuffle-button {
-        @apply h-8 w-8;
-    }
+  .play-button {
+    @apply h-full w-full;
+  }
 
-    .shuffling {
-        @apply fill-green-450
-            hover:fill-green-500
-            dark:fill-green-350
-            hover:dark:fill-green-450;
-    }
+  .playing {
+    @apply fill-gray-800
+      dark:fill-gray-150;
+  }
+  .repeat-button {
+    @apply w-full h-full
+      fill-none stroke-gray-450 stroke-2
+      hover:fill-none hover:stroke-gray-550
+      dark:fill-none dark:stroke-gray-550
+      hover:dark:fill-none hover:dark:stroke-gray-150;
+  }
+
+  .repeating {
+    @apply stroke-green-450
+      hover:stroke-green-500
+      dark:stroke-green-350 
+      hover:dark:stroke-green-450;
+  }
+
+  .shuffle-button {
+    @apply h-full w-full;
+  }
+
+  .shuffling {
+    @apply fill-green-450
+      hover:fill-green-500
+      dark:fill-green-350
+      hover:dark:fill-green-450;
+  }
 }
