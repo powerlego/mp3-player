@@ -28,14 +28,14 @@ app.get("/", (req: Request, res: Response) => {
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 app.post("/metadata", async (req: Request, res: Response) => {
+    console.log("Request Recieved");
     try {
         if (!req.files) {
             res.send({
                 status: false,
                 message: "No file uploaded",
             });
-        }
-        else {
+        } else {
             const track: fileUpload.UploadedFile = req.files.track as fileUpload.UploadedFile;
             const fileInfo = {
                 mimetype: track.mimetype,
@@ -56,8 +56,7 @@ app.post("/metadata", async (req: Request, res: Response) => {
                         },
                     },
                 });
-            }
-            else {
+            } else {
                 res.send({
                     status: true,
                     message: "File is uploaded",
@@ -69,8 +68,7 @@ app.post("/metadata", async (req: Request, res: Response) => {
                 });
             }
         }
-    }
-    catch (err) {
+    } catch (err) {
         res.status(500).send(err);
     }
 });

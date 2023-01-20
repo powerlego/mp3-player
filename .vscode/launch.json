@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    {
+      "name": "Docker Node.js Launch (Client)",
+      "type": "docker",
+      "request": "launch",
+      "preLaunchTask": "docker-run: debug",
+      "platform": "node",
+      "node": {
+        "package": "${workspaceFolder}/client/package.json",
+        "localRoot": "${workspaceFolder}/client"
+      }
+    },
+    {
+      "name": "Docker Node.js Launch (Server)",
+      "type": "docker",
+      "request": "launch",
+      "preLaunchTask": "docker-run: debug",
+      "platform": "node",
+      "node": {
+        "package": "${workspaceFolder}/server/package.json",
+        "localRoot": "${workspaceFolder}/server"
+      }
+    }
+  ]
+}
