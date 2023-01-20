@@ -81,8 +81,16 @@ class SongDetails extends React.Component<SongDetailsProps, SongDetailsState> {
           <img
             alt="Cover Art"
             className={`media-controls-song-details-cover-art-image ${expanded ? "scale-0" : ""}`}
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            src={!coverArt.data ? coverArt.src : `data:${coverArt.format!};base64,${coverArt.data}`}
+            src={
+              !coverArt.data
+                ? coverArt.src
+                : coverArt.data === ""
+                  ? coverArt.src
+                  : (
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    `data:${coverArt.format!};base64,${coverArt.data}`
+                  )
+            }
           />
         </div>
         <div className={`media-controls-song-details-text-container ${expanded ? "-translate-x-20" : ""}`}>
