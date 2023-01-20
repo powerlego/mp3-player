@@ -4,13 +4,27 @@ import MediaControlsBar from "./components/MediaControlsBar";
 import Sidebar from "./components/Sidebar";
 import testAudioFile from "./assets/audio/Hymn-For-The-Weekend.mp3";
 
-class App extends React.Component {
-  audio = new Audio(testAudioFile);
+interface AppState {
+  expanded: boolean;
+  audio: HTMLAudioElement;
+}
+
+class App extends React.Component<Record<string, never>, AppState> {
+  state: AppState = {
+    expanded: false,
+    audio: new Audio(testAudioFile),
+  };
+
+  expandSongDetails = () => {
+    console.log("Expand song details");
+    this.setState({ expanded: !this.state.expanded });
+  };
   render() {
+    const { audio } = this.state;
     return (
       <div className="app">
         <Sidebar />
-        <MediaControlsBar src={this.audio.src} />
+        <MediaControlsBar expandFunc={this.expandSongDetails} src={audio.src} />
         <MainWindow />
       </div>
     );

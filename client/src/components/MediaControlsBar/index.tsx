@@ -21,6 +21,7 @@ type MediaControlsBarProps = {
   timeFormat?: TIME_FORMAT;
   volume?: number;
   muted?: boolean;
+  expandFunc?: () => void;
 };
 
 type MediaControlsBarState = {
@@ -235,7 +236,7 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
   };
 
   render() {
-    const { src, timeFormat, defaultCurrentTime, defaultDuration, i18nAriaLabels } = this.props;
+    const { src, timeFormat, defaultCurrentTime, defaultDuration, i18nAriaLabels, expandFunc } = this.props;
     const { coverArt } = this.state;
     const audio = this.audio.current;
     if (!timeFormat) {
@@ -245,7 +246,7 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
       <div aria-label={i18nAriaLabels?.player} className="media-container">
         <audio controls={false} ref={this.audio} src={src} />
         <div className="media-controls">
-          <SongDetails coverArt={coverArt} songName={this.state.songName} />
+          <SongDetails coverArt={coverArt} expandFunc={expandFunc} songName={this.state.songName} />
           <div className="media-controls-center">
             <MediaControls audio={audio} i18nAriaLabels={i18nAriaLabels} togglePlay={this.togglePlay} />
             <TrackProgress
