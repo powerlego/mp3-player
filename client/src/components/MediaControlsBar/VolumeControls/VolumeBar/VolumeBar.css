@@ -2,44 +2,44 @@
 @tailwind components;
 
 @layer components {
-    .media-controls-volume-container {
-        @apply mx-5
-            flex h-5
-            w-full flex-1 flex-row items-center justify-center;
-    }
+  .media-controls-volume-container {
+    @apply mx-5
+      flex h-5
+      w-full flex-1 flex-row items-center justify-center;
+  }
 
-    .media-controls-volume-bar {
-        @apply relative 
-            box-border h-1
-            w-full rounded-full 
-            bg-gray-450
-            dark:bg-gray-600;
-    }
+  .media-controls-volume-bar {
+    @apply relative 
+      box-border h-1
+      w-full rounded-full 
+      bg-gray-450
+      dark:bg-gray-600;
+  }
 
-    .media-controls-volume-bar-fill {
-        @apply absolute z-10
-            box-border h-full 
-            rounded-full
-            bg-gray-500
-            dark:bg-gray-550;
-    }
+  .media-controls-volume-bar-fill {
+    @apply absolute z-10
+      box-border h-full 
+      rounded-full
+      bg-gray-500
+      dark:bg-gray-550;
+  }
 
-    .media-controls-volume-bar-fill-dragging {
-        @apply bg-green-500
-            dark:bg-green-500;
-    }
+  .media-controls-volume-bar-fill-dragging {
+    @apply bg-green-500
+      dark:bg-green-500;
+  }
 
-    .media-controls-volume-bar-scrubber {
-        @apply absolute -top-2 z-20 
-            -ml-2.5
-            box-border h-5 
-            w-5 scale-0 rounded-full 
-            shadow shadow-gray-800 dark:shadow-gray-250;
-    }
+  .media-controls-volume-bar-scrubber {
+    @apply absolute -top-2 z-20 
+      -ml-2.5
+      box-border h-5 
+      w-5 scale-0 rounded-full 
+      shadow shadow-gray-800 dark:shadow-gray-250;
+  }
 
-    .media-controls-volume-bar-scrubber-dragging {
-        @apply scale-100
-            bg-gray-550
-            dark:bg-gray-250;
-    }
+  .media-controls-volume-bar-scrubber-dragging {
+    @apply scale-100
+      bg-gray-550
+      dark:bg-gray-250;
+  }
 }
