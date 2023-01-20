@@ -189,7 +189,7 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
       return (
         <div
           aria-label={i18nVolumeControl}
-          className="media-controls-volume-container"
+          className="media-controls-volume-bar-container"
           ref={this.volumeBar}
           role="progressbar"
         >
@@ -216,7 +216,7 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
           aria-valuemax={100}
           aria-valuemin={0}
           aria-valuenow={Number((volume * 100).toFixed(0))}
-          className="media-controls-volume-container group"
+          className="media-controls-volume-bar-container group"
           ref={this.volumeBar}
           role="progressbar"
           onContextMenu={this.handleContextMenu}

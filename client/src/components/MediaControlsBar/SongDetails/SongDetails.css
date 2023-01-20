@@ -3,7 +3,7 @@
 
 @layer components {
   .media-controls-song-details {
-    @apply m-0 flex flex-row items-center h-full w-auto min-w-56 ml-5;
+    @apply m-0 flex flex-row items-center h-full w-auto min-w-[12.75rem] ml-5 truncate;
   }
 
   .media-controls-song-details-text-container {

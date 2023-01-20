@@ -2,7 +2,7 @@
 @tailwind components;
 
 @layer components {
-  .media-controls-volume-container {
+  .media-controls-volume-bar-container {
     @apply mx-5
       flex h-5
       w-full flex-1 flex-row items-center justify-center;

@@ -24,14 +24,16 @@ class VolumeControls extends Component<VolumeControlsProps, VolumeControlsState>
     const { audio, i18nAriaLabels, onMuteChange, onClickedVolumeButton } = this.props;
     const { volume } = this.state;
     return (
-      <div className="media-controls-volume">
-        <VolumeButton audio={audio} i18nAriaLabels={i18nAriaLabels} onClick={onClickedVolumeButton} />
-        <VolumeBar
-          audio={audio}
-          i18nVolumeControl={i18nAriaLabels?.volumeControl}
-          volume={volume}
-          onMuteChange={onMuteChange}
-        />
+      <div className="media-controls-volume-container">
+        <div className="media-controls-volume">
+          <VolumeButton audio={audio} i18nAriaLabels={i18nAriaLabels} onClick={onClickedVolumeButton} />
+          <VolumeBar
+            audio={audio}
+            i18nVolumeControl={i18nAriaLabels?.volumeControl}
+            volume={volume}
+            onMuteChange={onMuteChange}
+          />
+        </div>
       </div>
     );
   }

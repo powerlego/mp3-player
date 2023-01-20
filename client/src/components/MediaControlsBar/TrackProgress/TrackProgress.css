@@ -4,12 +4,12 @@
 @layer components {
   .media-controls-progress {
     @apply w-full h-1/3
-      flex flex-row items-center justify-center;
+      flex flex-row items-center justify-evenly gap-2;
   }
 
   .media-controls-progress-time {
-    @apply m-1 mx-2
-      text-sm
+    @apply min-w-[2.5rem]
+      text-xs
       text-gray-700
       dark:text-gray-350;
   }
