@@ -1,9 +1,13 @@
 import React, { useState } from "react";
-import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
-import { BsFillSkipEndFill, BsFillSkipStartFill } from "react-icons/bs";
-import { BiShuffle } from "react-icons/bi";
-import { TbRepeat, TbRepeatOnce } from "react-icons/tb";
+import { ReactComponent as PlayIcon } from "../../../assets/icons/play.svg";
+import { ReactComponent as PauseIcon } from "../../../assets/icons/pause.svg";
+import { ReactComponent as SkipBackwardIcon } from "../../../assets/icons/skip_backward.svg";
+import { ReactComponent as SkipForwardIcon } from "../../../assets/icons/skip_forward.svg";
+import { ReactComponent as ShuffleIcon } from "../../../assets/icons/shuffle.svg";
+import { ReactComponent as LoopIcon } from "../../../assets/icons/loop.svg";
+import { ReactComponent as LoopOnceIcon } from "../../../assets/icons/loop_once.svg";
 import { I18nAriaLabels } from "../../../types";
+
 import "./MediaControls.css";
 
 interface MediaControlsProps {
@@ -17,36 +21,53 @@ export default class MediaControls extends React.Component<MediaControlsProps> {
     const { audio, togglePlay, i18nAriaLabels } = this.props;
     return (
       <div className="media-controls-controls">
-        <ShuffleButton />
-        <SkipBackButton aria-label={i18nAriaLabels?.previous} />
+        <div className="media-controls-controls-left">
+          <ShuffleButton audio={audio} />
+          <SkipBackButton aria-label={i18nAriaLabels?.previous} />
+        </div>
         <PlayButton audio={audio} i18nAriaLabels={i18nAriaLabels} togglePlay={togglePlay} />
-        <SkipForwardButton aria-label={i18nAriaLabels?.next} />
-        <RepeatButton />
+        <div className="media-controls-controls-right">
+          <SkipForwardButton aria-label={i18nAriaLabels?.next} />
+          <RepeatButton />
+        </div>
       </div>
     );
   }
 }
 
-function ShuffleButton() {
+interface ShuffleButtonProps {
+  audio?: HTMLAudioElement | null;
+}
+
+function ShuffleButton({ audio }: ShuffleButtonProps) {
   const [isShuffle, setIsShuffle] = useState(false);
   const handleShuffle = () => setIsShuffle(!isShuffle);
-  return (
-    <div className="media-icon-container" onClick={() => handleShuffle()}>
-      {isShuffle
-        ? (
-          <BiShuffle className="media-icon shuffle-button shuffling" />
-        )
-        : (
-          <BiShuffle className="media-icon shuffle-button" />
-        )}
-    </div>
-  );
+  if (!audio) {
+    return (
+      <div className="media-icon-container">
+        <ShuffleIcon className="media-icon" />
+      </div>
+    );
+  }
+  else {
+    return (
+      <div className="media-icon-container" onClick={() => handleShuffle()}>
+        {isShuffle
+          ? (
+            <ShuffleIcon className="media-icon shuffling has-media-icon" />
+          )
+          : (
+            <ShuffleIcon className="media-icon non-scale-stroke has-media-icon" />
+          )}
+      </div>
+    );
+  }
 }
 
 function SkipBackButton() {
   return (
     <div className="media-icon-skip-container" onClick={() => console.log("skipBack")}>
-      <BsFillSkipStartFill className="media-icon skip-button" />
+      <SkipBackwardIcon className="media-icon skip-button" />
     </div>
   );
 }
@@ -137,20 +158,23 @@ class PlayButton extends React.Component<PlayButtonProps, PlayButtonState> {
     const { isPlaying } = this.state;
     if (!this.isAudioAvailable()) {
       return (
-        <div className="media-icon-play-container">
-          <FaPauseCircle className="media-icon play-button" />
+        <div className="play-button-container">
+          <PauseIcon className="media-icon play-button" />
         </div>
       );
     }
     else {
       return (
-        <div className="media-icon-play-container" onClick={togglePlay}>
+        <div
+          className="play-button-container has-media transition-all ease-in-out duration-200 hover:scale-[1.1]"
+          onClick={togglePlay}
+        >
           {isPlaying
             ? (
-              <FaPauseCircle aria-label={i18nAriaLabels?.play} className="media-icon play-button has-media" />
+              <PauseIcon aria-label={i18nAriaLabels?.play} className="play-button" />
             )
             : (
-              <FaPlayCircle aria-label={i18nAriaLabels?.pause} className="media-icon play-button has-media" />
+              <PlayIcon aria-label={i18nAriaLabels?.pause} className="play-button" />
             )}
         </div>
       );
@@ -161,7 +185,7 @@ class PlayButton extends React.Component<PlayButtonProps, PlayButtonState> {
 function SkipForwardButton() {
   return (
     <div className="media-icon-skip-container" onClick={() => console.log("skipForward")}>
-      <BsFillSkipEndFill className="media-icon skip-button" />
+      <SkipForwardIcon className="media-icon skip-button" />
     </div>
   );
 }
@@ -179,14 +203,14 @@ function RepeatButton() {
     <div className="media-icon-container" onClick={() => handleRepeat()}>
       {repeat === 1
         ? (
-          <TbRepeat className="media-icon repeat-button repeating" />
+          <LoopIcon className="media-icon repeat-button repeating" />
         )
         : repeat === 2
           ? (
-            <TbRepeatOnce className="media-icon repeat-button repeating" />
+            <LoopOnceIcon className="media-icon repeat-button repeating" />
           )
           : (
-            <TbRepeat className="media-icon repeat-button" />
+            <LoopIcon className="media-icon repeat-button" />
           )}
     </div>
   );

@@ -11,13 +11,13 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="16"
    height="16"
-   viewBox="0 0 16 16.000001"
+   viewBox="0 0 16 16"
    version="1.1"
-   id="svg1376"
+   id="svg8"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
-   sodipodi:docname="play.svg">
+   sodipodi:docname="loop_once.svg">
   <defs
-     id="defs1370" />
+     id="defs2" />
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -25,21 +25,20 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="15.839192"
-     inkscape:cx="2.4521864"
-     inkscape:cy="9.1097618"
+     inkscape:zoom="7.9195959"
+     inkscape:cx="6.5317365"
+     inkscape:cy="16.589569"
      inkscape:document-units="px"
-     inkscape:current-layer="svg1376"
+     inkscape:current-layer="svg8"
      showgrid="false"
      units="px"
-     scale-x="1"
      inkscape:window-width="1920"
      inkscape:window-height="1009"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
   <metadata
-     id="metadata1373">
+     id="metadata5">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
@@ -54,9 +53,13 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-1106.5197)" />
+     transform="translate(0,-292.76665)" />
   <path
-     id="path1921"
-     d="M 3,1.713 A 0.7,0.7 0 0 1 4.05,1.106 l 10.89,6.288 a 0.7,0.7 0 0 1 0,1.212 L 4.05,14.894 A 0.7,0.7 0 0 1 3,14.288 Z"
+     id="path815"
+     d="M 0,4.75 A 3.75,3.75 0 0 1 3.75,1 H 4.5 V 2.5 H 3.75 A 2.25,2.25 0 0 0 1.5,4.75 v 5 A 2.25,2.25 0 0 0 3.75,12 H 5 v 1.5 H 3.75 A 3.75,3.75 0 0 1 0,9.75 Z M 12.25,2.5 H 11.5 V 1 h 0.75 A 3.75,3.75 0 0 1 16,4.75 v 5 A 3.75,3.75 0 0 1 12.25,13.5 H 9.81 l 1.018,1.018 a 0.75,0.75 0 1 1 -1.06,1.06 L 6.939,12.75 9.768,9.922 a 0.75,0.75 0 1 1 1.06,1.06 L 9.811,12 H 12.25 A 2.25,2.25 0 0 0 14.5,9.75 v -5 A 2.25,2.25 0 0 0 12.25,2.5 Z"
+     inkscape:connector-curvature="0" />
+  <path
+     id="path819"
+     d="M 9.12,8 V 1 H 7.787 C 7.659,1.72 7.027,2.293 6,2.313 V 3.36 H 7.57 V 8 Z"
      inkscape:connector-curvature="0" />
 </svg>

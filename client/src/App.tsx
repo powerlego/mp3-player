@@ -24,7 +24,7 @@ class App extends React.Component<Record<string, never>, AppState> {
     return (
       <div className="app">
         <Sidebar />
-        <MediaControlsBar expandFunc={this.expandSongDetails} src={audio.src} />
+        <MediaControlsBar expandFunc={this.expandSongDetails} src={""} />
         <MainWindow />
       </div>
     );

@@ -1,53 +1,39 @@
 @tailwind base;
 @tailwind components;
+@tailwind utilities;
 
 @layer components {
   .media-controls-controls {
-    @apply mt-2 mb-1 h-1/3
-      flex flex-row items-center justify-center;
-  }
-
-  .skip-button {
-    @apply h-full w-full;
+    @apply mb-4
+      flex flex-row items-center justify-evenly gap-4 w-full;
   }
 
   .media-icon-container {
-    @apply h-4/5 aspect-square m-2;
+    @apply h-8 aspect-square flex justify-center items-center;
   }
 
-  .media-icon-skip-container {
-    @apply h-[90%] aspect-square m-2;
+  .media-controls-controls-left {
+    @apply flex items-center justify-end w-full flex-1 gap-2;
   }
 
-  .media-icon-play-container {
-    @apply h-full aspect-square m-2;
+  .media-controls-controls-right {
+    @apply flex items-center justify-start w-full flex-1 gap-2;
   }
 
+  .play-button-container {
+    @apply h-8 aspect-square flex justify-center items-center bg-gray-450 dark:bg-gray-550 rounded-full
+      cursor-pointer;
+  }
   .play-button {
-    @apply h-full w-full;
+    @apply fill-gray-150 dark:fill-gray-800 m-0
+      w-4 h-4
+      cursor-pointer;
   }
-
-  .playing {
-    @apply fill-gray-800
-      dark:fill-gray-150;
-  }
-  .repeat-button {
-    @apply w-full h-full
-      fill-none stroke-gray-450 stroke-2
-      hover:fill-none hover:stroke-gray-550
-      dark:fill-none dark:stroke-gray-550
-      hover:dark:fill-none hover:dark:stroke-gray-150;
-  }
-
   .repeating {
-    @apply stroke-green-450
-      hover:stroke-green-500
-      dark:stroke-green-350 
-      hover:dark:stroke-green-450;
-  }
-
-  .shuffle-button {
-    @apply h-full w-full;
+    @apply fill-green-450
+      hover:fill-green-500
+      dark:fill-green-350 
+      hover:dark:fill-green-450;
   }
 
   .shuffling {

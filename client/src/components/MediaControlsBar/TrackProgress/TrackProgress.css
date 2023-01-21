@@ -3,7 +3,7 @@
 
 @layer components {
   .media-controls-progress {
-    @apply w-full h-1/3
+    @apply w-full
       flex flex-row items-center justify-evenly gap-2;
   }
 
