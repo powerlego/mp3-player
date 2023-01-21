@@ -155,6 +155,9 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
         return;
       }
       const url = new URL(import.meta.env.REACT_APP_SERVER_URL as string);
+      if (src === "" || src === window.location.href) {
+        return;
+      }
       fetch(src)
         .then(async (res) => {
           if (res.ok) {

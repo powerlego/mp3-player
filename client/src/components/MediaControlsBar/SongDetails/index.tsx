@@ -73,7 +73,6 @@ class SongDetails extends React.Component<SongDetailsProps, SongDetailsState> {
       <div className="media-controls-song-details">
         <div className={`media-controls-song-details-cover-art group/parent ${expanded ? "scale-0" : ""}`}>
           <div className="media-controls-song-details-expand group/tooltip group-hover/parent:scale-100">
-            <span className="media-controls-song-details-expand-tooltip group-hover/tooltip:opacity-100"> Expand </span>
             <div className="media-controls-song-details-expand-button" onClick={this.onExpandClick}>
               <BsChevronUp className="media-controls-song-details-expand-button-icon" />
             </div>
@@ -86,10 +85,8 @@ class SongDetails extends React.Component<SongDetailsProps, SongDetailsState> {
                 ? coverArt.src
                 : coverArt.data === ""
                   ? coverArt.src
-                  : (
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    `data:${coverArt.format!};base64,${coverArt.data}`
-                  )
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                  : `data:${coverArt.format!};base64,${coverArt.data}`
             }
           />
         </div>
