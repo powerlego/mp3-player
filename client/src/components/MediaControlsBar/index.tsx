@@ -260,12 +260,16 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
               timeFormat={timeFormat}
             />
           </div>
-          <VolumeControls
-            audio={audio}
-            i18nAriaLabels={i18nAriaLabels}
-            onClickedVolumeButton={this.handleClickVolumeButton}
-            onMuteChange={this.handleMuteChange}
-          />
+          <div className="media-controls-right">
+            <div className="media-controls-right-container">
+              <VolumeControls
+                audio={audio}
+                i18nAriaLabels={i18nAriaLabels}
+                onClickedVolumeButton={this.handleClickVolumeButton}
+                onMuteChange={this.handleMuteChange}
+              />
+            </div>
+          </div>
         </div>
       </div>
     );

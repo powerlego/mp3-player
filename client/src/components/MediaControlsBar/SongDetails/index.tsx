@@ -1,13 +1,18 @@
 import React from "react";
-import { CoverArt } from "../../../types";
+import { CoverArt, IterationType } from "../../../types";
 import { BsChevronUp } from "react-icons/bs";
 import "./SongDetails.css";
+import SongName from "./SongName";
 
 interface SongDetailsProps {
   songName: string;
   artistName: string;
   coverArt: CoverArt;
   expandFunc?: () => void;
+  speed?: number;
+  pauseAtEndEdgeDurationMs?: number;
+  initialMouseIntDelayMs?: number;
+  iterationType?: IterationType;
 }
 
 interface SongDetailsState {
@@ -18,14 +23,19 @@ class SongDetails extends React.Component<SongDetailsProps, SongDetailsState> {
   static defaultProps = {
     songName: "Song Name",
     artistName: "Artist Name",
-    coverArt: {
-      src: "https://via.placeholder.com/150",
-    },
+    coverArt: { data: "", format: "" },
+    speed: 0.2,
+    pauseAtEndEdgeDurationMs: 1200,
+    initialMouseIntDelayMs: 200,
+    iterationType: "single",
   };
 
   state: SongDetailsState = {
     expanded: false,
   };
+
+  artistNameContainer = React.createRef<HTMLDivElement>();
+  artistNameOffset = React.createRef<HTMLDivElement>();
 
   renderArtist = (artist: string, index: number) => {
     return (
@@ -68,31 +78,33 @@ class SongDetails extends React.Component<SongDetailsProps, SongDetailsState> {
     const { expanded } = this.state;
     const artists = artistName.split(",");
     const renderedArtists = this.renderArtists(artists);
-
     return (
-      <div className="media-controls-song-details">
-        <div className={`media-controls-song-details-cover-art group/parent ${expanded ? "scale-0" : ""}`}>
-          <div className="media-controls-song-details-expand group/tooltip group-hover/parent:scale-100">
-            <div className="media-controls-song-details-expand-button" onClick={this.onExpandClick}>
-              <BsChevronUp className="media-controls-song-details-expand-button-icon" />
+      <div className="song-details">
+        <div className={`song-details-cover-art group/parent ${expanded ? "scale-0" : ""}`}>
+          <div className="song-details-expand group/tooltip group-hover/parent:scale-100">
+            <div className="song-details-expand-button" onClick={this.onExpandClick}>
+              <BsChevronUp className="song-details-expand-button-icon" />
             </div>
           </div>
           <img
             alt="Cover Art"
-            className={`media-controls-song-details-cover-art-image ${expanded ? "scale-0" : ""}`}
+            className={`song-details-cover-art-image ${expanded ? "scale-0" : ""}`}
             src={
-              !coverArt.data
-                ? coverArt.src
-                : coverArt.data === ""
-                  ? coverArt.src
-                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                  : `data:${coverArt.format!};base64,${coverArt.data}`
+              !coverArt.data || !coverArt.format
+                ? "https://via.placeholder.com/150"
+                : coverArt.data === "" || coverArt.format === ""
+                  ? "https://via.placeholder.com/150"
+                  : `data:${coverArt.format};base64,${coverArt.data}`
             }
           />
         </div>
-        <div className={`media-controls-song-details-text-container ${expanded ? "-translate-x-20" : ""}`}>
-          <span className="media-controls-song-details-name">{songName}</span>
-          <div className="media-controls-song-details-artist">{renderedArtists}</div>
+        <div className={`song-details-text-container ${expanded ? "-translate-x-20" : ""}`}>
+          <SongName songName={songName} />
+          <div className="song-details-artist-align">
+            <div className="song-details-artist-container">
+              <div className="song-details-artist-offset">{renderedArtists}</div>
+            </div>
+          </div>
         </div>
       </div>
     );
