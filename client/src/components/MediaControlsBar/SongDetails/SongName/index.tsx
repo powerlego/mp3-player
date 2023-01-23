@@ -26,18 +26,16 @@ export default function SongName(props: SongNameProps) {
   return (
     <div
       className="song-details-name-align"
-      onBlur={() => handleMouseOut}
-      onMouseOut={() => handleMouseOut}
-      onFocus={() => {
-        handleMouseOver(true);
-      }}
-      onMouseOver={() => {
-        handleMouseOver(false);
-      }}
+      onBlur={handleMouseOut}
+      onFocus={handleMouseOver}
+      onMouseOut={handleMouseOut}
+      onMouseOver={handleMouseOver}
     >
       <div className="song-details-name-container" ref={containerRef}>
-        <div className="song-details-name-offset" ref={offsetRef}>
-          <span className="song-details-name">{songName}</span>
+        <div className="overflow-hidden">
+          <div className="song-details-name-offset" ref={offsetRef}>
+            <span className="song-details-name">{songName}</span>
+          </div>
         </div>
       </div>
     </div>

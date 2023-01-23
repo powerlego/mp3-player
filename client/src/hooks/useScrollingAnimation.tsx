@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { SyntheticEvent, useCallback, useEffect, useRef } from "react";
 import { ScrollingAnimationProps } from "../types";
 
 interface HookProps {
@@ -67,17 +67,10 @@ const useScrollingAnimation = (props: HookProps) => {
         }
         else if (scrollingState.current !== "paused") {
           offset += direction * ((60 * (startTime - endTime)) / 1e3) * speed;
-          if (offset > displayWidth) {
-            direction *= -1;
-            prevTime = startTime;
-            offset = displayWidth;
-          }
-          else if (offset < 0) {
-            direction *= -1;
-            prevTime = startTime;
-            offset = 0;
-            isInfinite = iterationType === "infinite";
-          }
+          offset > displayWidth
+            ? ((direction *= -1), (prevTime = startTime), (offset = displayWidth))
+            : offset < 0
+              && ((direction *= -1), (prevTime = startTime), (offset = 0), (isInfinite = iterationType === "infinite"));
         }
         prevOffset = offset;
         const offsetValue = getDirection() * prevOffset + getOffset();
@@ -96,23 +89,28 @@ const useScrollingAnimation = (props: HookProps) => {
   }, [speed, pauseAtEndEdgeDurationMs, getDirection, getOffset, getDisplayWidth, iterationType, offsetRef]);
 
   const getCurrentAnimationId = useCallback(() => animationFrameId.current, []);
+
   const setScrollingStatePaused = useCallback(() => {
     scrollingState.current = "paused";
   }, []);
+
   const setScrollingStateScrolling = useCallback(() => {
     scrollingState.current = "scrolling";
   }, []);
+
   const resetAnimation = useCallback(() => {
     cancelAnimationFrame(animationFrameId.current);
     scrollingState.current = "paused";
     animationFrameId.current = 0;
   }, []);
+
   const clearTimeOuts = useCallback(() => {
     Object.values(timeOuts.current).forEach((e) => e && clearTimeout(e));
   }, []);
 
   const handleMouseOver = useCallback(
-    (focused: boolean) => {
+    (event: SyntheticEvent) => {
+      const focused = event.type === "mouseover" && event.currentTarget === event.target ? true : false;
       if (getCurrentAnimationId()) {
         setScrollingStatePaused();
       }
