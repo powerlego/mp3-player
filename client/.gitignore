@@ -26,3 +26,8 @@ package-lock.json
 palettes.json
 src/assets/audio/Hymn-For-The-Weekend.mp3
 dist/
+yarn.lock
+dist-ssr
+dist-electron
+release
+*.local

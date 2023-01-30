@@ -27,7 +27,7 @@ module.exports = {
       version: "detect",
     },
   },
-  plugins: ["react", "@typescript-eslint"],
+  plugins: ["react", "@typescript-eslint", "react-hooks"],
   rules: {
     "arrow-parens": ["error", "always"],
     camelcase: ["error", { properties: "always" }],

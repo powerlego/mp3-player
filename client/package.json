@@ -1,7 +1,13 @@
 {
   "name": "mp3-player",
   "version": "0.1.0",
+  "main": "dist-electron/main/index.js",
   "private": true,
+  "debug": {
+    "env": {
+      "VITE_DEV_SERVER_URL": "http://127.0.0.1:7777/"
+    }
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -25,8 +31,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "vite",
-    "build": "vite build"
+    "dev": "vite",
+    "build": "tsc && vite build && electron-builder",
+    "preview": "vite preview"
   },
   "eslintConfig": {
     "extends": [
@@ -47,9 +54,10 @@
     ]
   },
   "devDependencies": {
-    "@esbuild-plugins/node-modules-polyfill": "^0.1.4",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.48.1",
+    "electron": "^22.1.0",
+    "electron-builder": "^23.6.0",
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-react": "^7.32.0",
@@ -61,6 +69,11 @@
     "stylelint-config-prettier": "^9.0.4",
     "stylelint-config-recommended": "^9.0.0",
     "stylelint-config-tailwindcss": "^0.0.7",
-    "vite": "^4.0.4"
+    "vite": "^4.0.4",
+    "vite-electron-plugin": "^0.7.4",
+    "vite-plugin-electron-renderer": "^0.11.4"
+  },
+  "engines": {
+    "node": "^14.18.0 || >=16.0.0"
   }
 }
