@@ -3,7 +3,6 @@ import React from "react";
 import { ReactComponent as PlayIcon } from "../../../../assets/icons/play.svg";
 import { ReactComponent as PauseIcon } from "../../../../assets/icons/pause.svg";
 import { I18nAriaLabels } from "../../../../types";
-import "./PlayButton.css";
 
 interface PlayButtonProps {
   audio?: HTMLAudioElement | null;
@@ -15,50 +14,42 @@ interface PlayButtonProps {
 //   isPlaying: boolean;
 // }
 
-export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayButtonProps) {
+export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayButtonProps): JSX.Element {
   const [isPlaying, setIsPlaying] = React.useState(false);
   const addedEventListeners = React.useRef(false);
-  const isAudioAvailable = (): boolean => {
-    if (!audio) {
-      return false;
+
+  const handlePlayPause = React.useCallback((e: Event) => {
+    e.preventDefault();
+    if (e.type === "play") {
+      setIsPlaying(true);
     }
-    if (audio.src === "" || audio.src === window.location.href) {
-      return false;
+    else if (e.type === "pause") {
+      setIsPlaying(false);
     }
-    return true;
-  };
+    else if (e.type === "ended") {
+      setIsPlaying(false);
+    }
+  }, []);
 
   const addEventListeners = React.useCallback(() => {
     if (!audio) {
       return;
     }
-    audio.addEventListener("play", () => {
-      setIsPlaying(true);
-    });
-    audio.addEventListener("pause", () => {
-      setIsPlaying(false);
-    });
-    audio.addEventListener("ended", () => {
-      setIsPlaying(false);
-    });
+    audio.addEventListener("play", handlePlayPause);
+    audio.addEventListener("pause", handlePlayPause);
+    audio.addEventListener("ended", handlePlayPause);
     addedEventListeners.current = true;
-  }, [audio]);
+  }, [audio, handlePlayPause]);
 
   const removeEventListeners = React.useCallback(() => {
     if (!audio) {
       return;
     }
-    audio.removeEventListener("play", () => {
-      setIsPlaying(true);
-    });
-    audio.removeEventListener("pause", () => {
-      setIsPlaying(false);
-    });
-    audio.removeEventListener("ended", () => {
-      setIsPlaying(false);
-    });
+    audio.removeEventListener("play", handlePlayPause);
+    audio.removeEventListener("pause", handlePlayPause);
+    audio.removeEventListener("ended", handlePlayPause);
     addedEventListeners.current = false;
-  }, [audio]);
+  }, [audio, handlePlayPause]);
 
   React.useEffect(() => {
     if (!addedEventListeners.current) {
@@ -69,24 +60,42 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
     };
   }, [audio, addedEventListeners, removeEventListeners, addEventListeners]);
 
-  return isAudioAvailable()
+  return audio && !(audio.src === "" || audio.src === window.location.href)
     ? (
       <div
-        className="play-button-container has-media transition-all ease-in-out duration-200 hover:scale-[1.1]"
+        data-testid="play-button"
+        className="h-8 aspect-square flex justify-center items-center bg-gray-450 dark:bg-gray-550 rounded-full
+        cursor-pointer has-media transition-all ease-in-out duration-200 hover:scale-[1.1]"
         onClick={togglePlay}
       >
         {isPlaying
           ? (
-            <PauseIcon aria-label={i18nAriaLabels?.play} className="play-button" />
+            <PauseIcon
+              aria-label={i18nAriaLabels?.play}
+              className="fill-gray-150 dark:fill-gray-800 m-0 w-4 h-4 cursor-pointer"
+              data-testid="playing"
+              id="pause"
+            />
           )
           : (
-            <PlayIcon aria-label={i18nAriaLabels?.pause} className="play-button" />
+            <PlayIcon
+              aria-label={i18nAriaLabels?.pause}
+              className="fill-gray-150 dark:fill-gray-800 m-0 w-4 h-4 cursor-pointer"
+              data-testid="playing"
+              id="play"
+            />
           )}
       </div>
     )
     : (
-      <div className="play-button-container">
-        <PauseIcon className="media-icon play-button" />
+      <div
+        className="h-8 aspect-square flex justify-center items-center bg-gray-450 dark:bg-gray-550 rounded-full cursor-pointer"
+        data-testid="play-button"
+      >
+        <PauseIcon
+          className="transition-all duration-300 ease-in-out fill-gray-450 hover:fill-gray-550 dark:fill-gray-550 hover:dark:fill-gray-150 m-0 w-4 h-4 cursor-pointer"
+          data-testid="playing"
+        />
       </div>
     );
 }
