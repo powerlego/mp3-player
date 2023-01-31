@@ -1,7 +1,6 @@
 import React from "react";
 import { IterationType, ScrollingAnimationProps } from "../../../../types";
 import useScrollingAnimation from "../../../../hooks/useScrollingAnimation";
-import "./SongName.css";
 
 interface SongNameProps {
   songName: string;
@@ -25,16 +24,38 @@ export default function SongName(props: SongNameProps) {
 
   return (
     <div
-      className="song-details-name-align"
+      className="w-full justify-self-start"
+      style={{
+        gridArea: "title",
+      }}
       onBlur={handleMouseOut}
       onFocus={handleMouseOver}
       onMouseOut={handleMouseOut}
       onMouseOver={handleMouseOver}
     >
-      <div className="song-details-name-container" ref={containerRef}>
+      <div
+        ref={containerRef}
+        style={{
+          marginLeft: "-6px",
+          marginRight: "-6px",
+          overflow: "hidden",
+          position: "relative",
+          maskImage: "linear-gradient(90deg, transparent 0, black 6px, black calc(100% - 12px), transparent)",
+        }}
+      >
         <div className="overflow-hidden">
-          <div className="song-details-name-offset" ref={offsetRef}>
-            <span className="song-details-name">{songName}</span>
+          <div
+            ref={offsetRef}
+            style={{
+              display: "flex",
+              paddingInlineStart: "6px",
+              paddingInlineEnd: "12px",
+              transform: "translateX(var(--trans-x))",
+              whiteSpace: "nowrap",
+              width: "fit-content",
+            }}
+          >
+            <span className="text-base text-gray-800 dark:text-gray-200 font-semibold cursor-default">{songName}</span>
           </div>
         </div>
       </div>

@@ -56,7 +56,7 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
   };
 
   state: MediaControlsBarState = {
-    songName: "",
+    songName: "Song Name",
     coverArt: {
       data: "",
       format: "",

@@ -1,6 +1,5 @@
 import React from "react";
 import { I18nAriaLabels } from "../../../types";
-import "./MediaControls.css";
 import PlayButton from "./PlayButton";
 import RepeatButton from "./RepeatButton";
 import ShuffleButton from "./ShuffleButton";
@@ -17,13 +16,13 @@ export default class MediaControls extends React.Component<MediaControlsProps> {
   render() {
     const { audio, togglePlay, i18nAriaLabels } = this.props;
     return (
-      <div className="media-controls-controls">
-        <div className="media-controls-controls-left">
+      <div className="mb-4 flex flex-row items-center justify-evenly gap-4 w-full">
+        <div className="flex items-center justify-end w-full flex-1 gap-2">
           <ShuffleButton audio={audio} />
           <SkipBackButton aria-label={i18nAriaLabels?.previous} />
         </div>
         <PlayButton audio={audio} i18nAriaLabels={i18nAriaLabels} togglePlay={togglePlay} />
-        <div className="media-controls-controls-right">
+        <div className="flex items-center justify-start w-full flex-1 gap-2">
           <SkipForwardButton aria-label={i18nAriaLabels?.next} />
           <RepeatButton />
         </div>
