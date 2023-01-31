@@ -6,3 +6,4 @@ public/
 .eslintrc.js
 *.config.js
 *.config.ts
+__mocks__/
