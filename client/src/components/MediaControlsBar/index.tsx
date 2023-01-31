@@ -197,7 +197,7 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
     else {
       audio.volume = this.lastVolume;
     }
-    audio.addEventListener("loadstart", this.fetchMetadata);
+    // audio.addEventListener("loadstart", this.fetchMetadata);
     // mmb.fetchFromUrl(audio.src)
     //     .then((metadata) => {
     //         console.log(metadata);
