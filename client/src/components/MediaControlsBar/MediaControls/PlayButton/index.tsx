@@ -11,26 +11,14 @@ interface PlayButtonProps {
   i18nAriaLabels?: I18nAriaLabels;
 }
 
-interface PlayButtonState {
-  isPlaying: boolean;
-}
+// interface PlayButtonState {
+//   isPlaying: boolean;
+// }
 
-export default class PlayButton extends React.Component<PlayButtonProps, PlayButtonState> {
-  addedEventListeners = false;
-
-  state: PlayButtonState = {
-    isPlaying: false,
-  };
-  isPlaying = (): boolean => {
-    const { audio } = this.props;
-    if (!audio) {
-      return false;
-    }
-
-    return !audio.paused && !audio.ended;
-  };
-  isAudioAvailable = (): boolean => {
-    const { audio } = this.props;
+export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayButtonProps) {
+  const [isPlaying, setIsPlaying] = React.useState(false);
+  const addedEventListeners = React.useRef(false);
+  const isAudioAvailable = (): boolean => {
     if (!audio) {
       return false;
     }
@@ -40,77 +28,65 @@ export default class PlayButton extends React.Component<PlayButtonProps, PlayBut
     return true;
   };
 
-  addEventListeners = () => {
-    const { audio } = this.props;
+  const addEventListeners = React.useCallback(() => {
     if (!audio) {
       return;
     }
     audio.addEventListener("play", () => {
-      this.setState({ isPlaying: true });
+      setIsPlaying(true);
     });
     audio.addEventListener("pause", () => {
-      this.setState({ isPlaying: false });
+      setIsPlaying(false);
     });
     audio.addEventListener("ended", () => {
-      this.setState({ isPlaying: false });
+      setIsPlaying(false);
     });
-    this.addedEventListeners = true;
-  };
+    addedEventListeners.current = true;
+  }, [audio]);
 
-  removeEventListeners = () => {
-    const { audio } = this.props;
+  const removeEventListeners = React.useCallback(() => {
     if (!audio) {
       return;
     }
     audio.removeEventListener("play", () => {
-      this.setState({ isPlaying: true });
+      setIsPlaying(true);
     });
     audio.removeEventListener("pause", () => {
-      this.setState({ isPlaying: false });
+      setIsPlaying(false);
     });
     audio.removeEventListener("ended", () => {
-      this.setState({ isPlaying: false });
+      setIsPlaying(false);
     });
-    this.addedEventListeners = false;
-  };
+    addedEventListeners.current = false;
+  }, [audio]);
 
-  componentDidMount() {
-    this.addEventListeners();
-  }
-
-  componentDidUpdate() {
-    this.addEventListeners();
-  }
-
-  componentWillUnmount() {
-    this.removeEventListeners();
-  }
-
-  render() {
-    const { togglePlay, i18nAriaLabels } = this.props;
-    const { isPlaying } = this.state;
-    if (!this.isAudioAvailable()) {
-      return (
-        <div className="play-button-container">
-          <PauseIcon className="media-icon play-button" />
-        </div>
-      );
+  React.useEffect(() => {
+    if (!addedEventListeners.current) {
+      addEventListeners();
     }
-    else {
-      return (
-        <div
-          className="play-button-container has-media transition-all ease-in-out duration-200 hover:scale-[1.1]"
-          onClick={togglePlay}
-        >
-          {isPlaying
-            ? (
-              <PauseIcon aria-label={i18nAriaLabels?.play} className="play-button" />
-            )
-            : (
-              <PlayIcon aria-label={i18nAriaLabels?.pause} className="play-button" />
-            )}
-        </div>
-      );
-    }
-  }
+    return () => {
+      removeEventListeners();
+    };
+  }, [audio, addedEventListeners, removeEventListeners, addEventListeners]);
+
+  return isAudioAvailable()
+    ? (
+      <div
+        className="play-button-container has-media transition-all ease-in-out duration-200 hover:scale-[1.1]"
+        onClick={togglePlay}
+      >
+        {isPlaying
+          ? (
+            <PauseIcon aria-label={i18nAriaLabels?.play} className="play-button" />
+          )
+          : (
+            <PlayIcon aria-label={i18nAriaLabels?.pause} className="play-button" />
+          )}
+      </div>
+    )
+    : (
+      <div className="play-button-container">
+        <PauseIcon className="media-icon play-button" />
+      </div>
+    );
 }
