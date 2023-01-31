@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .play-button-container {
+    @apply h-8 aspect-square flex justify-center items-center bg-gray-450 dark:bg-gray-550 rounded-full
+      cursor-pointer;
+  }
+  .play-button {
+    @apply fill-gray-150 dark:fill-gray-800 m-0
+      w-4 h-4
+      cursor-pointer;
+  }
+}

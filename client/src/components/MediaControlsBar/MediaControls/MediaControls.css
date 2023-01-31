@@ -19,27 +19,4 @@
   .media-controls-controls-right {
     @apply flex items-center justify-start w-full flex-1 gap-2;
   }
-
-  .play-button-container {
-    @apply h-8 aspect-square flex justify-center items-center bg-gray-450 dark:bg-gray-550 rounded-full
-      cursor-pointer;
-  }
-  .play-button {
-    @apply fill-gray-150 dark:fill-gray-800 m-0
-      w-4 h-4
-      cursor-pointer;
-  }
-  .repeating {
-    @apply fill-green-450
-      hover:fill-green-500
-      dark:fill-green-350 
-      hover:dark:fill-green-450;
-  }
-
-  .shuffling {
-    @apply fill-green-450
-      hover:fill-green-500
-      dark:fill-green-350
-      hover:dark:fill-green-450;
-  }
 }
