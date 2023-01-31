@@ -1,6 +1,8 @@
-import { app, BrowserWindow, shell, ipcMain } from "electron";
+/* eslint-disable @typescript-eslint/no-floating-promises */
+import { app, BrowserWindow, shell, ipcMain, dialog } from "electron";
 import { release } from "node:os";
 import { join } from "node:path";
+import ElectronStore from "electron-store";
 
 // The built directory structure
 //
@@ -15,12 +17,17 @@ import { join } from "node:path";
 process.env.DIST_ELECTRON = join(__dirname, "../");
 process.env.DIST = join(process.env.DIST_ELECTRON, "../dist");
 process.env.PUBLIC = process.env.VITE_DEV_SERVER_URL ? join(process.env.DIST_ELECTRON, "../public") : process.env.DIST;
+const store = new ElectronStore();
 
 // Disable GPU Acceleration for Windows 7
-if (release().startsWith("6.1")) app.disableHardwareAcceleration();
+if (release().startsWith("6.1")) {
+  app.disableHardwareAcceleration();
+}
 
 // Set application name for Windows 10+ notifications
-if (process.platform === "win32") app.setAppUserModelId(app.getName());
+if (process.platform === "win32") {
+  app.setAppUserModelId(app.getName());
+}
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();
@@ -38,17 +45,16 @@ const preload = join(__dirname, "../preload/index.js");
 const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, "index.html");
 
+// eslint-disable-next-line @typescript-eslint/require-await
 async function createWindow() {
   win = new BrowserWindow({
     title: "Main window",
     icon: join(process.env.PUBLIC, "favicon.ico"),
+    width: 800,
+    height: 600,
     webPreferences: {
       preload,
-      // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
-      // Consider using contextBridge.exposeInMainWorld
-      // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
-      nodeIntegration: true,
-      contextIsolation: false,
+      contextIsolation: true,
     },
   });
 
@@ -57,7 +63,8 @@ async function createWindow() {
     win.loadURL(process.env.VITE_DEV_SERVER_URL);
     // Open devTool if the app is not packaged
     win.webContents.openDevTools();
-  } else {
+  }
+  else {
     win.loadFile(indexHtml);
   }
 
@@ -68,7 +75,9 @@ async function createWindow() {
 
   // Make all links open with the browser, not with the application
   win.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith("https:")) shell.openExternal(url);
+    if (url.startsWith("https:")) {
+      shell.openExternal(url);
+    }
     return { action: "deny" };
   });
 }
@@ -77,13 +86,17 @@ app.whenReady().then(createWindow);
 
 app.on("window-all-closed", () => {
   win = null;
-  if (process.platform !== "darwin") app.quit();
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
 });
 
 app.on("second-instance", () => {
   if (win) {
     // Focus on the main window if the user tried to open another
-    if (win.isMinimized()) win.restore();
+    if (win.isMinimized()) {
+      win.restore();
+    }
     win.focus();
   }
 });
@@ -92,7 +105,8 @@ app.on("activate", () => {
   const allWindows = BrowserWindow.getAllWindows();
   if (allWindows.length) {
     allWindows[0].focus();
-  } else {
+  }
+  else {
     createWindow();
   }
 });
@@ -108,8 +122,33 @@ ipcMain.handle("open-win", (_, arg) => {
   });
 
   if (process.env.VITE_DEV_SERVER_URL) {
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     childWindow.loadURL(`${url}#${arg}`);
-  } else {
+  }
+  else {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     childWindow.loadFile(indexHtml, { hash: arg });
   }
+});
+
+ipcMain.handle("getAudioFile", async () => {
+  const { canceled, filePaths } = await dialog.showOpenDialog({
+    filters: [
+      {
+        name: "Audio",
+        extensions: ["mp3", "wav", "ogg"],
+      },
+    ],
+  });
+  if (!canceled) {
+    return filePaths[0];
+  }
+});
+
+ipcMain.handle("getStoreKey", (_, key) => {
+  return store.get(key);
+});
+
+ipcMain.handle("setStoreKey", (_, key, value) => {
+  store.set(key, value);
 });

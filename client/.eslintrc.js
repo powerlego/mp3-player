@@ -44,7 +44,7 @@ module.exports = {
     "no-tabs": "error",
     "no-trailing-spaces": "error",
     "multiline-ternary": ["error", "always-multiline"],
-    "max-len": ["error", { code: 120 }],
+    "max-len": ["error", { code: 120, ignoreComments: true, ignoreStrings: true, ignoreTemplateLiterals: true }],
     yoda: ["error", "never", { exceptRange: true }],
     "quote-props": ["error", "as-needed"],
     "no-unused-vars": "off", // ts lint will take care of it
