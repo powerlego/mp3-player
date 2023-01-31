@@ -10,12 +10,20 @@
   }
   .media-controls {
     @apply flex h-full 
-      w-full flex-row justify-between;
+      w-full flex-row justify-between items-center;
   }
 
   .media-controls-center {
     @apply flex
       w-2/5 min-w-fit max-w-[45rem] flex-col items-center justify-center;
+  }
+
+  .media-controls-right {
+    @apply w-[30%] min-w-[11.25rem] flex flex-row justify-end items-center;
+  }
+
+  .media-controls-right-container {
+    @apply flex flex-grow justify-end items-center;
   }
 
   .media-icon {

@@ -26,7 +26,18 @@ export interface MetaDataPayload {
 }
 
 export interface CoverArt {
-  src?: string;
   data?: string;
   format?: string;
+}
+
+export enum IterationType {
+  single = "single",
+  infinite = "infinite",
+}
+
+export interface ScrollingAnimationProps {
+  speed: number;
+  pauseAtEndEdgeDurationMs: number;
+  initialMouseIntDelayMs: number;
+  iterationType: IterationType;
 }

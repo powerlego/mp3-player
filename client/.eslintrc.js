@@ -10,6 +10,7 @@ module.exports = {
   extends: [
     "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
   ],
@@ -26,7 +27,7 @@ module.exports = {
       version: "detect",
     },
   },
-  plugins: ["react", "@typescript-eslint"],
+  plugins: ["react", "@typescript-eslint", "react-hooks"],
   rules: {
     "arrow-parens": ["error", "always"],
     camelcase: ["error", { properties: "always" }],
@@ -43,7 +44,7 @@ module.exports = {
     "no-tabs": "error",
     "no-trailing-spaces": "error",
     "multiline-ternary": ["error", "always-multiline"],
-    "max-len": ["error", { code: 120 }],
+    "max-len": ["error", { code: 120, ignoreComments: true, ignoreStrings: true, ignoreTemplateLiterals: true }],
     yoda: ["error", "never", { exceptRange: true }],
     "quote-props": ["error", "as-needed"],
     "no-unused-vars": "off", // ts lint will take care of it

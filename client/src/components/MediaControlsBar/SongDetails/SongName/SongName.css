@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .song-details-name-align {
+    grid-area: title;
+    @apply w-full justify-self-start;
+  }
+  .song-details-name-container {
+    margin-left: -6px;
+    margin-right: -6px;
+    mask-image: linear-gradient(90deg, transparent 0, black 6px, black calc(100% - 12px), transparent);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .song-details-name-offset {
+    display: flex;
+    padding-inline-start: 6px;
+    padding-inline-end: 12px;
+    transform: translateX(var(--trans-x));
+    white-space: nowrap;
+    width: fit-content;
+  }
+
+  .song-details-name {
+    @apply text-base text-gray-800 dark:text-gray-200 font-semibold cursor-default;
+  }
+}

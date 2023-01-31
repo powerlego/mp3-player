@@ -180,8 +180,8 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
     if (typeof volume === "undefined") {
       return null;
     }
-
     let indicatorClassNames = "media-controls-volume-bar-scrubber ";
+    let indicatorContainerClassNames = "media-controls-volume-bar-scrubber-container ";
 
     let volumeClassNames = "media-controls-volume-bar-fill ";
 
@@ -204,10 +204,12 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
       volumeClassNames += "has-media ";
       if (isDraggingVolume) {
         indicatorClassNames += "media-controls-volume-bar-scrubber-dragging";
+        indicatorContainerClassNames += "media-controls-volume-bar-scrubber-container-dragging";
         volumeClassNames += "media-controls-volume-bar-fill-dragging";
       }
       else {
         indicatorClassNames += "group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250";
+        indicatorContainerClassNames += "group-hover:scale-100";
         volumeClassNames += "group-hover:bg-green-500 dark:group-hover:bg-green-500";
       }
       return (
@@ -224,7 +226,9 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
           onTouchStart={this.handleVolumeControlMouseOrTouchDown}
         >
           <div className="media-controls-volume-bar">
-            <div className={indicatorClassNames} style={{ left: currentVolumePos }} />
+            <div className={indicatorContainerClassNames} style={{ left: currentVolumePos }}>
+              <div className={indicatorClassNames} />
+            </div>
             <div className={volumeClassNames} style={{ width: currentVolumePos }} />
           </div>
         </div>
