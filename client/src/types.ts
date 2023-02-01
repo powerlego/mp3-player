@@ -21,12 +21,15 @@ export interface MetaDataPayload {
   message: string;
   data: {
     name: string;
-    cover: CoverArt;
+    cover: {
+      src?: string;
+      format?: string;
+    };
   };
 }
 
 export interface CoverArt {
-  data?: string;
+  src?: string;
   format?: string;
 }
 
