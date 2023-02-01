@@ -64,8 +64,8 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
     ? (
       <div
         data-testid="play-button"
-        className="h-8 aspect-square flex justify-center items-center bg-gray-450 dark:bg-gray-550 rounded-full
-        cursor-pointer has-media transition-all ease-in-out duration-200 hover:scale-[1.1]"
+        className="h-8 aspect-square flex justify-center items-center rounded-full
+        cursor-pointer bg-gray-800 dark:bg-gray-150 hover:bg-gray-600 dark:hover:bg-gray-350 transition-all ease-in-out duration-200 hover:scale-[1.1]"
         onClick={togglePlay}
       >
         {isPlaying

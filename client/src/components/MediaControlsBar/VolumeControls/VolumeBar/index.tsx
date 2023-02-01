@@ -1,6 +1,5 @@
 import React, { Component, SyntheticEvent } from "react";
 import { getPosX } from "../../../../utils";
-import "./VolumeBar.css";
 
 type VolumeBarProps = {
   audio: HTMLAudioElement | null;
@@ -180,20 +179,21 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
     if (typeof volume === "undefined") {
       return null;
     }
-    let indicatorClassNames = "media-controls-volume-bar-scrubber ";
-    let indicatorContainerClassNames = "media-controls-volume-bar-scrubber-container ";
+    let indicatorClassNames
+      = "absolute h-full w-full top-[calc((50%*-1)+1px)] ml-[calc(50%*-1)] box-border rounded-full bg-gray-450 dark:bg-gray-600 shadow shadow-gray-800 dark:shadow-gray-250 ";
+    let indicatorContainerClassNames = "absolute z-20 box-border rounded-full h-13/4 aspect-square scale-0 ";
 
-    let volumeClassNames = "media-controls-volume-bar-fill ";
+    let volumeClassNames = "absolute z-10 box-border h-full rounded-full bg-gray-500 dark:bg-gray-550 ";
 
     if (!this.isAudioAvailable()) {
       return (
         <div
           aria-label={i18nVolumeControl}
-          className="media-controls-volume-bar-container"
+          className="flex h-5 w-full flex-1 flex-row items-center justify-center"
           ref={this.volumeBar}
           role="progressbar"
         >
-          <div className="media-controls-volume-bar">
+          <div className="relative box-border h-1 w-full rounded-full bg-gray-450 dark:bg-gray-600">
             <div className={indicatorClassNames} style={{ left: currentVolumePos }} />
             <div className={volumeClassNames} style={{ width: currentVolumePos }} />
           </div>
@@ -201,16 +201,17 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
       );
     }
     else {
-      volumeClassNames += "has-media ";
       if (isDraggingVolume) {
-        indicatorClassNames += "media-controls-volume-bar-scrubber-dragging";
-        indicatorContainerClassNames += "media-controls-volume-bar-scrubber-container-dragging";
-        volumeClassNames += "media-controls-volume-bar-fill-dragging";
+        indicatorClassNames += "bg-gray-550 dark:bg-gray-250";
+        indicatorContainerClassNames += "scale-100";
+        volumeClassNames
+          = "absolute z-10 box-border h-full rounded-full bg-green-500 dark:bg-green-500 hover:bg-green-500 dark:hover:bg-green-500";
       }
       else {
         indicatorClassNames += "group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250";
         indicatorContainerClassNames += "group-hover:scale-100";
-        volumeClassNames += "group-hover:bg-green-500 dark:group-hover:bg-green-500";
+        volumeClassNames
+          = "absolute z-10 box-border h-full rounded-full bg-gray-800 dark:bg-gray-150 group-hover:bg-green-500 dark:group-hover:bg-green-500";
       }
       return (
         <div
@@ -218,14 +219,14 @@ export default class VolumeBar extends Component<VolumeBarProps, VolumeBarState>
           aria-valuemax={100}
           aria-valuemin={0}
           aria-valuenow={Number((volume * 100).toFixed(0))}
-          className="media-controls-volume-bar-container group"
+          className="flex h-5 w-full flex-1 flex-row items-center justify-center group"
           ref={this.volumeBar}
           role="progressbar"
           onContextMenu={this.handleContextMenu}
           onMouseDown={this.handleVolumeControlMouseOrTouchDown}
           onTouchStart={this.handleVolumeControlMouseOrTouchDown}
         >
-          <div className="media-controls-volume-bar">
+          <div className="relative box-border h-1 w-full rounded-full bg-gray-450 dark:bg-gray-600">
             <div className={indicatorContainerClassNames} style={{ left: currentVolumePos }}>
               <div className={indicatorClassNames} />
             </div>

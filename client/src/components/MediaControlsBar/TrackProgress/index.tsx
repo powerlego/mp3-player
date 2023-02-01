@@ -1,9 +1,8 @@
-import React, { Component, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { TIME_FORMAT } from "../../../constants";
 import CurrentTime from "./CurrentTime";
 import Duration from "./Duration";
 import ProgressBar from "./ProgressBar";
-import "./TrackProgress.css";
 import { I18nAriaLabels } from "../../../types";
 
 interface TrackProgressProps {
@@ -14,31 +13,28 @@ interface TrackProgressProps {
   i18nAriaLabels?: I18nAriaLabels;
 }
 
-class TrackProgress extends Component<TrackProgressProps> {
-  progressRef = React.createRef<HTMLDivElement>();
-  render() {
-    const { audio, timeFormat, defaultCurrentTime, defaultDuration, i18nAriaLabels } = this.props;
-    if (!timeFormat) {
-      return null;
-    }
-    return (
-      <div className="media-controls-progress">
-        <CurrentTime
-          audio={audio}
-          className="media-controls-progress-time text-right"
-          defaultCurrentTime={defaultCurrentTime}
-          timeFormat={timeFormat}
-        />
-        <ProgressBar audio={audio} i18nProgressBar={i18nAriaLabels?.progressControl} ref={this.progressRef} />
-        <Duration
-          audio={audio}
-          className="media-controls-progress-time text-left"
-          defaultDuration={defaultDuration}
-          timeFormat={timeFormat}
-        />
-      </div>
-    );
+function TrackProgress({ audio, timeFormat, defaultCurrentTime, defaultDuration, i18nAriaLabels }: TrackProgressProps) {
+  const progressRef = React.useRef<HTMLDivElement>(null);
+  if (!timeFormat) {
+    return null;
   }
+  return (
+    <div className="w-full flex flex-row items-center justify-evenly gap-2">
+      <CurrentTime
+        audio={audio}
+        className="min-w-[2.5rem] text-xs text-gray-700 dark:text-gray-350 text-right"
+        defaultCurrentTime={defaultCurrentTime}
+        timeFormat={timeFormat}
+      />
+      <ProgressBar audio={audio} i18nProgressBar={i18nAriaLabels?.progressControl} ref={progressRef} />
+      <Duration
+        audio={audio}
+        className="min-w-[2.5rem] text-xs text-gray-700 dark:text-gray-350 text-left"
+        defaultDuration={defaultDuration}
+        timeFormat={timeFormat}
+      />
+    </div>
+  );
 }
 
 export default TrackProgress;

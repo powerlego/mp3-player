@@ -1,6 +1,5 @@
 import React, { Component, forwardRef } from "react";
 import { getPosX, throttle } from "../../../../utils";
-import "./ProgressBar.css";
 
 interface ProgressBarState {
   isDraggingProgress: boolean;
@@ -173,14 +172,15 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
     if (!currentTimePos) {
       return null;
     }
-    let indicatorClassNames = "media-controls-progress-bar-scrubber ";
-    let indicatorContainerClassNames = "media-controls-progress-bar-scrubber-container ";
-    let progressClassNames = "media-controls-progress-bar-progress ";
+    let indicatorClassNames
+      = "absolute h-full w-full top-[calc((50%*-1)+1px)] ml-[calc(50%*-1)] box-border rounded-full bg-gray-450 dark:bg-gray-600 shadow shadow-gray-800 dark:shadow-gray-250 ";
+    let indicatorContainerClassNames = "absolute z-20 box-border rounded-full h-13/4 aspect-square scale-0 ";
+    let progressClassNames = "absolute z-10 box-border rounded-full h-full bg-gray-550 dark:bg-gray-250 ";
 
     if (isDraggingProgress) {
-      indicatorClassNames += "media-controls-progress-bar-scrubber-dragging";
-      indicatorContainerClassNames += "media-controls-progress-bar-scrubber-container-dragging";
-      progressClassNames += "media-controls-progress-bar-progress-dragging";
+      indicatorClassNames += "bg-gray-550 dark:bg-gray-250";
+      indicatorContainerClassNames += "scale-100";
+      progressClassNames += "bg-green-500 dark:bg-green-500";
     }
     else {
       indicatorClassNames += "group-hover:bg-gray-550 dark:group-hover:bg-gray-250";
@@ -193,12 +193,12 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
         aria-valuemax={100}
         aria-valuemin={0}
         aria-valuenow={Number(currentTimePos.split("%")[0])}
-        className="media-controls-progress-container group "
+        className="h-5 w-4/5 flex flex-row flex-1 items-center justify-center group "
         ref={progressRef}
         onMouseDown={this.handleMouseDownOrTouchStart}
         onTouchStart={this.handleMouseDownOrTouchStart}
       >
-        <div className="media-controls-progress-bar ">
+        <div className="relative box-border rounded-full h-1 w-full bg-gray-450 dark:bg-gray-600 ">
           <div className={indicatorContainerClassNames} style={{ left: currentTimePos }}>
             <div className={indicatorClassNames} />
           </div>

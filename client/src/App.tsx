@@ -22,7 +22,12 @@ class App extends React.Component<Record<string, never>, AppState> {
   render() {
     const { audio } = this.state;
     return (
-      <div className="app">
+      <div
+        className="relative grid overflow-y-hidden h-screen min-h-screen w-full"
+        style={{
+          gridTemplateColumns: "auto 1fr",
+        }}
+      >
         <Sidebar />
         <MediaControlsBar expandFunc={this.expandSongDetails} src={audio.src} />
         <MainWindow />

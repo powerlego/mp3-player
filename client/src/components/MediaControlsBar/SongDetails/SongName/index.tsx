@@ -40,7 +40,9 @@ export default function SongName(props: SongNameProps) {
           marginRight: "-6px",
           overflow: "hidden",
           position: "relative",
-          maskImage: "linear-gradient(90deg, transparent 0, black 6px, black calc(100% - 12px), transparent)",
+          maskImage: "linear-gradient(90deg, transparent 0, black 6px, black calc(100% - 12px), transparent )",
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          WebkitMaskImage: "linear-gradient(90deg, transparent 0, black 6px, black calc(100% - 12px), transparent )",
         }}
       >
         <div className="overflow-hidden">
