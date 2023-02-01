@@ -7,9 +7,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import React from "react";
 import "@testing-library/jest-dom";
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor, cleanup } from "@testing-library/react";
 import PlayButton from ".";
+import { I18nAriaLabels } from "@/types";
 
+afterEach(() => {
+  jest.clearAllMocks();
+  cleanup();
+});
 describe("PlayButton", () => {
   it("should render", () => {
     render(<PlayButton />);

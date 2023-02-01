@@ -14,4 +14,14 @@ describe("SkipBackButton", () => {
   it("should render", () => {
     render(<SkipBackButton />);
   });
+  it("should respond to click", () => {
+    const skipBack = jest.fn();
+    render(<SkipBackButton skipBack={skipBack} />);
+    const skipBackButton = screen.queryByTestId("skip-back-button");
+    if (!skipBackButton) {
+      throw new Error("Skip back button not found");
+    }
+    fireEvent.click(skipBackButton);
+    expect(skipBack).toHaveBeenCalledTimes(1);
+  });
 });

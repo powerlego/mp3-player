@@ -21,6 +21,7 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
   const handlePlayPause = React.useCallback((e: Event) => {
     e.preventDefault();
     if (e.type === "play") {
+      console.log("play");
       setIsPlaying(true);
     }
     else if (e.type === "pause") {
