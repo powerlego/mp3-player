@@ -38,7 +38,11 @@ function SongDetails(props: SongDetailsProps) {
         output.push(artist);
         if (index < artistsRendered.length - 1) {
           output.push(
-            <span className="text-sm text-gray-800 dark:text-gray-200 font-normal truncate cursor-default" key={index}>
+            <span
+              className="text-sm text-gray-800 dark:text-gray-200 font-normal truncate cursor-default"
+              data-testid="artist-comma"
+              key={`comma-${index}`}
+            >
               ,{" "}
             </span>
           );
@@ -73,7 +77,12 @@ function SongDetails(props: SongDetailsProps) {
             <BsChevronUp className="fill-gray-800 dark:fill-gray-200 h-[90%] w-[90%] m-0 opacity-100 stroke-gray-800 dark:stroke-gray-200 hover:stroke-1" />
           </div>
         </div>
-        <img alt="Cover Art" className={`h-full w-full ${expanded ? "scale-0" : ""}`} src={coverArt} />
+        <img
+          alt="Cover Art"
+          className={`h-full w-full ${expanded ? "scale-0" : ""}`}
+          data-testid="cover-art"
+          src={coverArt}
+        />
       </div>
       <div
         className={`items-center grid gap-x-2 mx-4 ${expanded ? "-translate-x-20" : ""}`}

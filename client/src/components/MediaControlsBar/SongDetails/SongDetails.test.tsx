@@ -44,5 +44,13 @@ describe("SongDetails", () => {
       throw new Error("Expand button not found");
     }
     fireEvent.click(expandButton);
+    expect(screen.queryByTestId("cover-art")).not.toHaveClass("scale-0");
+  });
+  it("should place a coma between two artists", async () => {
+    render(
+      <SongDetails artistName="Test Artist, Test Artist 2" coverArt="https://via.placeholder.com/150" songName="" />
+    );
+    const artistComma = await screen.findByTestId("artist-comma");
+    expect(artistComma).toBeInTheDocument();
   });
 });
