@@ -17,6 +17,32 @@ describe("SongDetails", () => {
 
   it("should render with artist name", () => {
     render(<SongDetails artistName="Test Artist" coverArt="https://via.placeholder.com/150" songName="" />);
-    expect(screen.findByTestId("artist-name")).toHaveValue("Test Artist");
+    const artistName = screen.queryByTestId("artist-name");
+    expect(artistName).toHaveTextContent("Test Artist");
+  });
+  it("should expand when clicked", () => {
+    const toggleExpand = jest.fn();
+    render(
+      <SongDetails
+        artistName="Test Artist"
+        coverArt="https://via.placeholder.com/150"
+        expandFunc={toggleExpand}
+        songName=""
+      />
+    );
+    const expandButton = screen.queryByTestId("expand-button");
+    if (!expandButton) {
+      throw new Error("Expand button not found");
+    }
+    fireEvent.click(expandButton);
+    expect(toggleExpand).toBeCalledTimes(1);
+  });
+  it("should not expand when clicked if no expand function is provided", () => {
+    render(<SongDetails artistName="Test Artist" coverArt="https://via.placeholder.com/150" songName="" />);
+    const expandButton = screen.queryByTestId("expand-button");
+    if (!expandButton) {
+      throw new Error("Expand button not found");
+    }
+    fireEvent.click(expandButton);
   });
 });
