@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { TIME_FORMAT } from "../../../../constants";
 import { getDisplayTimeBySeconds } from "../../../../utils";
 
@@ -11,7 +11,7 @@ interface CurrentTimeProps {
 
 function CurrentTime(props: CurrentTimeProps) {
   const { audio, defaultCurrentTime, timeFormat, className } = props;
-  const [currentTime, setCurrentTime] = React.useState(
+  const [currentTime, setCurrentTime] = React.useState<ReactNode>(
     audio ? getDisplayTimeBySeconds(audio.currentTime, audio.duration, timeFormat) : defaultCurrentTime
   );
   const hasAddedAudioEventListener = React.useRef(false);
@@ -19,20 +19,16 @@ function CurrentTime(props: CurrentTimeProps) {
   const handleAudioCurrentTimeChange = React.useCallback(
     (e: Event): void => {
       const audio = e.target as HTMLAudioElement;
-      setCurrentTime(getDisplayTimeBySeconds(audio.currentTime, audio.duration, timeFormat) || defaultCurrentTime);
+      setCurrentTime(getDisplayTimeBySeconds(audio.currentTime, audio.duration, timeFormat));
     },
-    [defaultCurrentTime, timeFormat]
+    [timeFormat]
   );
 
   const addAudioEventListeners = React.useCallback((): void => {
     if (audio && !hasAddedAudioEventListener.current) {
       hasAddedAudioEventListener.current = true;
-      audio.addEventListener("timeupdate", (e: Event) => {
-        handleAudioCurrentTimeChange(e);
-      });
-      audio.addEventListener("loadedmetadata", (e: Event) => {
-        handleAudioCurrentTimeChange(e);
-      });
+      audio.addEventListener("timeupdate", handleAudioCurrentTimeChange);
+      audio.addEventListener("loadedmetadata", handleAudioCurrentTimeChange);
     }
   }, [audio, handleAudioCurrentTimeChange]);
 
@@ -40,12 +36,8 @@ function CurrentTime(props: CurrentTimeProps) {
     addAudioEventListeners();
     return () => {
       if (audio && hasAddedAudioEventListener.current) {
-        audio.removeEventListener("timeupdate", (e: Event) => {
-          handleAudioCurrentTimeChange(e);
-        });
-        audio.removeEventListener("loadedmetadata", (e: Event) => {
-          handleAudioCurrentTimeChange(e);
-        });
+        audio.removeEventListener("timeupdate", handleAudioCurrentTimeChange);
+        audio.removeEventListener("loadedmetadata", handleAudioCurrentTimeChange);
       }
     };
   }, [addAudioEventListeners, audio, handleAudioCurrentTimeChange]);
