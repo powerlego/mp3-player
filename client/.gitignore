@@ -31,3 +31,9 @@ dist-ssr
 dist-electron
 release
 *.local
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/test-results/
+/playwright-report/
+/playwright/.cache/

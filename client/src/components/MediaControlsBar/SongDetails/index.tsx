@@ -1,114 +1,111 @@
 import React from "react";
-import { CoverArt, IterationType } from "../../../types";
+import { ScrollingAnimationProps } from "../../../types";
 import { BsChevronUp } from "react-icons/bs";
-import "./SongDetails.css";
 import SongName from "./SongName";
 
 interface SongDetailsProps {
   songName: string;
   artistName: string;
-  coverArt: CoverArt;
+  coverArt: string;
   expandFunc?: () => void;
-  speed?: number;
-  pauseAtEndEdgeDurationMs?: number;
-  initialMouseIntDelayMs?: number;
-  iterationType?: IterationType;
+  animationProps?: ScrollingAnimationProps;
 }
 
-interface SongDetailsState {
-  expanded: boolean;
-}
+function SongDetails(props: SongDetailsProps) {
+  const { songName, artistName, coverArt, expandFunc, animationProps } = props;
 
-class SongDetails extends React.Component<SongDetailsProps, SongDetailsState> {
-  static defaultProps = {
-    songName: "Song Name",
-    artistName: "Artist Name",
-    coverArt: { data: "", format: "" },
-    speed: 0.2,
-    pauseAtEndEdgeDurationMs: 1200,
-    initialMouseIntDelayMs: 200,
-    iterationType: "single",
-  };
+  const [expanded, setExpanded] = React.useState(false);
 
-  state: SongDetailsState = {
-    expanded: false,
-  };
-
-  artistNameContainer = React.createRef<HTMLDivElement>();
-  artistNameOffset = React.createRef<HTMLDivElement>();
-
-  renderArtist = (artist: string, index: number) => {
+  const renderArtist = React.useCallback((artist: string, index: number) => {
     return (
-      <span className="artist-text artist" key={index}>
+      <span
+        className="text-sm text-gray-800 dark:text-gray-200 font-normal truncate cursor-default hover:underline"
+        key={index}
+      >
         {artist}
       </span>
     );
-  };
+  }, []);
 
-  renderArtists = (artists: string[]) => {
-    const artistsRendered = artists.map(this.renderArtist);
+  const renderArtists = React.useCallback(
+    (artists: string[]) => {
+      const artistsRendered = artists.map(renderArtist);
 
-    const output: JSX.Element[] = [];
+      const output: JSX.Element[] = [];
 
-    artistsRendered.forEach((artist, index) => {
-      output.push(artist);
-      if (index < artistsRendered.length - 1) {
-        output.push(
-          <span className="artist-text" key={index}>
-            ,{" "}
-          </span>
-        );
-      }
-    });
+      artistsRendered.forEach((artist, index) => {
+        output.push(artist);
+        if (index < artistsRendered.length - 1) {
+          output.push(
+            <span
+              className="text-sm text-gray-800 dark:text-gray-200 font-normal truncate cursor-default"
+              key={`comma-${index}`}
+            >
+              ,{" "}
+            </span>
+          );
+        }
+      });
 
-    return output;
-  };
+      return output;
+    },
+    [renderArtist]
+  );
 
-  onExpandClick = () => {
-    const { expandFunc } = this.props;
+  const onExpandClick = React.useCallback(() => {
     if (!expandFunc) {
       return;
     }
     expandFunc();
-    this.setState({ expanded: !this.state.expanded });
-  };
+    setExpanded(!expanded);
+  }, [expandFunc, expanded]);
 
-  render() {
-    const { songName, artistName, coverArt } = this.props;
-    const { expanded } = this.state;
-    const artists = artistName.split(",");
-    const renderedArtists = this.renderArtists(artists);
-    return (
-      <div className="song-details">
-        <div className={`song-details-cover-art group/parent ${expanded ? "scale-0" : ""}`}>
-          <div className="song-details-expand group/tooltip group-hover/parent:scale-100">
-            <div className="song-details-expand-button" onClick={this.onExpandClick}>
-              <BsChevronUp className="song-details-expand-button-icon" />
-            </div>
+  const artists = artistName.split(",");
+  const renderedArtists = renderArtists(artists);
+  return (
+    <div className="m-0 flex flex-row items-center h-full w-[30%] min-w-[11.25rem]">
+      <div className={`relative h-4/5 aspect-square group/parent ${expanded ? "scale-0" : ""}`}>
+        <div className="absolute right-0 top-0 scale-0 group/tooltip group-hover/parent:scale-100">
+          <div
+            className="absolute right-0 top-0 object-cover rounded-full bg-opacity-75 dark:bg-opacity-75 bg-gray-350 dark:bg-black
+  w-5 h-5 m-0.5 flex items-center justify-center hover:h-6 hover:w-6"
+            onClick={onExpandClick}
+          >
+            <BsChevronUp className="fill-gray-800 dark:fill-gray-200 h-[90%] w-[90%] m-0 opacity-100 stroke-gray-800 dark:stroke-gray-200 hover:stroke-1" />
           </div>
-          <img
-            alt="Cover Art"
-            className={`song-details-cover-art-image ${expanded ? "scale-0" : ""}`}
-            src={
-              !coverArt.data || !coverArt.format
-                ? "https://via.placeholder.com/150"
-                : coverArt.data === "" || coverArt.format === ""
-                  ? "https://via.placeholder.com/150"
-                  : `data:${coverArt.format};base64,${coverArt.data}`
-            }
-          />
         </div>
-        <div className={`song-details-text-container ${expanded ? "-translate-x-20" : ""}`}>
-          <SongName songName={songName} />
-          <div className="song-details-artist-align">
-            <div className="song-details-artist-container">
-              <div className="song-details-artist-offset">{renderedArtists}</div>
+        <img alt="Cover Art" className={`h-full w-full ${expanded ? "scale-0" : ""}`} src={coverArt} />
+      </div>
+      <div
+        className={`items-center grid gap-x-2 mx-4 ${expanded ? "-translate-x-20" : ""}`}
+        style={{
+          gridTemplate: "'title title' 'badges subtitle' / auto 1fr",
+        }}
+      >
+        <SongName animationProps={animationProps} songName={songName} />
+        <div
+          className="w-full min-w-0"
+          style={{
+            gridArea: "subtitle",
+            gridColumnStart: "badges",
+          }}
+        >
+          <div className="overflow-hidden -mx-2">
+            <div
+              className="flex whitespace-nowrap w-fit"
+              style={{
+                paddingInlineStart: "6px",
+                paddingInlineEnd: "12px",
+                transform: "translateX(var(--trans-x))",
+              }}
+            >
+              {renderedArtists}
             </div>
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default SongDetails;

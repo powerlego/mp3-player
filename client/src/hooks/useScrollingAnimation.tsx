@@ -21,8 +21,10 @@ const useScrollingAnimation = (props: HookProps) => {
 
   const animationFrameId = useRef<number>(0);
   const textDirRef = useRef("ltr");
-  const timeOuts = useRef({
-    initialMouseInteraction: 0,
+  const timeOuts = useRef<{ initialMouseInteraction: NodeJS.Timeout }>({
+    initialMouseInteraction: setTimeout(() => {
+      /* do nothing */
+    }, 0),
   });
   const scrollingState = useRef("scrolling");
 

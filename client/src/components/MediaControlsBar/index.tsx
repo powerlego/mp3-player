@@ -1,9 +1,8 @@
 import React, { ReactNode } from "react";
 import { AUDIO_PRELOAD_ATTRIBUTE, TIME_FORMAT } from "../../constants";
-import "./MediaControlsBar.css";
 import TrackProgress from "./TrackProgress";
 import MediaControls from "./MediaControls";
-import { CoverArt, I18nAriaLabels, MetaDataPayload } from "../../types";
+import { I18nAriaLabels, MetaDataPayload } from "../../types";
 import VolumeControls from "./VolumeControls";
 import SongDetails from "./SongDetails";
 
@@ -26,7 +25,8 @@ type MediaControlsBarProps = {
 
 type MediaControlsBarState = {
   songName: string;
-  coverArt: CoverArt;
+  artistName: string;
+  coverArt: string;
 };
 
 class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaControlsBarState> {
@@ -56,11 +56,10 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
   };
 
   state: MediaControlsBarState = {
-    songName: "",
-    coverArt: {
-      data: "",
-      format: "",
-    },
+    songName:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    coverArt: "https://via.placeholder.com/150",
+    artistName: "Lorem Ipsum",
   };
 
   audio = React.createRef<HTMLAudioElement>();
@@ -172,10 +171,17 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
               });
               const payload = (await resp.json()) as MetaDataPayload;
               const { name, cover } = payload.data;
-              this.setState({
-                songName: name,
-                coverArt: cover,
-              });
+              if (!cover.format && !cover.src) {
+                console.log("No cover art found");
+                this.setState({ songName: name, coverArt: "https://via.placeholder.com/150" });
+              }
+              else if (cover.src !== "" && cover.format !== "") {
+                this.setState({
+                  songName: name,
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                  coverArt: `data:${cover.format!};base64,${cover.src!}`,
+                });
+              }
             }
           }
         })
@@ -197,7 +203,7 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
     else {
       audio.volume = this.lastVolume;
     }
-    audio.addEventListener("loadstart", this.fetchMetadata);
+    // audio.addEventListener("loadstart", this.fetchMetadata);
     // mmb.fetchFromUrl(audio.src)
     //     .then((metadata) => {
     //         console.log(metadata);
@@ -240,17 +246,20 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
 
   render() {
     const { src, timeFormat, defaultCurrentTime, defaultDuration, i18nAriaLabels, expandFunc } = this.props;
-    const { coverArt } = this.state;
+    const { coverArt, artistName, songName } = this.state;
     const audio = this.audio.current;
     if (!timeFormat) {
       return null;
     }
     return (
-      <div aria-label={i18nAriaLabels?.player} className="media-container">
+      <div
+        aria-label={i18nAriaLabels?.player}
+        className="fixed bottom-0 left-0 z-30 h-[90px] w-fullbg-gray-350 dark:bg-gray-750 px-4"
+      >
         <audio controls={false} ref={this.audio} src={src} />
-        <div className="media-controls">
-          <SongDetails coverArt={coverArt} expandFunc={expandFunc} songName={this.state.songName} />
-          <div className="media-controls-center">
+        <div className="flex h-full w-full flex-row justify-between items-center">
+          <SongDetails artistName={artistName} coverArt={coverArt} expandFunc={expandFunc} songName={songName} />
+          <div className="flex w-2/5 min-w-fit max-w-[45rem] flex-col items-center justify-center">
             <MediaControls audio={audio} i18nAriaLabels={i18nAriaLabels} togglePlay={this.togglePlay} />
             <TrackProgress
               audio={audio}
@@ -260,8 +269,8 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
               timeFormat={timeFormat}
             />
           </div>
-          <div className="media-controls-right">
-            <div className="media-controls-right-container">
+          <div className="w-[30%] min-w-[11.25rem] flex flex-row justify-end items-center">
+            <div className="flex flex-grow justify-end items-center">
               <VolumeControls
                 audio={audio}
                 i18nAriaLabels={i18nAriaLabels}

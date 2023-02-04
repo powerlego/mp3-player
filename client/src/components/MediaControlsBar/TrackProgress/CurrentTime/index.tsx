@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { TIME_FORMAT } from "../../../../constants";
 import { getDisplayTimeBySeconds } from "../../../../utils";
 
@@ -9,73 +9,40 @@ interface CurrentTimeProps {
   className?: string;
 }
 
-interface CurrentTimeState {
-  currentTime: ReactNode;
-}
+function CurrentTime(props: CurrentTimeProps) {
+  const { audio, defaultCurrentTime, timeFormat, className } = props;
+  const [currentTime, setCurrentTime] = React.useState<ReactNode>(
+    audio ? getDisplayTimeBySeconds(audio.currentTime, audio.duration, timeFormat) : defaultCurrentTime
+  );
+  const hasAddedAudioEventListener = React.useRef(false);
 
-export default class CurrentTime extends Component<CurrentTimeProps, CurrentTimeState> {
-  audio?: HTMLAudioElement;
+  const handleAudioCurrentTimeChange = React.useCallback(
+    (e: Event): void => {
+      const audio = e.target as HTMLAudioElement;
+      setCurrentTime(getDisplayTimeBySeconds(audio.currentTime, audio.duration, timeFormat));
+    },
+    [timeFormat]
+  );
 
-  hasAddedAudioEventListener = false;
-
-  constructor(props: CurrentTimeProps) {
-    super(props);
-    const { audio, defaultCurrentTime, timeFormat } = props;
-    let currentTime = defaultCurrentTime;
-    if (audio) {
-      currentTime = getDisplayTimeBySeconds(audio.currentTime, audio.duration, timeFormat);
+  const addAudioEventListeners = React.useCallback((): void => {
+    if (audio && !hasAddedAudioEventListener.current) {
+      hasAddedAudioEventListener.current = true;
+      audio.addEventListener("timeupdate", handleAudioCurrentTimeChange);
+      audio.addEventListener("loadedmetadata", handleAudioCurrentTimeChange);
     }
-    this.state = {
-      currentTime,
+  }, [audio, handleAudioCurrentTimeChange]);
+
+  React.useEffect(() => {
+    addAudioEventListeners();
+    return () => {
+      if (audio && hasAddedAudioEventListener.current) {
+        audio.removeEventListener("timeupdate", handleAudioCurrentTimeChange);
+        audio.removeEventListener("loadedmetadata", handleAudioCurrentTimeChange);
+      }
     };
-  }
+  }, [addAudioEventListeners, audio, handleAudioCurrentTimeChange]);
 
-  state: CurrentTimeState = {
-    currentTime: this.props.defaultCurrentTime,
-  };
-
-  handleAudioCurrentTimeChange = (e: Event): void => {
-    const audio = e.target as HTMLAudioElement;
-    const { timeFormat, defaultCurrentTime } = this.props;
-    this.setState({
-      currentTime: getDisplayTimeBySeconds(audio.currentTime, audio.duration, timeFormat) || defaultCurrentTime,
-    });
-  };
-
-  addAudioEventListeners = (): void => {
-    const { audio } = this.props;
-    if (audio && !this.hasAddedAudioEventListener) {
-      this.audio = audio;
-      this.hasAddedAudioEventListener = true;
-      audio.addEventListener("timeupdate", (e: Event) => {
-        this.handleAudioCurrentTimeChange(e);
-      });
-      audio.addEventListener("loadedmetadata", (e: Event) => {
-        this.handleAudioCurrentTimeChange(e);
-      });
-    }
-  };
-
-  componentDidMount(): void {
-    this.addAudioEventListeners();
-  }
-
-  componentDidUpdate(): void {
-    this.addAudioEventListeners();
-  }
-
-  componentWillUnmount(): void {
-    if (this.audio && this.hasAddedAudioEventListener) {
-      this.audio.removeEventListener("timeupdate", (e: Event) => {
-        this.handleAudioCurrentTimeChange(e);
-      });
-      this.audio.removeEventListener("loadedmetadata", (e: Event) => {
-        this.handleAudioCurrentTimeChange(e);
-      });
-    }
-  }
-
-  render(): React.ReactNode {
-    return <div className={this.props.className}>{this.state.currentTime}</div>;
-  }
+  return <div className={className}>{currentTime}</div>;
 }
+
+export default CurrentTime;
