@@ -197,17 +197,16 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
         aria-valuemin={0}
         aria-valuenow={Number(currentTimePos.split("%")[0])}
         className="h-5 w-4/5 flex flex-row flex-1 items-center justify-center group "
-        data-testid="progress-bar-container"
         ref={progressRef}
         style={style}
         onMouseDown={this.handleMouseDownOrTouchStart}
         onTouchStart={this.handleMouseDownOrTouchStart}
       >
         <div className="relative box-border rounded-full h-1 w-full bg-gray-450 dark:bg-gray-600 ">
-          <div className={indicatorContainerClassNames} data-testid="scrubber" style={{ left: currentTimePos }}>
+          <div className={indicatorContainerClassNames} style={{ left: currentTimePos }}>
             <div className={indicatorClassNames} />
           </div>
-          <div className={progressClassNames} data-testid="progress-bar" style={{ width: currentTimePos }} />
+          <div className={progressClassNames} style={{ width: currentTimePos }} />
         </div>
       </div>
     );

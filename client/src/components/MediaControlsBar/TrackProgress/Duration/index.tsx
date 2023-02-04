@@ -43,11 +43,7 @@ function Duration(props: DurationProps) {
     };
   }, [addAudioEventListeners, audio, handleAudioDurationChange]);
 
-  return (
-    <div className={className} data-testid="duration">
-      {duration}
-    </div>
-  );
+  return <div className={className}>{duration}</div>;
 }
 
 export default Duration;

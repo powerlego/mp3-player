@@ -73,29 +73,19 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
             <PauseIcon
               aria-label={i18nAriaLabels?.play}
               className="fill-gray-150 dark:fill-gray-800 m-0 w-4 h-4 cursor-pointer"
-              data-testid="pause"
-              id="pause"
             />
           )
           : (
             <PlayIcon
               aria-label={i18nAriaLabels?.pause}
               className="fill-gray-150 dark:fill-gray-800 m-0 w-4 h-4 cursor-pointer"
-              data-testid="play"
-              id="play"
             />
           )}
       </div>
     )
     : (
-      <div
-        className="h-8 aspect-square flex justify-center items-center bg-gray-450 dark:bg-gray-550 rounded-full cursor-pointer"
-        data-testid="play-button"
-      >
-        <PauseIcon
-          className="transition-all duration-300 ease-in-out fill-gray-350 dark:fill-gray-650 m-0 w-4 h-4 cursor-pointer"
-          data-testid="playing"
-        />
+      <div className="h-8 aspect-square flex justify-center items-center bg-gray-450 dark:bg-gray-550 rounded-full cursor-pointer">
+        <PauseIcon className="fill-gray-350 dark:fill-gray-650 m-0 w-4 h-4 cursor-pointer" data-testid="playing" />
       </div>
     );
 }

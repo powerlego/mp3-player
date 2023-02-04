@@ -20,7 +20,6 @@ function SongDetails(props: SongDetailsProps) {
     return (
       <span
         className="text-sm text-gray-800 dark:text-gray-200 font-normal truncate cursor-default hover:underline"
-        data-testid="artist-name"
         key={index}
       >
         {artist}
@@ -40,7 +39,6 @@ function SongDetails(props: SongDetailsProps) {
           output.push(
             <span
               className="text-sm text-gray-800 dark:text-gray-200 font-normal truncate cursor-default"
-              data-testid="artist-comma"
               key={`comma-${index}`}
             >
               ,{" "}
@@ -69,7 +67,6 @@ function SongDetails(props: SongDetailsProps) {
       <div className={`relative h-4/5 aspect-square group/parent ${expanded ? "scale-0" : ""}`}>
         <div className="absolute right-0 top-0 scale-0 group/tooltip group-hover/parent:scale-100">
           <div
-            data-testid="expand-button"
             className="absolute right-0 top-0 object-cover rounded-full bg-opacity-75 dark:bg-opacity-75 bg-gray-350 dark:bg-black
   w-5 h-5 m-0.5 flex items-center justify-center hover:h-6 hover:w-6"
             onClick={onExpandClick}
@@ -77,12 +74,7 @@ function SongDetails(props: SongDetailsProps) {
             <BsChevronUp className="fill-gray-800 dark:fill-gray-200 h-[90%] w-[90%] m-0 opacity-100 stroke-gray-800 dark:stroke-gray-200 hover:stroke-1" />
           </div>
         </div>
-        <img
-          alt="Cover Art"
-          className={`h-full w-full ${expanded ? "scale-0" : ""}`}
-          data-testid="cover-art"
-          src={coverArt}
-        />
+        <img alt="Cover Art" className={`h-full w-full ${expanded ? "scale-0" : ""}`} src={coverArt} />
       </div>
       <div
         className={`items-center grid gap-x-2 mx-4 ${expanded ? "-translate-x-20" : ""}`}
@@ -90,7 +82,7 @@ function SongDetails(props: SongDetailsProps) {
           gridTemplate: "'title title' 'badges subtitle' / auto 1fr",
         }}
       >
-        <SongName animationProps={animationProps} data-testid="song-name" songName={songName} />
+        <SongName animationProps={animationProps} songName={songName} />
         <div
           className="w-full min-w-0"
           style={{

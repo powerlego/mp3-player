@@ -42,11 +42,7 @@ function CurrentTime(props: CurrentTimeProps) {
     };
   }, [addAudioEventListeners, audio, handleAudioCurrentTimeChange]);
 
-  return (
-    <div className={className} data-testid="current-time">
-      {currentTime}
-    </div>
-  );
+  return <div className={className}>{currentTime}</div>;
 }
 
 export default CurrentTime;

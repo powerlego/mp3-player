@@ -6,5 +6,3 @@ public/
 .eslintrc.js
 *.config.js
 *.config.ts
-__mocks__/
-setup-jest.js
