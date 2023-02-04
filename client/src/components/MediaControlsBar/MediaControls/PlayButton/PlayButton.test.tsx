@@ -7,9 +7,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import React from "react";
 import "@testing-library/jest-dom";
-import { render, fireEvent, screen, waitFor, cleanup } from "@testing-library/react";
+import { render, fireEvent, screen, cleanup, waitFor } from "@testing-library/react";
 import PlayButton from ".";
-import { debug } from "console";
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -99,5 +98,22 @@ describe("PlayButton", () => {
     }
     fireEvent.click(playButton);
     expect(setStateMock).toHaveBeenCalledWith(false);
+  });
+
+  it("should show the pause icon when playing", async () => {
+    const audio = new Audio("./assets/audio/test.mp3");
+    const togglePlay = () => {
+      audio.dispatchEvent(new Event("play"));
+    };
+    jest.spyOn(React, "useState").mockImplementation(() => [true, jest.fn()]);
+    render(<PlayButton audio={audio} togglePlay={togglePlay} />);
+    const playButton = screen.queryByTestId("play-button");
+    if (!playButton) {
+      throw new Error("Play button not found");
+    }
+    fireEvent.play(audio);
+    await waitFor(() => {
+      expect(screen.getByTestId("pause")).toBeInTheDocument();
+    });
   });
 });
