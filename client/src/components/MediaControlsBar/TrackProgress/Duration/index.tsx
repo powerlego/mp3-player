@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { TIME_FORMAT } from "../../../../constants";
 import { getDisplayTimeBySeconds } from "../../../../utils";
 
@@ -9,71 +9,45 @@ interface DurationProps {
   className?: string;
 }
 
-interface DurationState {
-  duration: ReactNode;
-}
+function Duration(props: DurationProps) {
+  const { audio, defaultDuration, timeFormat, className } = props;
+  const [duration, setDuration] = React.useState<ReactNode>(
+    audio ? getDisplayTimeBySeconds(audio.duration, audio.duration, timeFormat) : defaultDuration
+  );
+  const hasAddedAudioEventListener = React.useRef(false);
 
-export default class Duration extends Component<DurationProps, DurationState> {
-  audio?: HTMLAudioElement;
+  const handleAudioDurationChange = React.useCallback(
+    (e: Event): void => {
+      const audio = e.target as HTMLAudioElement;
 
-  hasAddedAudioEventListener = false;
+      setDuration(getDisplayTimeBySeconds(audio.duration, audio.duration, timeFormat));
+    },
+    [timeFormat]
+  );
 
-  constructor(props: DurationProps) {
-    super(props);
-    const { audio, defaultDuration, timeFormat } = props;
-    this.state = {
-      duration: audio ? getDisplayTimeBySeconds(audio.duration, audio.duration, timeFormat) : defaultDuration,
+  const addAudioEventListeners = React.useCallback((): void => {
+    if (audio && !hasAddedAudioEventListener.current) {
+      hasAddedAudioEventListener.current = true;
+      audio.addEventListener("durationchange", handleAudioDurationChange);
+      audio.addEventListener("abort", handleAudioDurationChange);
+    }
+  }, [audio, handleAudioDurationChange]);
+
+  React.useEffect(() => {
+    addAudioEventListeners();
+    return () => {
+      if (audio && hasAddedAudioEventListener.current) {
+        audio.removeEventListener("durationchange", handleAudioDurationChange);
+        audio.removeEventListener("abort", handleAudioDurationChange);
+      }
     };
-  }
+  }, [addAudioEventListeners, audio, handleAudioDurationChange]);
 
-  state: DurationState = {
-    duration: this.props.audio
-      ? getDisplayTimeBySeconds(this.props.audio.duration, this.props.audio.duration, this.props.timeFormat)
-      : this.props.defaultDuration,
-  };
-
-  handleAudioDurationChange = (e: Event): void => {
-    const audio = e.target as HTMLAudioElement;
-    const { timeFormat, defaultDuration } = this.props;
-    this.setState({
-      duration: getDisplayTimeBySeconds(audio.duration, audio.duration, timeFormat) || defaultDuration,
-    });
-  };
-
-  addAudioEventListeners = (): void => {
-    const { audio } = this.props;
-    if (audio && !this.hasAddedAudioEventListener) {
-      this.audio = audio;
-      this.hasAddedAudioEventListener = true;
-      audio.addEventListener("durationchange", (e: Event) => {
-        this.handleAudioDurationChange(e);
-      });
-      audio.addEventListener("abort", (e: Event) => {
-        this.handleAudioDurationChange(e);
-      });
-    }
-  };
-
-  componentDidMount(): void {
-    this.addAudioEventListeners();
-  }
-
-  componentDidUpdate(): void {
-    this.addAudioEventListeners();
-  }
-
-  componentWillUnmount(): void {
-    if (this.audio && this.hasAddedAudioEventListener) {
-      this.audio.removeEventListener("durationchange", (e: Event) => {
-        this.handleAudioDurationChange(e);
-      });
-      this.audio.removeEventListener("abort", (e: Event) => {
-        this.handleAudioDurationChange(e);
-      });
-    }
-  }
-
-  render(): ReactNode {
-    return <div className={this.props.className}>{this.state.duration}</div>;
-  }
+  return (
+    <div className={className} data-testid="duration">
+      {duration}
+    </div>
+  );
 }
+
+export default Duration;
