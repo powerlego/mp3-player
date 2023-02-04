@@ -93,7 +93,7 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
         data-testid="play-button"
       >
         <PauseIcon
-          className="transition-all duration-300 ease-in-out fill-gray-450 hover:fill-gray-550 dark:fill-gray-550 hover:dark:fill-gray-150 m-0 w-4 h-4 cursor-pointer"
+          className="transition-all duration-300 ease-in-out fill-gray-350 dark:fill-gray-650 m-0 w-4 h-4 cursor-pointer"
           data-testid="playing"
         />
       </div>

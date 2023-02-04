@@ -11,6 +11,7 @@ interface ProgressBarForwardRefProps {
   progressUpdateInterval?: number;
   srcDuration?: number;
   i18nProgressBar?: string;
+  style?: React.CSSProperties;
 }
 
 interface ProgressBarProps extends ProgressBarForwardRefProps {
@@ -44,10 +45,12 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
 
   getCurrentProgress = (event: MouseEvent | React.MouseEvent | TouchEvent | React.TouchEvent): TimePosInfo => {
     const { progressRef } = this.props;
+    console.log("progressRef", progressRef);
     if (!progressRef.current) {
       return { currentTime: 0, currentTimePos: "0%" };
     }
     const rect = progressRef.current.getBoundingClientRect();
+    console.log("rect", rect);
     const maxRelativePos = rect.width;
 
     let relativePos = getPosX(event) - rect.left;
@@ -67,7 +70,7 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
   handleMouseDownOrTouchStart = (event: React.MouseEvent | React.TouchEvent): void => {
     event.stopPropagation();
     const { currentTime, currentTimePos } = this.getCurrentProgress(event);
-
+    console.log("handleMouseDownOrTouchStart", currentTime, currentTimePos);
     if (isFinite(currentTime)) {
       this.timeOnMouseMove = currentTime;
       this.setState({
@@ -167,7 +170,7 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
   }
 
   render(): React.ReactNode {
-    const { progressRef, i18nProgressBar } = this.props;
+    const { progressRef, i18nProgressBar, style } = this.props;
     const { currentTimePos, isDraggingProgress } = this.state;
     if (!currentTimePos) {
       return null;
@@ -194,15 +197,17 @@ class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {
         aria-valuemin={0}
         aria-valuenow={Number(currentTimePos.split("%")[0])}
         className="h-5 w-4/5 flex flex-row flex-1 items-center justify-center group "
+        data-testid="progress-bar-container"
         ref={progressRef}
+        style={style}
         onMouseDown={this.handleMouseDownOrTouchStart}
         onTouchStart={this.handleMouseDownOrTouchStart}
       >
         <div className="relative box-border rounded-full h-1 w-full bg-gray-450 dark:bg-gray-600 ">
-          <div className={indicatorContainerClassNames} style={{ left: currentTimePos }}>
+          <div className={indicatorContainerClassNames} data-testid="scrubber" style={{ left: currentTimePos }}>
             <div className={indicatorClassNames} />
           </div>
-          <div className={progressClassNames} style={{ width: currentTimePos }} />
+          <div className={progressClassNames} data-testid="progress-bar" style={{ width: currentTimePos }} />
         </div>
       </div>
     );

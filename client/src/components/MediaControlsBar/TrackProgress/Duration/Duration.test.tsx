@@ -47,7 +47,6 @@ describe("Duration", () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore: error TS2540: Cannot assign to 'duration' because it is a read-only property.
     audio.duration = 3;
-    console.log(audio.duration);
     fireEvent.durationChange(audio);
     await waitFor(() => {
       expect(duration).toHaveTextContent("00:03");
