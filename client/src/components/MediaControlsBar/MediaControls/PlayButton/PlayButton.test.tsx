@@ -9,7 +9,7 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { render, fireEvent, screen, waitFor, cleanup } from "@testing-library/react";
 import PlayButton from ".";
-import { I18nAriaLabels } from "@/types";
+import { debug } from "console";
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -26,7 +26,7 @@ describe("PlayButton", () => {
   });
   it("should be not grayed out when audio is available", () => {
     render(<PlayButton audio={new Audio("./assets/audio/test.mp3")} />);
-    const playIcon = screen.queryByTestId("playing");
+    const playIcon = screen.queryByTestId("play");
     expect(playIcon).toHaveClass("fill-gray-150 dark:fill-gray-800");
   });
   it("should toggle play/pause when clicked when audio is available", () => {
