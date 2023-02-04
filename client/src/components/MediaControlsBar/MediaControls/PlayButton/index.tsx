@@ -73,7 +73,7 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
             <PauseIcon
               aria-label={i18nAriaLabels?.play}
               className="fill-gray-150 dark:fill-gray-800 m-0 w-4 h-4 cursor-pointer"
-              data-testid="playing"
+              data-testid="pause"
               id="pause"
             />
           )
@@ -81,7 +81,7 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
             <PlayIcon
               aria-label={i18nAriaLabels?.pause}
               className="fill-gray-150 dark:fill-gray-800 m-0 w-4 h-4 cursor-pointer"
-              data-testid="playing"
+              data-testid="play"
               id="play"
             />
           )}
