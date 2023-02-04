@@ -74,21 +74,4 @@ describe("Duration", () => {
       expect(duration).toHaveTextContent("00:32");
     });
   });
-
-  // it("should update duration time state when audio duration changes", () => {
-  //   const audio = new Audio("./assets/audio/test.mp3");
-  //   const setStateMock = jest.fn();
-  //   const useStateMock: any = (initState: any) => [initState, setStateMock];
-  //   jest.spyOn(React, "useState").mockImplementation(useStateMock);
-  //   render(<Duration audio={audio} defaultDuration="00:00" timeFormat="auto" />);
-  //   const duration = screen.queryByTestId("duration");
-  //   if (!duration) {
-  //     throw new Error("Duration not found");
-  //   }
-  //   fireEvent.loadedMetadata(audio);
-  //   void waitFor(() => {
-  //     expect(duration).toHaveTextContent("00:03");
-  //   });
-  //   expect(setStateMock).toHaveBeenCalledWith("00:03");
-  // });
 });
