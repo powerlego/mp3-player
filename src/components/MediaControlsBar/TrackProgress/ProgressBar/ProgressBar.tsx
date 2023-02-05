@@ -27,8 +27,9 @@ function ProgressBar({
   progressRef,
 }: ProgressBarProps): JSX.Element {
   const hasAddedAudioEventListener = React.useRef(false);
+  const isDraggingProgress = React.useRef(false);
+  const [isDragging, setIsDragging] = React.useState(isDraggingProgress.current);
   const timeOnMouseMove = React.useRef(0);
-  const [isDraggingProgress, setIsDraggingProgress] = React.useState(false);
   const [currentTimePos, setCurrentTimePos] = React.useState("0.00%");
 
   const getDuration = React.useCallback((): number => {
@@ -62,76 +63,69 @@ function ProgressBar({
     [getDuration, progressRef]
   );
 
-  const handleMouseOrTouchMove = React.useCallback(
-    (event: MouseEvent | TouchEvent) => {
-      if (event instanceof MouseEvent) {
-        event.preventDefault();
-      }
+  const handleMouseOrTouchMove = (event: MouseEvent | TouchEvent) => {
+    if (event instanceof MouseEvent) {
+      event.preventDefault();
+    }
 
-      event.stopPropagation();
-      const windowSelection: Selection | null = window.getSelection();
-      if (windowSelection && windowSelection.type === "Range") {
-        windowSelection.empty();
-      }
-      if (isDraggingProgress) {
-        const { currentTime, currentTimePos } = getCurrentProgress(event);
-        timeOnMouseMove.current = currentTime;
-        setCurrentTimePos(currentTimePos);
-      }
-    },
-    [getCurrentProgress, isDraggingProgress]
-  );
-
-  const handleMouseOrTouchUp = React.useCallback(
-    (event: MouseEvent | TouchEvent) => {
-      event.stopPropagation();
-      setIsDraggingProgress(false);
-      const newTime = timeOnMouseMove.current;
-      if (!audio) {
-        return;
-      }
-      if (audio.readyState === audio.HAVE_NOTHING || audio.readyState === audio.HAVE_METADATA || !isFinite(newTime)) {
-        setCurrentTimePos("0.00%");
-      }
-      else {
-        audio.currentTime = newTime;
-      }
-      if (event instanceof MouseEvent) {
-        window.removeEventListener("mousemove", handleMouseOrTouchMove);
-        window.removeEventListener("mouseup", handleMouseOrTouchUp);
-      }
-      else {
-        window.removeEventListener("touchmove", handleMouseOrTouchMove);
-        window.removeEventListener("touchend", handleMouseOrTouchUp);
-      }
-    },
-    [handleMouseOrTouchMove, audio]
-  );
-
-  const handleMouseDownOrTouchStart = React.useCallback(
-    (event: React.MouseEvent | React.TouchEvent) => {
-      event.stopPropagation();
+    event.stopPropagation();
+    const windowSelection: Selection | null = window.getSelection();
+    if (windowSelection && windowSelection.type === "Range") {
+      windowSelection.empty();
+    }
+    if (isDraggingProgress.current) {
       const { currentTime, currentTimePos } = getCurrentProgress(event);
-      if (isFinite(currentTime)) {
-        timeOnMouseMove.current = currentTime;
-        setIsDraggingProgress(true);
-        setCurrentTimePos(currentTimePos);
-        if (event.nativeEvent instanceof MouseEvent) {
-          window.addEventListener("mousemove", handleMouseOrTouchMove);
-          window.addEventListener("mouseup", handleMouseOrTouchUp);
-        }
-        else {
-          window.addEventListener("touchmove", handleMouseOrTouchMove);
-          window.addEventListener("touchend", handleMouseOrTouchUp);
-        }
+      timeOnMouseMove.current = currentTime;
+      setCurrentTimePos(currentTimePos);
+    }
+  };
+
+  const handleMouseOrTouchUp = (event: MouseEvent | TouchEvent) => {
+    event.stopPropagation();
+    isDraggingProgress.current = false;
+    setIsDragging(isDraggingProgress.current);
+    const newTime = timeOnMouseMove.current;
+    if (!audio) {
+      return;
+    }
+    if (audio.readyState === audio.HAVE_NOTHING || audio.readyState === audio.HAVE_METADATA || !isFinite(newTime)) {
+      setCurrentTimePos("0.00%");
+    }
+    else {
+      audio.currentTime = newTime;
+    }
+    if (event instanceof MouseEvent) {
+      window.removeEventListener("mousemove", handleMouseOrTouchMove);
+      window.removeEventListener("mouseup", handleMouseOrTouchUp);
+    }
+    else {
+      window.removeEventListener("touchmove", handleMouseOrTouchMove);
+      window.removeEventListener("touchend", handleMouseOrTouchUp);
+    }
+  };
+
+  const handleMouseDownOrTouchStart = (event: React.MouseEvent | React.TouchEvent) => {
+    event.stopPropagation();
+    const { currentTime, currentTimePos } = getCurrentProgress(event);
+    if (isFinite(currentTime)) {
+      timeOnMouseMove.current = currentTime;
+      isDraggingProgress.current = true;
+      setIsDragging(isDraggingProgress.current);
+      setCurrentTimePos(currentTimePos);
+      if (event.nativeEvent instanceof MouseEvent) {
+        window.addEventListener("mousemove", handleMouseOrTouchMove);
+        window.addEventListener("mouseup", handleMouseOrTouchUp);
       }
-    },
-    [getCurrentProgress, handleMouseOrTouchMove, handleMouseOrTouchUp]
-  );
+      else {
+        window.addEventListener("touchmove", handleMouseOrTouchMove);
+        window.addEventListener("touchend", handleMouseOrTouchUp);
+      }
+    }
+  };
 
   const handleAudioTimeUpdate = throttle((e: Event): void => {
     const audio = e.target as HTMLAudioElement;
-    if (isDraggingProgress) {
+    if (isDraggingProgress.current) {
       return;
     }
     const { currentTime } = audio;
@@ -171,24 +165,20 @@ function ProgressBar({
       <div className="relative box-border rounded-full h-1 w-full bg-gray-450 dark:bg-gray-600 ">
         <div
           style={{ left: currentTimePos }}
-          className={`absolute z-20 box-border rounded-full h-13/4 aspect-square scale-0 ${
-            isDraggingProgress ? "scale-100" : "group-hover:scale-100"
+          className={`absolute z-20 box-border rounded-full h-13/4 aspect-square group-hover:scale-100 ${
+            isDragging ? "scale-100" : "scale-0"
           }`}
         >
           <div
-            className={`absolute h-full w-full top-[calc((50%*-1)+1px)] ml-[calc(50%*-1)] box-border rounded-full bg-gray-450 dark:bg-gray-600 shadow shadow-gray-800 dark:shadow-gray-250 ${
-              isDraggingProgress
-                ? "bg-gray-550 dark:bg-gray-250"
-                : "group-hover:bg-gray-550 dark:group-hover:bg-gray-250"
+            className={`absolute h-full w-full top-[calc((50%*-1)+1px)] ml-[calc(50%*-1)] box-border rounded-full group-hover:bg-gray-550 dark:group-hover:bg-gray-250 shadow shadow-gray-800 dark:shadow-gray-250 ${
+              isDragging ? "bg-gray-550 dark:bg-gray-250" : "bg-gray-450 dark:bg-gray-600"
             }`}
           />
         </div>
         <div
           style={{ width: currentTimePos }}
-          className={`absolute z-10 box-border rounded-full h-full bg-gray-550 dark:bg-gray-250 ${
-            isDraggingProgress
-              ? "bg-green-500 dark:bg-green-500"
-              : "group-hover:bg-green-500 dark:group-hover:bg-green-500"
+          className={`absolute z-10 box-border rounded-full h-full group-hover:bg-green-500 dark:group-hover:bg-green-500 ${
+            isDragging ? "bg-green-500 dark:bg-green-500" : "bg-gray-550 dark:bg-gray-250"
           }`}
         />
       </div>
