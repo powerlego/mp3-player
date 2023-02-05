@@ -9,8 +9,7 @@ interface DurationProps {
   className?: string;
 }
 
-function Duration(props: DurationProps) {
-  const { audio, defaultDuration, timeFormat, className } = props;
+function Duration({ audio, defaultDuration, timeFormat, className }: DurationProps) {
   const [duration, setDuration] = React.useState<ReactNode>(
     audio ? getDisplayTimeBySeconds(audio.duration, audio.duration, timeFormat) : defaultDuration
   );

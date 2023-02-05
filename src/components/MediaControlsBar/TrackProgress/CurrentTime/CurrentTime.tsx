@@ -9,8 +9,7 @@ interface CurrentTimeProps {
   className?: string;
 }
 
-function CurrentTime(props: CurrentTimeProps) {
-  const { audio, defaultCurrentTime, timeFormat, className } = props;
+function CurrentTime({ audio, defaultCurrentTime, timeFormat, className }: CurrentTimeProps) {
   const [currentTime, setCurrentTime] = React.useState<ReactNode>(
     audio ? getDisplayTimeBySeconds(audio.currentTime, audio.duration, timeFormat) : defaultCurrentTime
   );
