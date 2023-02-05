@@ -21,7 +21,7 @@ class VolumeControls extends Component<VolumeControlsProps, VolumeControlsState>
   };
 
   render() {
-    const { audio, i18nAriaLabels, onMuteChange, onClickedVolumeButton } = this.props;
+    const { audio, i18nAriaLabels, onClickedVolumeButton } = this.props;
     const { volume } = this.state;
     return (
       <div
@@ -31,12 +31,7 @@ class VolumeControls extends Component<VolumeControlsProps, VolumeControlsState>
         }}
       >
         <VolumeButton audio={audio} i18nAriaLabels={i18nAriaLabels} onClick={onClickedVolumeButton} />
-        <VolumeBar
-          audio={audio}
-          i18nVolumeControl={i18nAriaLabels?.volumeControl}
-          volume={volume}
-          onMuteChange={onMuteChange}
-        />
+        <VolumeBar audio={audio} i18nVolumeControl={i18nAriaLabels?.volumeControl} initVolume={volume} />
       </div>
     );
   }
