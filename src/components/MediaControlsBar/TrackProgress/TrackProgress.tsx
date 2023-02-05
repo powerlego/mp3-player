@@ -1,9 +1,9 @@
 import React, { ReactNode } from "react";
-import { TIME_FORMAT } from "../../../constants";
+import { TIME_FORMAT } from "@/constants";
+import { I18nAriaLabels } from "@/types";
 import CurrentTime from "./CurrentTime";
 import Duration from "./Duration";
 import ProgressBar from "./ProgressBar";
-import { I18nAriaLabels } from "../../../types";
 
 interface TrackProgressProps {
   audio: HTMLAudioElement | null;

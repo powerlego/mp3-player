@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollingAnimationProps } from "../../../types";
+import { ScrollingAnimationProps } from "@/types";
 import { BsChevronUp } from "react-icons/bs";
 import SongName from "./SongName";
 

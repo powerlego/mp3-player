@@ -1,6 +1,6 @@
 import React from "react";
-import { IterationType, ScrollingAnimationProps } from "../../../../types";
-import useScrollingAnimation from "../../../../hooks/useScrollingAnimation";
+import { IterationType, ScrollingAnimationProps } from "@/types";
+import useScrollingAnimation from "@/hooks/useScrollingAnimation";
 
 interface SongNameProps {
   songName: string;

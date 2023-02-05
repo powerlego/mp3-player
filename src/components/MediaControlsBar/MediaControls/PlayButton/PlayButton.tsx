@@ -1,19 +1,14 @@
 import React from "react";
 
-import { ReactComponent as PlayIcon } from "../../../../assets/icons/play.svg";
-import { ReactComponent as PauseIcon } from "../../../../assets/icons/pause.svg";
-import { I18nAriaLabels } from "../../../../types";
+import { ReactComponent as PlayIcon } from "@/assets/icons/play.svg";
+import { ReactComponent as PauseIcon } from "@/assets/icons/pause.svg";
+import { I18nAriaLabels } from "@/types";
 
 interface PlayButtonProps {
   audio?: HTMLAudioElement | null;
   togglePlay?: (e: React.SyntheticEvent) => void;
   i18nAriaLabels?: I18nAriaLabels;
 }
-
-// interface PlayButtonState {
-//   isPlaying: boolean;
-// }
-
 export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayButtonProps): JSX.Element {
   const [isPlaying, setIsPlaying] = React.useState(false);
   const addedEventListeners = React.useRef(false);

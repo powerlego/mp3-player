@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import { getPosX, throttle } from "../../../../utils";
+import { getPosX, throttle } from "@/utils";
 
 interface ProgressBarForwardRefProps {
   audio: HTMLAudioElement | null;

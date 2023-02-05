@@ -1,6 +1,6 @@
 import React from "react";
 import { ImVolumeMute2, ImVolumeMute, ImVolumeLow, ImVolumeMedium, ImVolumeHigh } from "react-icons/im";
-import { I18nAriaLabels } from "../../../../types";
+import { I18nAriaLabels } from "@/types";
 
 type VolumeButtonProps = {
   onClick: () => void;

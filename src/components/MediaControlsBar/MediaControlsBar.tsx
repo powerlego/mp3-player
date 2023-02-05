@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
-import { AUDIO_PRELOAD_ATTRIBUTE, TIME_FORMAT } from "../../constants";
+import { AUDIO_PRELOAD_ATTRIBUTE, TIME_FORMAT } from "@/constants";
+import { I18nAriaLabels, MetaDataPayload } from "@/types";
 import TrackProgress from "./TrackProgress";
 import MediaControls from "./MediaControls";
-import { I18nAriaLabels, MetaDataPayload } from "../../types";
 import VolumeControls from "./VolumeControls";
 import SongDetails from "./SongDetails";
 

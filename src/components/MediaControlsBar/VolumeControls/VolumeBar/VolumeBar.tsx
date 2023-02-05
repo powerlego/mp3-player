@@ -1,5 +1,5 @@
 import React, { Component, SyntheticEvent } from "react";
-import { getPosX } from "../../../../utils";
+import { getPosX } from "@/utils";
 
 type VolumeBarProps = {
   audio: HTMLAudioElement | null;

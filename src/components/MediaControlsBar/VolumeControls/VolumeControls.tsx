@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import VolumeBar from "./VolumeBar";
-import { I18nAriaLabels } from "../../../types";
+import { I18nAriaLabels } from "@/types";
 import VolumeButton from "./VolumeButton";
 
 interface VolumeControlsProps {
