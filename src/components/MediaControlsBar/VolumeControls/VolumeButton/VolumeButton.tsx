@@ -13,7 +13,10 @@ export default function VolumeButton(props: VolumeButtonProps) {
   const [isMuted, setIsMuted] = React.useState(false);
   const [volume, setVolume] = React.useState(1);
   const hasAddedAudioEventListener = React.useRef(false);
-  const isAudioAvailable = audio && audio.src !== "" && audio.src !== window.location.href;
+  const isAudioAvailable = React.useMemo(
+    () => audio && audio.src !== "" && audio.src !== window.location.href,
+    [audio]
+  );
 
   const toggleMute = React.useCallback((): void => {
     if (!audio) {

@@ -7,7 +7,10 @@ interface SkipForwardButtonProps {
 }
 
 export default function SkipForwardButton({ skipForward, audio }: SkipForwardButtonProps): JSX.Element {
-  const isAudioAvailable = audio && audio.src !== "" && audio.src !== window.location.href;
+  const isAudioAvailable = React.useMemo(
+    () => audio && audio.src !== "" && audio.src !== window.location.href,
+    [audio]
+  );
   return isAudioAvailable
     ? (
       <div className="h-8 aspect-square flex justify-center items-center" onClick={skipForward}>

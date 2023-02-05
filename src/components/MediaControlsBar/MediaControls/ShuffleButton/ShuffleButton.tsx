@@ -9,7 +9,10 @@ interface ShuffleButtonProps {
 export default function ShuffleButton({ audio, toggleShuffle }: ShuffleButtonProps) {
   const [isShuffle, setIsShuffle] = useState(false);
   const handleShuffle = toggleShuffle ? toggleShuffle : () => setIsShuffle(!isShuffle);
-  const isAudioAvailable = audio && audio.src !== "" && audio.src !== window.location.href;
+  const isAudioAvailable = React.useMemo(
+    () => audio && audio.src !== "" && audio.src !== window.location.href,
+    [audio]
+  );
   if (!isAudioAvailable) {
     return (
       <div className="h-8 aspect-square flex justify-center items-center">

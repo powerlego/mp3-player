@@ -8,7 +8,10 @@ interface RepeatButtonProps {
 
 export default function RepeatButton({ audio }: RepeatButtonProps): JSX.Element {
   const [repeat, setRepeat] = useState(0);
-  const isAudioAvailable = audio && audio.src !== "" && audio.src !== window.location.href;
+  const isAudioAvailable = React.useMemo(
+    () => audio && audio.src !== "" && audio.src !== window.location.href,
+    [audio]
+  );
   const handleRepeat = () => {
     if (repeat === 2) {
       setRepeat(0);

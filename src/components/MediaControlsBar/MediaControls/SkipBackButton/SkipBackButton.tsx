@@ -7,7 +7,10 @@ interface SkipBackButtonProps {
 }
 
 export default function SkipBackButton({ skipBack, audio }: SkipBackButtonProps): JSX.Element {
-  const isAudioAvailable = audio && audio.src !== "" && audio.src !== window.location.href;
+  const isAudioAvailable = React.useMemo(
+    () => audio && audio.src !== "" && audio.src !== window.location.href,
+    [audio]
+  );
   return isAudioAvailable
     ? (
       <div className="h-8 aspect-square flex justify-center items-center" onClick={skipBack}>
