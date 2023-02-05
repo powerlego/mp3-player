@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { AUDIO_PRELOAD_ATTRIBUTE, TIME_FORMAT } from "@/constants";
-import { I18nAriaLabels, MetaDataPayload } from "@/types";
+import { I18nAriaLabels } from "@/types";
 import TrackProgress from "./TrackProgress";
 import MediaControls from "./MediaControls";
 import VolumeControls from "./VolumeControls";
@@ -23,20 +23,12 @@ type MediaControlsBarProps = {
   expandFunc?: () => void;
 };
 
-type MediaControlsBarState = {
-  songName: string;
-  artistName: string;
-  coverArt: string;
-};
-
-class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaControlsBarState> {
-  hasFetchedMetadata = false;
-
-  static defaultProps: MediaControlsBarProps = {
-    timeFormat: "auto",
-    defaultCurrentTime: "--:--",
-    defaultDuration: "--:--",
-    i18nAriaLabels: {
+function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
+  const {
+    src,
+    progressUpdateInterval,
+    preload,
+    i18nAriaLabels = {
       player: "Audio player",
       progressControl: "Audio progress control",
       volumeControl: "Volume control",
@@ -53,39 +45,46 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
       volume: "Mute",
       volumeMute: "Unmute",
     },
-  };
+    defaultCurrentTime = "--:--",
+    defaultDuration = "--:--",
+    timeFormat = "auto",
+    volume = 1,
+    muted = false,
+    expandFunc,
+  } = props;
 
-  state: MediaControlsBarState = {
-    songName:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    coverArt: "https://via.placeholder.com/150",
-    artistName: "Lorem Ipsum",
-  };
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const [_, forceUpdate] = React.useReducer((x: number) => x + 1, 0);
+  const [songName, setSongName] = React.useState(
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  );
+  const [artistName, setArtistName] = React.useState("Lorem Ipsum");
+  const [coverArt, setCoverArt] = React.useState("https://via.placeholder.com/150");
+  const initLoad = React.useRef(false);
+  const audio = React.useRef<HTMLAudioElement>(null);
 
-  audio = React.createRef<HTMLAudioElement>();
+  const lastVolume = React.useRef(volume);
 
-  lastVolume = this.props.volume ? this.props.volume : 1;
-
-  togglePlay = (e: React.SyntheticEvent): void => {
+  const togglePlay = (e: React.SyntheticEvent): void => {
     e.stopPropagation();
-    const audio = this.audio.current;
-    if (!audio) {
+    const aud = audio.current;
+    if (!aud) {
       return;
     }
-    if ((audio.paused || audio.ended) && audio.src) {
-      this.playAudioPromise();
+    if ((aud.paused || aud.ended) && aud.src) {
+      playAudioPromise();
     }
-    else if (!audio.paused) {
-      audio.pause();
+    else if (!aud.paused) {
+      aud.pause();
     }
   };
 
-  playAudioPromise = (): void => {
-    const audio = this.audio.current;
-    if (!audio) {
+  const playAudioPromise = (): void => {
+    const aud = audio.current;
+    if (!aud) {
       return;
     }
-    const playPromise = audio.play();
+    const playPromise = aud.play();
     // playPromise is null in IE 11
 
     playPromise.then(null).catch((err) => {
@@ -93,196 +92,113 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
     });
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  handlePlay = (e: Event): void => {
-    this.forceUpdate();
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  handlePause = (e: Event): void => {
-    if (!this.audio) {
+  const handlePlay = (e: Event): void => {
+    if (!audio.current) {
       return;
     }
-    this.forceUpdate();
+    forceUpdate();
+    console.log("handlePlay", e);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  handleEnded = (e: Event): void => {
-    if (!this.audio) {
+  const handlePause = (e: Event): void => {
+    if (!audio.current) {
       return;
     }
-    // Remove forceUpdate when stop supporting IE 11
-    this.forceUpdate();
+    forceUpdate();
+    console.log("handlePause", e);
   };
 
-  handleClickVolumeButton = (): void => {
-    const audio = this.audio.current;
-    if (!audio) {
+  const handleEnded = (e: Event): void => {
+    if (!audio.current) {
       return;
     }
-    if (audio.volume > 0) {
-      this.lastVolume = audio.volume;
-      audio.volume = 0;
+    forceUpdate();
+    console.log("handleEnded", e);
+  };
+
+  const handleClickVolumeButton = (): void => {
+    const aud = audio.current;
+    if (!aud) {
+      return;
+    }
+    if (aud.volume > 0) {
+      lastVolume.current = aud.volume;
+      aud.volume = 0;
     }
     else {
-      audio.volume = this.lastVolume;
+      aud.volume = lastVolume.current;
     }
   };
 
-  handleMuteChange = (): void => {
-    this.forceUpdate();
-  };
-
-  handleClickLoopButton = (): void => {
-    if (!this.audio.current) {
+  const handleClickLoopButton = (): void => {
+    if (!audio.current) {
       return;
     }
-    this.audio.current.loop = !this.audio.current.loop;
-    this.forceUpdate();
+    audio.current.loop = !audio.current.loop;
+    forceUpdate();
   };
 
-  fetchMetadata = (): void => {
-    const audio = this.audio.current;
-    if (!audio) {
+  React.useEffect(() => {
+    if (!initLoad.current) {
+      initLoad.current = true;
+      forceUpdate();
+    }
+    const aud = audio.current;
+    if (!aud) {
       return;
     }
-    const { src } = audio;
-    if (!this.hasFetchedMetadata) {
-      this.hasFetchedMetadata = true;
-      if (!import.meta.env.REACT_APP_SERVER_URL) {
-        console.log("No server URL provided");
-        return;
-      }
-      const url = new URL(import.meta.env.REACT_APP_SERVER_URL as string);
-      if (src === "" || src === window.location.href) {
-        return;
-      }
-      fetch(src)
-        .then(async (res) => {
-          if (res.ok) {
-            if (res.body) {
-              url.pathname = "/metadata";
-              const resText = await res.blob();
-              const form = new FormData();
-              form.append("track", resText);
-              const resp = await fetch(url, {
-                method: "POST",
-                body: form,
-              });
-              const payload = (await resp.json()) as MetaDataPayload;
-              const { name, cover } = payload.data;
-              if (!cover.format && !cover.src) {
-                console.log("No cover art found");
-                this.setState({ songName: name, coverArt: "https://via.placeholder.com/150" });
-              }
-              else if (cover.src !== "" && cover.format !== "") {
-                this.setState({
-                  songName: name,
-                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                  coverArt: `data:${cover.format!};base64,${cover.src!}`,
-                });
-              }
-            }
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-
-  componentDidMount() {
-    this.forceUpdate();
-    const audio = this.audio.current;
-    if (!audio) {
-      return;
-    }
-    if (this.props.muted) {
-      audio.volume = 0;
+    if (muted) {
+      aud.volume = 0;
     }
     else {
-      audio.volume = this.lastVolume;
+      aud.volume = lastVolume.current;
     }
-    // audio.addEventListener("loadstart", this.fetchMetadata);
-    // mmb.fetchFromUrl(audio.src)
-    //     .then((metadata) => {
-    //         console.log(metadata);
-    //     })
-    //     .finally(() => {
-    //         this.setState({
-    //             songName: "Song Name",
-    //         });
-    //     });
 
-    // When audio play starts
-    audio.addEventListener("play", this.handlePlay);
+    aud.addEventListener("play", handlePlay);
+    aud.addEventListener("pause", handlePause);
+    aud.addEventListener("ended", handleEnded);
 
-    audio.addEventListener("ended", this.handleEnded);
+    return () => {
+      aud.removeEventListener("play", handlePlay);
+      aud.removeEventListener("pause", handlePause);
+      aud.removeEventListener("ended", handleEnded);
+    };
+  });
 
-    // When the user pauses playback
-    audio.addEventListener("pause", this.handlePause);
+  if (!timeFormat) {
+    return <></>;
   }
-
-  componentDidUpdate(prevProps: MediaControlsBarProps): void {
-    const { src } = this.props;
-    if (prevProps.src !== src) {
-      // if (autoPlayAfterSrcChange) {
-      //     this.playAudioPromise();
-      // }
-      // else {
-      // Updating pause icon to play icon
-      this.forceUpdate();
-      // }
-    }
-  }
-  isPlaying = (): boolean => {
-    const audio = this.audio.current;
-    if (!audio) {
-      return false;
-    }
-
-    return !audio.paused && !audio.ended;
-  };
-
-  render() {
-    const { src, timeFormat, defaultCurrentTime, defaultDuration, i18nAriaLabels, expandFunc } = this.props;
-    const { coverArt, artistName, songName } = this.state;
-    const audio = this.audio.current;
-    if (!timeFormat) {
-      return null;
-    }
-    return (
-      <div
-        aria-label={i18nAriaLabels?.player}
-        className="fixed bottom-0 left-0 z-30 h-[90px] w-full bg-gray-350 dark:bg-gray-750 px-4"
-      >
-        <audio controls={false} ref={this.audio} src={src} />
-        <div className="flex h-full w-full flex-row justify-between items-center">
-          <SongDetails artistName={artistName} coverArt={coverArt} expandFunc={expandFunc} songName={songName} />
-          <div className="flex w-1/2 min-w-fit max-w-[45rem] flex-col items-center justify-center">
-            <MediaControls audio={audio} i18nAriaLabels={i18nAriaLabels} togglePlay={this.togglePlay} />
-            <TrackProgress
-              audio={audio}
-              defaultCurrentTime={defaultCurrentTime}
-              defaultDuration={defaultDuration}
+  return (
+    <div
+      aria-label={i18nAriaLabels?.player}
+      className="fixed bottom-0 left-0 z-30 h-[90px] w-full bg-gray-350 dark:bg-gray-750 px-4"
+    >
+      <audio controls={false} preload={preload} ref={audio} src={src} />
+      <div className="flex h-full w-full flex-row justify-between items-center">
+        <SongDetails artistName={artistName} coverArt={coverArt} expandFunc={expandFunc} songName={songName} />
+        <div className="flex w-1/2 min-w-fit max-w-[45rem] flex-col items-center justify-center">
+          <MediaControls audio={audio.current} i18nAriaLabels={i18nAriaLabels} togglePlay={togglePlay} />
+          <TrackProgress
+            audio={audio.current}
+            defaultCurrentTime={defaultCurrentTime}
+            defaultDuration={defaultDuration}
+            i18nAriaLabels={i18nAriaLabels}
+            progressUpdateInterval={progressUpdateInterval}
+            timeFormat={timeFormat}
+          />
+        </div>
+        <div className="w-[20%] min-w-[11.25rem] flex flex-row justify-end items-center">
+          <div className="flex flex-grow justify-end items-center">
+            <VolumeControls
+              audio={audio.current}
               i18nAriaLabels={i18nAriaLabels}
-              timeFormat={timeFormat}
+              onClickedVolumeButton={handleClickVolumeButton}
             />
-          </div>
-          <div className="w-[20%] min-w-[11.25rem] flex flex-row justify-end items-center">
-            <div className="flex flex-grow justify-end items-center">
-              <VolumeControls
-                audio={audio}
-                i18nAriaLabels={i18nAriaLabels}
-                onClickedVolumeButton={this.handleClickVolumeButton}
-                onMuteChange={this.handleMuteChange}
-              />
-            </div>
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default MediaControlsBar;
