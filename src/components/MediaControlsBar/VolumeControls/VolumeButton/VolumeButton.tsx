@@ -1,0 +1,116 @@
+import React from "react";
+import { ImVolumeMute2, ImVolumeMute, ImVolumeLow, ImVolumeMedium, ImVolumeHigh } from "react-icons/im";
+import { I18nAriaLabels } from "../../../../types";
+
+type VolumeButtonProps = {
+  onClick: () => void;
+  audio: HTMLAudioElement | null;
+  i18nAriaLabels?: I18nAriaLabels;
+};
+
+export default function VolumeButton(props: VolumeButtonProps) {
+  const { onClick, audio, i18nAriaLabels } = props;
+  const [isMuted, setIsMuted] = React.useState(false);
+  const [volume, setVolume] = React.useState(1);
+  const hasAddedAudioEventListener = React.useRef(false);
+
+  const toggleMute = React.useCallback((): void => {
+    if (!audio) {
+      return;
+    }
+    onClick();
+    audio.muted = !isMuted;
+    setIsMuted(!isMuted);
+  }, [audio, isMuted, onClick]);
+
+  const checkMuted = React.useCallback((): void => {
+    if (!audio) {
+      return;
+    }
+    if (audio.volume === 0) {
+      audio.muted = true;
+      setIsMuted(true);
+    }
+    else {
+      audio.muted = false;
+      setIsMuted(false);
+    }
+  }, [audio]);
+
+  const checkVolume = React.useCallback((): void => {
+    if (!audio) {
+      return;
+    }
+    setVolume(audio.volume);
+  }, [audio]);
+
+  const addEventListenerToAudio = React.useCallback((): void => {
+    if (audio && !hasAddedAudioEventListener.current) {
+      audio.addEventListener("volumechange", checkMuted);
+      audio.addEventListener("volumechange", checkVolume);
+      hasAddedAudioEventListener.current = true;
+    }
+  }, [audio, checkMuted, checkVolume]);
+
+  const removeEventListenerFromAudio = React.useCallback((): void => {
+    if (audio && hasAddedAudioEventListener.current) {
+      audio.removeEventListener("volumechange", checkMuted);
+      audio.removeEventListener("volumechange", checkVolume);
+      hasAddedAudioEventListener.current = false;
+    }
+  }, [audio, checkMuted, checkVolume]);
+
+  React.useEffect(() => {
+    addEventListenerToAudio();
+    return () => {
+      removeEventListenerFromAudio();
+    };
+  }, [audio, addEventListenerToAudio, removeEventListenerFromAudio]);
+
+  const isAudioAvailable = React.useCallback((): boolean => {
+    if (!audio) {
+      return false;
+    }
+    if (audio.src === "" || audio.src === window.location.href) {
+      return false;
+    }
+    return true;
+  }, [audio]);
+
+  if (!isAudioAvailable()) {
+    return (
+      <div className="aspect-square h-8 flex items-center justify-center">
+        <ImVolumeMute2 className="m-0 w-4 h-4 cursor-pointer fill-gray-450 transition-all duration-300 ease-in-out hover:fill-gray-550 dark:fill-gray-550 hover:dark:fill-gray-150 " />
+      </div>
+    );
+  }
+  else {
+    return (
+      <div
+        aria-label={isMuted ? i18nAriaLabels?.volumeMute : i18nAriaLabels?.volume}
+        className="aspect-square h-8 flex items-center justify-center"
+        onClick={toggleMute}
+      >
+        {isMuted
+          ? (
+            <ImVolumeMute2 className="m-0 w-4 h-4 cursor-pointer fill-gray-450 transition-all duration-300 ease-in-out hover:fill-gray-550 dark:fill-gray-550 hover:dark:fill-gray-150" />
+          )
+          : volume < 0.25
+            ? (
+              <ImVolumeMute className="m-0 w-4 h-4 cursor-pointer fill-gray-450 transition-all duration-300 ease-in-out hover:fill-gray-550 dark:fill-gray-550 hover:dark:fill-gray-150" />
+            )
+            : volume < 0.5
+              ? (
+                <ImVolumeLow className="m-0 w-4 h-4 cursor-pointer fill-gray-450 transition-all duration-300 ease-in-out hover:fill-gray-550 dark:fill-gray-550 hover:dark:fill-gray-150" />
+              )
+              : volume < 0.75
+                ? (
+                  <ImVolumeMedium className="m-0 w-4 h-4 cursor-pointer fill-gray-450 transition-all duration-300 ease-in-out hover:fill-gray-550 dark:fill-gray-550 hover:dark:fill-gray-150" />
+                )
+                : (
+                  <ImVolumeHigh className="m-0 w-4 h-4 cursor-pointer fill-gray-450 transition-all duration-300 ease-in-out hover:fill-gray-550 dark:fill-gray-550 hover:dark:fill-gray-150" />
+                )}
+      </div>
+    );
+  }
+}
