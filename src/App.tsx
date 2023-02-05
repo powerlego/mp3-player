@@ -6,7 +6,7 @@ import testAudioFile from "./assets/audio/Hymn-For-The-Weekend.mp3";
 
 function App() {
   const [expanded, setExpanded] = React.useState(false);
-  const [audio] = React.useState(new Audio(testAudioFile));
+  const audio = new Audio(testAudioFile);
 
   const expandSongDetails = () => {
     console.log("Expand song details");
