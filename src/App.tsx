@@ -4,35 +4,26 @@ import MediaControlsBar from "./components/MediaControlsBar";
 import Sidebar from "./components/Sidebar";
 import testAudioFile from "./assets/audio/Hymn-For-The-Weekend.mp3";
 
-interface AppState {
-  expanded: boolean;
-  audio: HTMLAudioElement;
-}
+function App() {
+  const [expanded, setExpanded] = React.useState(false);
+  const audio = new Audio(testAudioFile);
 
-class App extends React.Component<Record<string, never>, AppState> {
-  state: AppState = {
-    expanded: false,
-    audio: new Audio(testAudioFile),
-  };
-
-  expandSongDetails = () => {
+  const expandSongDetails = () => {
     console.log("Expand song details");
-    this.setState({ expanded: !this.state.expanded });
+    setExpanded(!expanded);
   };
-  render() {
-    const { audio } = this.state;
-    return (
-      <div
-        className="relative grid overflow-y-hidden h-screen min-h-screen w-full"
-        style={{
-          gridTemplateColumns: "auto 1fr",
-        }}
-      >
-        <Sidebar />
-        <MediaControlsBar expandFunc={this.expandSongDetails} src={audio.src} />
-        <MainWindow />
-      </div>
-    );
-  }
+
+  return (
+    <div
+      className="relative grid overflow-y-hidden h-screen min-h-screen w-full"
+      style={{
+        gridTemplateColumns: "auto 1fr",
+      }}
+    >
+      <Sidebar />
+      <MediaControlsBar expandFunc={expandSongDetails} src={audio.src} />
+      <MainWindow />
+    </div>
+  );
 }
 export default App;
