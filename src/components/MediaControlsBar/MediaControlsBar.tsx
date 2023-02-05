@@ -254,12 +254,12 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
     return (
       <div
         aria-label={i18nAriaLabels?.player}
-        className="fixed bottom-0 left-0 z-30 h-[90px] w-fullbg-gray-350 dark:bg-gray-750 px-4"
+        className="fixed bottom-0 left-0 z-30 h-[90px] w-full bg-gray-350 dark:bg-gray-750 px-4"
       >
         <audio controls={false} ref={this.audio} src={src} />
         <div className="flex h-full w-full flex-row justify-between items-center">
           <SongDetails artistName={artistName} coverArt={coverArt} expandFunc={expandFunc} songName={songName} />
-          <div className="flex w-2/5 min-w-fit max-w-[45rem] flex-col items-center justify-center">
+          <div className="flex w-1/2 min-w-fit max-w-[45rem] flex-col items-center justify-center">
             <MediaControls audio={audio} i18nAriaLabels={i18nAriaLabels} togglePlay={this.togglePlay} />
             <TrackProgress
               audio={audio}
@@ -269,7 +269,7 @@ class MediaControlsBar extends React.Component<MediaControlsBarProps, MediaContr
               timeFormat={timeFormat}
             />
           </div>
-          <div className="w-[30%] min-w-[11.25rem] flex flex-row justify-end items-center">
+          <div className="w-[20%] min-w-[11.25rem] flex flex-row justify-end items-center">
             <div className="flex flex-grow justify-end items-center">
               <VolumeControls
                 audio={audio}

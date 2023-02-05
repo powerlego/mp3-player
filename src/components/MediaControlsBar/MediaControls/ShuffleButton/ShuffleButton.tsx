@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ReactComponent as ShuffleIcon } from "../../../../assets/icons/shuffle.svg";
+import { ReactComponent as ShuffleIcon } from "@/assets/icons/shuffle.svg";
 
 interface ShuffleButtonProps {
   audio?: HTMLAudioElement | null;
@@ -9,10 +9,11 @@ interface ShuffleButtonProps {
 export default function ShuffleButton({ audio, toggleShuffle }: ShuffleButtonProps) {
   const [isShuffle, setIsShuffle] = useState(false);
   const handleShuffle = toggleShuffle ? toggleShuffle : () => setIsShuffle(!isShuffle);
-  if (!audio) {
+  const isAudioAvailable = audio && audio.src !== "" && audio.src !== window.location.href;
+  if (!isAudioAvailable) {
     return (
       <div className="h-8 aspect-square flex justify-center items-center">
-        <ShuffleIcon className="m-0 w-4 h-4 cursor-pointer fill-gray-450 transition-all duration-300 ease-in-out hover:fill-gray-550 dark:fill-gray-550 hover:dark:fill-gray-150" />
+        <ShuffleIcon className="m-0 w-4 h-4 cursor-pointer fill-gray-450 dark:fill-gray-550" />
       </div>
     );
   }

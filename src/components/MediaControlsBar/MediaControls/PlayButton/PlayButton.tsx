@@ -17,6 +17,7 @@ interface PlayButtonProps {
 export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayButtonProps): JSX.Element {
   const [isPlaying, setIsPlaying] = React.useState(false);
   const addedEventListeners = React.useRef(false);
+  const isAudioAvailable = audio && audio.src !== "" && audio.src !== window.location.href;
 
   const handlePlayPause = React.useCallback((e: Event) => {
     e.preventDefault();
@@ -60,7 +61,7 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
     };
   }, [audio, addedEventListeners, removeEventListeners, addEventListeners]);
 
-  return audio && !(audio.src === "" || audio.src === window.location.href)
+  return isAudioAvailable
     ? (
       <div
         data-testid="play-button"
