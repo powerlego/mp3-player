@@ -1,5 +1,3 @@
-import React from "react";
-
 import VolumeBar from "./VolumeBar";
 import { I18nAriaLabels } from "@/types";
 import VolumeButton from "./VolumeButton";
