@@ -58,7 +58,7 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
   const [songName, setSongName] = React.useState(
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
   );
-  const [artistName, setArtistName] = React.useState("Lorem Ipsum");
+  const [artistName, setArtistName] = React.useState("Lorem Ipsum, Lorem Ipsum, Lorem Ipsum");
   const [coverArt, setCoverArt] = React.useState("https://via.placeholder.com/150");
   const initLoad = React.useRef(false);
   const audio = React.useRef<HTMLAudioElement>(null);
@@ -164,6 +164,10 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
       aud.removeEventListener("ended", handleEnded);
     };
   });
+
+  React.useEffect(() => {
+    forceUpdate();
+  }, [src]);
 
   if (!timeFormat) {
     return <></>;

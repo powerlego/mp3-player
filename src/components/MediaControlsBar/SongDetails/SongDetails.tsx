@@ -2,6 +2,7 @@ import React from "react";
 import { ScrollingAnimationProps } from "@/types";
 import { BsChevronUp } from "react-icons/bs";
 import SongName from "./SongName";
+import SongArtists from "./SongArtists/SongArtists";
 
 interface SongDetailsProps {
   songName: string;
@@ -16,42 +17,6 @@ function SongDetails(props: SongDetailsProps) {
 
   const [expanded, setExpanded] = React.useState(false);
 
-  const renderArtist = React.useCallback((artist: string, index: number) => {
-    return (
-      <span
-        className="text-sm text-gray-800 dark:text-gray-200 font-normal truncate cursor-default hover:underline"
-        key={index}
-      >
-        {artist}
-      </span>
-    );
-  }, []);
-
-  const renderArtists = React.useCallback(
-    (artists: string[]) => {
-      const artistsRendered = artists.map(renderArtist);
-
-      const output: JSX.Element[] = [];
-
-      artistsRendered.forEach((artist, index) => {
-        output.push(artist);
-        if (index < artistsRendered.length - 1) {
-          output.push(
-            <span
-              className="text-sm text-gray-800 dark:text-gray-200 font-normal truncate cursor-default"
-              key={`comma-${index}`}
-            >
-              ,{" "}
-            </span>
-          );
-        }
-      });
-
-      return output;
-    },
-    [renderArtist]
-  );
-
   const onExpandClick = React.useCallback(() => {
     if (!expandFunc) {
       return;
@@ -59,9 +24,6 @@ function SongDetails(props: SongDetailsProps) {
     expandFunc();
     setExpanded(!expanded);
   }, [expandFunc, expanded]);
-
-  const artists = artistName.split(",");
-  const renderedArtists = renderArtists(artists);
   return (
     <div className="m-0 flex flex-row items-center h-full w-[30%] min-w-[11.25rem]">
       <div className={`relative h-4/5 aspect-square group/parent ${expanded ? "scale-0" : ""}`}>
@@ -83,26 +45,7 @@ function SongDetails(props: SongDetailsProps) {
         }}
       >
         <SongName animationProps={animationProps} songName={songName} />
-        <div
-          className="w-full min-w-0"
-          style={{
-            gridArea: "subtitle",
-            gridColumnStart: "badges",
-          }}
-        >
-          <div className="overflow-hidden -mx-2">
-            <div
-              className="flex whitespace-nowrap w-fit"
-              style={{
-                paddingInlineStart: "6px",
-                paddingInlineEnd: "12px",
-                transform: "translateX(var(--trans-x))",
-              }}
-            >
-              {renderedArtists}
-            </div>
-          </div>
-        </div>
+        <SongArtists animationProps={animationProps} artistNames={artistName} />
       </div>
     </div>
   );
