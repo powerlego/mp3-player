@@ -38,3 +38,4 @@ release
 /playwright-report/
 /playwright/.cache/
 *.playground
+out/
