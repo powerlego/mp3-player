@@ -2,8 +2,7 @@ import React from "react";
 import MainWindow from "./components/MainWindow";
 import MediaControlsBar from "./components/MediaControlsBar";
 import Sidebar from "./components/Sidebar";
-import testAudioFile from "./assets/audio/Hymn-For-The-Weekend.mp3";
-import Titlebar from "./components/Titlebar/Titlebar";
+import testAudioFile from "@/assets/audio/Hymn-For-The-Weekend.mp3";
 
 function App() {
   const [expanded, setExpanded] = React.useState(false);
