@@ -59,7 +59,7 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
   );
   const [artistName, setArtistName] = React.useState("Lorem Ipsum, Lorem Ipsum, Lorem Ipsum");
-  const [coverArt, setCoverArt] = React.useState("https://via.placeholder.com/150");
+  const [coverArt, setCoverArt] = React.useState("https://via.placeholder.com/150.png");
   const initLoad = React.useRef(false);
   const audio = React.useRef<HTMLAudioElement>(null);
 
