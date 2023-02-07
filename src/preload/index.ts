@@ -7,9 +7,11 @@ import { electronAPI } from "@electron-toolkit/preload";
 import { Titlebar } from "custom-electron-titlebar";
 
 window.addEventListener("DOMContentLoaded", () => {
-  new Titlebar({
+  const titleBar = new Titlebar({
     containerOverflow: "hidden",
   });
+  titleBar._title.classList.remove("cet-center");
+  titleBar._title.style.removeProperty("max-width");
   const replaceText = (selector, text) => {
     const element = document.getElementById(selector);
     if (element) element.innerText = text;
