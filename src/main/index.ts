@@ -2,8 +2,12 @@ import { app, shell, BrowserWindow, ipcMain, dialog } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import ElectronStore from "electron-store";
+import { setupTitlebar, attachTitlebarToWindow } from "custom-electron-titlebar/main";
 
 const store = new ElectronStore();
+
+setupTitlebar();
+
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -17,6 +21,8 @@ function createWindow(): void {
       sandbox: false,
     },
   });
+
+  attachTitlebarToWindow(mainWindow);
 
   mainWindow.on("ready-to-show", () => {
     mainWindow.show();

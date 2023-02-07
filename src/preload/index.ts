@@ -4,8 +4,23 @@
 
 import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
+import { Titlebar, Color } from "custom-electron-titlebar";
+import theme from "../colors";
 
-window.addEventListener("DOMContentLoaded", () => {});
+window.addEventListener("DOMContentLoaded", () => {
+  const titleBar = new Titlebar({
+    backgroundColor: Color.fromHex(theme?.colors!["gray"][800] || "#2d3748"),
+    containerOverflow: "hidden",
+  });
+  const replaceText = (selector, text) => {
+    const element = document.getElementById(selector);
+    if (element) element.innerText = text;
+  };
+
+  for (const type of ["chrome", "node", "electron"]) {
+    replaceText(`${type}-version`, process.versions[type]);
+  }
+});
 
 // Custom APIs for renderer
 const api = {
