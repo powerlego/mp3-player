@@ -1,5 +1,4 @@
 import React from "react";
-
 import { ReactComponent as PlayIcon } from "@/assets/icons/play.svg";
 import { ReactComponent as PauseIcon } from "@/assets/icons/pause.svg";
 import { I18nAriaLabels } from "@/types";

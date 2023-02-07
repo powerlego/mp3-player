@@ -1,6 +1,6 @@
-import React, { ReactNode } from "react";
-import { TIME_FORMAT } from "@renderer/constants";
 import { I18nAriaLabels } from "@/types";
+import { TIME_FORMAT } from "@renderer/constants";
+import React, { ReactNode } from "react";
 import CurrentTime from "./CurrentTime";
 import Duration from "./Duration";
 import ProgressBar from "./ProgressBar";

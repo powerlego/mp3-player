@@ -1,10 +1,10 @@
-import React, { ReactNode } from "react";
-import { AUDIO_PRELOAD_ATTRIBUTE, TIME_FORMAT } from "@renderer/constants";
 import { I18nAriaLabels } from "@/types";
-import TrackProgress from "./TrackProgress";
+import { AUDIO_PRELOAD_ATTRIBUTE, TIME_FORMAT } from "@renderer/constants";
+import React, { ReactNode } from "react";
 import MediaControls from "./MediaControls";
-import VolumeControls from "./VolumeControls";
 import SongDetails from "./SongDetails";
+import TrackProgress from "./TrackProgress";
+import VolumeControls from "./VolumeControls";
 
 type MediaControlsBarProps = {
   src?: string;
@@ -21,6 +21,7 @@ type MediaControlsBarProps = {
   volume?: number;
   muted?: boolean;
   expandFunc?: () => void;
+  className?: string;
 };
 
 function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
@@ -51,15 +52,14 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     volume = 1,
     muted = false,
     expandFunc,
+    className,
   } = props;
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const [_, forceUpdate] = React.useReducer((x: number) => x + 1, 0);
-  const [songName, setSongName] = React.useState(
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-  );
-  const [artistName, setArtistName] = React.useState("Lorem Ipsum, Lorem Ipsum, Lorem Ipsum");
-  const [coverArt, setCoverArt] = React.useState("https://via.placeholder.com/150.png");
+  const [songName, setSongName] = React.useState("");
+  const [artistName, setArtistName] = React.useState("");
+  const [coverArt, setCoverArt] = React.useState("");
   const initLoad = React.useRef(false);
   const audio = React.useRef<HTMLAudioElement>(null);
 
@@ -170,10 +170,7 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     return <></>;
   }
   return (
-    <div
-      aria-label={i18nAriaLabels?.player}
-      className="fixed bottom-0 left-0 z-30 h-[90px] w-full bg-gray-350 dark:bg-gray-750 px-4"
-    >
+    <div aria-label={i18nAriaLabels?.player} className={className}>
       <audio controls={false} preload={preload} ref={audio} src={src} />
       <div className="flex h-full w-full flex-row justify-between items-center">
         <SongDetails artistName={artistName} coverArt={coverArt} expandFunc={expandFunc} songName={songName} />
