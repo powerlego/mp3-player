@@ -1,9 +1,13 @@
 import React from "react";
 
-function Sidebar() {
+type SidebarProps = {
+  className?: string;
+};
+
+function Sidebar({ className }: SidebarProps) {
   return (
-    <div className="z-20 m-0 w-56 bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white">
-      <div className="sticky top-0 bottom-0 flex flex-col">
+    <div className={className}>
+      <div className="flex flex-col">
         <i>A</i>
         <i>B</i>
       </div>

@@ -2,9 +2,13 @@ import React from "react";
 import useDarkMode from "@renderer/hooks/useDarkMode";
 import { FaMoon, FaSun } from "react-icons/fa";
 
-function Topbar() {
+type TopbarProps = {
+  className?: string;
+};
+
+function Topbar({ className }: TopbarProps): JSX.Element {
   return (
-    <div className="sticky top-0 bottom-0 z-10 m-0 h-16 w-full flex flex-row items-center justify-evenly bg-gray-300 shadow-lg dark:bg-gray-700">
+    <div className={className}>
       <ThemeIcon />
     </div>
   );
