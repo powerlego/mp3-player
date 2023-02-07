@@ -4,12 +4,10 @@
 
 import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
-import { Titlebar, Color } from "custom-electron-titlebar";
-import theme from "../colors";
+import { Titlebar } from "custom-electron-titlebar";
 
 window.addEventListener("DOMContentLoaded", () => {
-  const titleBar = new Titlebar({
-    backgroundColor: Color.fromHex(theme?.colors!["gray"][800] || "#2d3748"),
+  new Titlebar({
     containerOverflow: "hidden",
   });
   const replaceText = (selector, text) => {
