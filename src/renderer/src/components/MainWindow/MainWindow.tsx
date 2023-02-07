@@ -15,7 +15,7 @@ function MainWindow({ className }: MainWindowProps) {
   return (
     <div className={className}>
       <div className="h-16 sticky top-0" />
-      <div className="h-full w-full flex flex-col items-start justify-start overflow-y-scroll">
+      <div className="h-full w-full flex flex-col items-start justify-start overflow-y-scroll mx-2">
         {arr.map((item, index) => (
           <p key={index} className="w-full text-gray-800 dark:text-white">
             {item}
