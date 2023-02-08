@@ -6,7 +6,11 @@ import svgrPlugin from "vite-plugin-svgr";
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin()],
+    plugins: [
+      externalizeDepsPlugin({
+        exclude: ["music-metadata"],
+      }),
+    ],
     resolve: {
       alias: {
         "@": resolve("src/"),
