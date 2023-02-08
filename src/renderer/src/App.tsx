@@ -2,12 +2,10 @@ import React from "react";
 import MainWindow from "./components/MainWindow";
 import MediaControlsBar from "./components/MediaControlsBar";
 import Sidebar from "./components/Sidebar";
-import testAudioFile from "@/assets/audio/Hymn-For-The-Weekend.mp3";
 import Topbar from "./components/Topbar";
 
 function App() {
   const [expanded, setExpanded] = React.useState(false);
-  const audio = new Audio(testAudioFile);
 
   const expandSongDetails = () => {
     console.log("Expand song details");
@@ -20,7 +18,6 @@ function App() {
       <Sidebar className="z-20 m-0 w-56 grid-in-nav-bar bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white" />
       <MediaControlsBar
         expandFunc={expandSongDetails}
-        src={audio.src}
         className="grid-in-now-playing z-30 h-[90px] w-full bg-gray-350 dark:bg-gray-750 px-4"
       />
       <MainWindow className="grid-in-main-view flex flex-col overflow-hidden w-full bg-gray-300 dark:bg-gray-700" />
