@@ -1,9 +1,62 @@
-import { app, shell, BrowserWindow, ipcMain, dialog } from "electron";
+import { app, shell, BrowserWindow, ipcMain, dialog, Menu, protocol } from "electron";
 import { join } from "path";
-import { electronApp, optimizer, is } from "@electron-toolkit/utils";
+import { electronApp, optimizer, is, platform } from "@electron-toolkit/utils";
 import ElectronStore from "electron-store";
 import { setupTitlebar, attachTitlebarToWindow } from "custom-electron-titlebar/main";
 import { devTools } from "@electron-toolkit/utils";
+import fs from "fs";
+import { parseBuffer } from "music-metadata";
+
+const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] = [
+  // { role: 'fileMenu' }
+  {
+    label: "File",
+    submenu: [
+      {
+        label: "Open File",
+        accelerator: "CmdOrCtrl+O",
+        click: async () => {
+          const { filePaths } = await dialog.showOpenDialog({
+            properties: ["openFile"],
+            filters: [
+              {
+                name: "Audio Files",
+                extensions: ["mp3", "wav", "ogg", "flac"],
+              },
+            ],
+          });
+          if (filePaths.length > 0) {
+            const buffer = fs.readFileSync(filePaths[0]);
+            const uint8Array = new Uint8Array(buffer);
+            const metadata = await parseBuffer(buffer, "audio/mpeg");
+            console.log(filePaths[0]);
+            const window = BrowserWindow.getAllWindows()[0];
+            if (window) {
+              window.webContents.send("open-file", { fileName: filePaths[0], metadata, uint8Array });
+            }
+          }
+        },
+      },
+      { type: "separator" },
+      platform.isMacOS ? { role: "close" } : { role: "quit" },
+    ],
+  },
+  { role: "editMenu" },
+  { role: "viewMenu" },
+  { role: "windowMenu" },
+  {
+    role: "help",
+    submenu: [
+      {
+        label: "Learn More",
+        click: async () => {
+          const { shell } = require("electron");
+          await shell.openExternal("https://electronjs.org");
+        },
+      },
+    ],
+  },
+];
 
 const store = new ElectronStore();
 
@@ -24,10 +77,19 @@ function createWindow(): void {
     },
   });
 
+  const menu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(menu);
+
   attachTitlebarToWindow(mainWindow);
 
   mainWindow.on("ready-to-show", () => {
     mainWindow.show();
+  });
+
+  mainWindow.webContents.session.protocol.registerFileProtocol("file:", (request, callback) => {
+    console.log(request.url);
+    const url = request.url.replace("file:///", "");
+    callback({ path: url });
   });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -70,6 +132,13 @@ app.whenReady().then(async () => {
   });
 });
 
+app.on("ready", () => {
+  protocol.registerFileProtocol("file", (request, callback) => {
+    const url = request.url.replace("file:///", "app:///");
+    callback({ path: url });
+  });
+});
+
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
@@ -92,6 +161,26 @@ ipcMain.handle("getAudioFile", async () => {
     return filePaths[0];
   }
   return null;
+});
+
+ipcMain.handle("loadAudioFile", async () => {
+  const { canceled, filePaths } = await dialog.showOpenDialog({
+    filters: [
+      {
+        name: "Audio",
+        extensions: ["mp3", "wav", "ogg"],
+      },
+    ],
+  });
+  if (!canceled) {
+    const filePath = filePaths[0];
+    // const metadata = await mm.parseFile(filePath);
+    return {
+      filePath,
+      // metadata,
+    };
+  }
+  return {};
 });
 
 ipcMain.handle("getStoreKey", (_, key) => {
