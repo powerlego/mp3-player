@@ -31,6 +31,7 @@ function ProgressBar({
   const [isDragging, setIsDragging] = React.useState(isDraggingProgress.current);
   const timeOnMouseMove = React.useRef(0);
   const [currentTimePos, setCurrentTimePos] = React.useState("0.00%");
+  const isAudioAvailable = React.useMemo(() => audio && audio.src !== "", [audio]);
 
   const getDuration = React.useCallback((): number => {
     if (!audio) {
@@ -146,7 +147,7 @@ function ProgressBar({
   if (!currentTimePos) {
     return <></>;
   }
-  return (
+  return isAudioAvailable ? (
     <div
       aria-label={i18nProgressBar}
       aria-valuemax={100}
@@ -177,6 +178,17 @@ function ProgressBar({
             isDragging ? "bg-green-500 dark:bg-green-500" : "bg-gray-550 dark:bg-gray-250"
           }`}
         />
+      </div>
+    </div>
+  ) : (
+    <div
+      aria-label={i18nProgressBar}
+      className="h-5 w-4/5 flex flex-row flex-1 items-center justify-center group"
+      ref={progressRef}
+      role="progressbar"
+    >
+      <div className="relative box-border h-1 w-full rounded-full bg-gray-450 dark:bg-gray-600">
+        <div className="absolute z-10 box-border h-full rounded-full bg-gray-500 dark:bg-gray-550" />
       </div>
     </div>
   );
