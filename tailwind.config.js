@@ -1,8 +1,18 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: "class",
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   theme: {
     extend: {
+      gridTemplateAreas: {
+        layout: ["top-bar top-bar", "nav-bar main-view", "now-playing now-playing"],
+      },
+      gridTemplateColumns: {
+        layout: "auto 1fr",
+      },
+      gridTemplateRows: {
+        layout: "auto 1fr auto",
+      },
       minWidth: {
         56: "14rem",
         "2/5": "40%",
@@ -72,5 +82,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@savvywombat/tailwindcss-grid-areas")],
 };

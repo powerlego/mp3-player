@@ -1,0 +1,80 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+#root {
+  position: relative;
+  isolation: isolate;
+  z-index: 0;
+  @apply h-full;
+}
+
+.cet-titlebar {
+  @apply !bg-gray-150 dark:!bg-gray-850;
+}
+
+.cet-menubar-menu-container {
+  @apply !bg-gray-200 dark:!bg-gray-900;
+}
+
+.cet-action-label.separator {
+  @apply !border-gray-750 dark:!border-gray-250;
+}
+
+.keybinding {
+  @apply !text-gray-900 dark:!text-gray-100;
+}
+
+.cet-menu-item-icon {
+  @apply !fill-gray-900 dark:!fill-gray-100;
+}
+
+.cet-action-label {
+  @apply !text-gray-900 dark:!text-gray-100;
+}
+
+.focused > .cet-action-menu-item {
+  @apply !bg-gray-900 dark:!bg-gray-100 !bg-opacity-10 dark:!bg-opacity-10;
+}
+
+.cet-icon {
+  @apply !flex !justify-center !items-center;
+}
+
+.cet-icon > svg {
+  @apply !fill-gray-850 dark:!fill-gray-150;
+}
+
+.cet-menubar-menu-title {
+  @apply !text-gray-900 dark:!text-gray-100;
+}
+
+.cet-titlebar .cet-window-title {
+  @apply !text-gray-900 dark:!text-gray-100 !flex-auto !flex-shrink !justify-center !flex;
+}
+
+@layer utilities {
+  .non-scale-stroke {
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+::-webkit-scrollbar {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-500 dark:bg-green-400;
+}

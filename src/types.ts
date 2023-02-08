@@ -44,3 +44,5 @@ export interface ScrollingAnimationProps {
   initialMouseIntDelayMs: number;
   iterationType: IterationType;
 }
+
+export type Channels = "minimizeApp" | "maximizeApp" | "closeApp";

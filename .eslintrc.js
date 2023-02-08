@@ -19,7 +19,6 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
-    project: ["./tsconfig.eslint.json"],
     sourceType: "module",
   },
   settings: {
@@ -75,6 +74,7 @@ module.exports = {
     "template-curly-spacing": ["error", "never"],
     "comma-spacing": ["error", { before: false, after: true }],
     "comma-dangle": ["error", "always-multiline"],
+    "@typescript-eslint/ban-ts-comment": ["error", { "ts-ignore": "allow-with-description" }],
     "@typescript-eslint/naming-convention": [
       "warn",
       { selector: "default", format: ["camelCase"] },
