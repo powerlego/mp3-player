@@ -5,6 +5,7 @@
 import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
 import { Titlebar } from "custom-electron-titlebar";
+import { IAudioMetadata } from "music-metadata/lib/type";
 
 window.addEventListener("DOMContentLoaded", () => {
   const titleBar = new Titlebar({
@@ -24,7 +25,17 @@ window.addEventListener("DOMContentLoaded", () => {
 
 // Custom APIs for renderer
 const api = {
+  onFileOpen: (
+    callback: (
+      _event,
+      file: {
+        fileName: string;
+        metadata: IAudioMetadata;
+      }
+    ) => void
+  ) => ipcRenderer.on("open-file", callback),
   getAudioFile: () => ipcRenderer.invoke("getAudioFile"),
+  loadAudioFile: () => ipcRenderer.invoke("loadAudioFile"),
   getStoreKey: (key: string) => ipcRenderer.invoke("getStoreKey", key),
   setStoreKey: (key: string, value: any) => ipcRenderer.invoke("setStoreKey", key, value),
 };
