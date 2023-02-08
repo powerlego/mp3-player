@@ -59,7 +59,6 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
   const [artistName, setArtistName] = React.useState("");
   const [coverArt, setCoverArt] = React.useState("");
   const [src, setSrc] = React.useState("");
-  const initLoad = React.useRef(false);
   const audio = React.useRef<HTMLAudioElement>(null);
 
   const lastVolume = React.useRef(volume);
@@ -161,9 +160,16 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     window.api.onFileOpen((_event, file) => {
       const blob = new Blob([file.uint8Array], { type: "audio/mpeg" });
       const url = URL.createObjectURL(blob);
+      setSongName(file.metadata.common.title ?? "");
+      setArtistName(file.metadata.common.artist ?? "");
+      if (file.metadata.common.picture && file.metadata.common.picture?.length > 0) {
+        setCoverArt(
+          `data:${file.metadata.common.picture[0].type};base64,${file.metadata.common.picture[0].data.toString(
+            "base64"
+          )}` ?? ""
+        );
+      }
       setSrc(url);
-
-      forceUpdate();
     });
   }, []);
 
