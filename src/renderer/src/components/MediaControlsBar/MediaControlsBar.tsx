@@ -7,7 +7,6 @@ import TrackProgress from "./TrackProgress";
 import VolumeControls from "./VolumeControls";
 
 type MediaControlsBarProps = {
-  src?: string;
   progressUpdateInterval?: number;
 
   /**
@@ -26,7 +25,6 @@ type MediaControlsBarProps = {
 
 function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
   const {
-    src,
     progressUpdateInterval,
     preload,
     i18nAriaLabels = {
@@ -60,6 +58,7 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
   const [songName, setSongName] = React.useState("");
   const [artistName, setArtistName] = React.useState("");
   const [coverArt, setCoverArt] = React.useState("");
+  const [src, setSrc] = React.useState("");
   const initLoad = React.useRef(false);
   const audio = React.useRef<HTMLAudioElement>(null);
 
@@ -137,10 +136,6 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
   };
 
   React.useEffect(() => {
-    if (!initLoad.current) {
-      initLoad.current = true;
-      forceUpdate();
-    }
     const aud = audio.current;
     if (!aud) {
       return;
@@ -163,8 +158,14 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
   });
 
   React.useEffect(() => {
-    forceUpdate();
-  }, [src]);
+    window.api.onFileOpen((_event, file) => {
+      const blob = new Blob([file.uint8Array], { type: "audio/mpeg" });
+      const url = URL.createObjectURL(blob);
+      setSrc(url);
+
+      forceUpdate();
+    });
+  }, []);
 
   if (!timeFormat) {
     return <></>;
