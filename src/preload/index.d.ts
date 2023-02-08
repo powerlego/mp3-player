@@ -8,7 +8,6 @@ declare global {
         callback: (
           _event: any,
           file: {
-            fileName: string;
             metadata: IAudioMetadata;
             uint8Array: Uint8Array;
           }

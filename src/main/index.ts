@@ -29,10 +29,9 @@ const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] 
             const buffer = fs.readFileSync(filePaths[0]);
             const uint8Array = new Uint8Array(buffer);
             const metadata = await parseBuffer(buffer, "audio/mpeg");
-            console.log(filePaths[0]);
             const window = BrowserWindow.getAllWindows()[0];
             if (window) {
-              window.webContents.send("open-file", { fileName: filePaths[0], metadata, uint8Array });
+              window.webContents.send("open-file", { metadata, uint8Array });
             }
           }
         },

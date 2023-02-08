@@ -29,8 +29,8 @@ const api = {
     callback: (
       _event,
       file: {
-        fileName: string;
         metadata: IAudioMetadata;
+        uint8Array: Uint8Array;
       }
     ) => void
   ) => ipcRenderer.on("open-file", callback),
