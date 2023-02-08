@@ -21,10 +21,7 @@ function VolumeBar({ audio, initVolume, i18nVolumeControl }: VolumeBarProps): JS
   const isDraggingVolume = React.useRef(false);
   const [isDragging, setIsDragging] = React.useState(isDraggingVolume.current);
   const hasAddedAudioEventListener = React.useRef(false);
-  const isAudioAvailable = React.useMemo(
-    () => audio && audio.src !== "" && audio.src !== window.location.href,
-    [audio]
-  );
+  const isAudioAvailable = React.useMemo(() => audio && audio.src !== "", [audio]);
 
   const getCurrentVolume = (event: TouchEvent | MouseEvent): VolumePosInfo => {
     if (!audio) {
@@ -138,7 +135,18 @@ function VolumeBar({ audio, initVolume, i18nVolumeControl }: VolumeBarProps): JS
   }, [audio, handleAudioVolumeChange]);
 
   if (typeof audio?.volume === "undefined") {
-    return <></>;
+    return (
+      <div
+        aria-label={i18nVolumeControl}
+        className="flex h-5 w-full flex-1 flex-row items-center justify-center"
+        ref={volumeBar}
+        role="progressbar"
+      >
+        <div className="relative box-border h-1 w-full rounded-full bg-gray-450 dark:bg-gray-600">
+          <div className="absolute z-10 box-border h-full rounded-full bg-gray-500 dark:bg-gray-550" />
+        </div>
+      </div>
+    );
   }
   return !isAudioAvailable ? (
     <div
@@ -148,7 +156,6 @@ function VolumeBar({ audio, initVolume, i18nVolumeControl }: VolumeBarProps): JS
       role="progressbar"
     >
       <div className="relative box-border h-1 w-full rounded-full bg-gray-450 dark:bg-gray-600">
-        <div className="absolute h-full w-full top-[calc((50%*-1)+1px)] ml-[calc(50%*-1)] box-border rounded-full bg-gray-450 dark:bg-gray-600 shadow shadow-gray-800 dark:shadow-gray-250" />
         <div className="absolute z-10 box-border h-full rounded-full bg-gray-500 dark:bg-gray-550" />
       </div>
     </div>

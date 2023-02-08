@@ -13,10 +13,7 @@ export default function VolumeButton(props: VolumeButtonProps) {
   const [isMuted, setIsMuted] = React.useState(false);
   const [volume, setVolume] = React.useState(1);
   const hasAddedAudioEventListener = React.useRef(false);
-  const isAudioAvailable = React.useMemo(
-    () => audio && audio.src !== "" && audio.src !== window.location.href,
-    [audio]
-  );
+  const isAudioAvailable = React.useMemo(() => audio && audio.src !== "", [audio]);
 
   const toggleMute = React.useCallback((): void => {
     if (!audio) {
@@ -34,8 +31,7 @@ export default function VolumeButton(props: VolumeButtonProps) {
     if (audio.volume === 0) {
       audio.muted = true;
       setIsMuted(true);
-    }
-    else {
+    } else {
       audio.muted = false;
       setIsMuted(false);
     }
@@ -73,37 +69,28 @@ export default function VolumeButton(props: VolumeButtonProps) {
 
   if (!isAudioAvailable) {
     return (
-      <div className="aspect-square h-8 flex items-center justify-center">
-        <ImVolumeMute2 className="" />
+      <div className="aspect-square h-8 flex items-center justify-center  ">
+        <ImVolumeMute2 className="fill-gray-450 dark:fill-gray-550 m-0 w-4 h-4" />
       </div>
     );
-  }
-  else {
+  } else {
     return (
       <div
         aria-label={isMuted ? i18nAriaLabels?.volumeMute : i18nAriaLabels?.volume}
         className="aspect-square h-8 flex items-center justify-center"
         onClick={toggleMute}
       >
-        {isMuted
-          ? (
-            <ImVolumeMute2 className="m-0 w-4 h-4 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-600 hover:fill-gray-550 dark:fill-gray-500 hover:dark:fill-gray-350" />
-          )
-          : volume < 0.25
-            ? (
-              <ImVolumeMute className="m-0 w-4 h-4 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-600 hover:fill-gray-550 dark:fill-gray-500 hover:dark:fill-gray-350" />
-            )
-            : volume < 0.5
-              ? (
-                <ImVolumeLow className="m-0 w-4 h-4 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-600 hover:fill-gray-550 dark:fill-gray-500 hover:dark:fill-gray-350" />
-              )
-              : volume < 0.75
-                ? (
-                  <ImVolumeMedium className="m-0 w-4 h-4 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-600 hover:fill-gray-550 dark:fill-gray-500 hover:dark:fill-gray-350" />
-                )
-                : (
-                  <ImVolumeHigh className="m-0 w-4 h-4 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-600 hover:fill-gray-550 dark:fill-gray-500 hover:dark:fill-gray-350" />
-                )}
+        {isMuted ? (
+          <ImVolumeMute2 className="m-0 w-4 h-4 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-600 hover:fill-gray-550 dark:fill-gray-500 hover:dark:fill-gray-350" />
+        ) : volume < 0.25 ? (
+          <ImVolumeMute className="m-0 w-4 h-4 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-600 hover:fill-gray-550 dark:fill-gray-500 hover:dark:fill-gray-350" />
+        ) : volume < 0.5 ? (
+          <ImVolumeLow className="m-0 w-4 h-4 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-600 hover:fill-gray-550 dark:fill-gray-500 hover:dark:fill-gray-350" />
+        ) : volume < 0.75 ? (
+          <ImVolumeMedium className="m-0 w-4 h-4 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-600 hover:fill-gray-550 dark:fill-gray-500 hover:dark:fill-gray-350" />
+        ) : (
+          <ImVolumeHigh className="m-0 w-4 h-4 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-600 hover:fill-gray-550 dark:fill-gray-500 hover:dark:fill-gray-350" />
+        )}
       </div>
     );
   }

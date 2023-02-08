@@ -11,10 +11,7 @@ interface PlayButtonProps {
 export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayButtonProps): JSX.Element {
   const [isPlaying, setIsPlaying] = React.useState(false);
   const addedEventListeners = React.useRef(false);
-  const isAudioAvailable = React.useMemo(
-    () => audio && audio.src !== "" && audio.src !== window.location.href,
-    [audio]
-  );
+  const isAudioAvailable = React.useMemo(() => audio && audio.src !== "", [audio]);
 
   const handlePlayPause = React.useCallback((e: Event) => {
     e.preventDefault();
@@ -58,7 +55,6 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
 
   return isAudioAvailable ? (
     <div
-      data-testid="play-button"
       className="h-8 aspect-square flex justify-center items-center rounded-full
         cursor-pointer bg-gray-800 dark:bg-gray-150 hover:bg-gray-600 dark:hover:bg-gray-350 transition-all ease-in-out duration-200 hover:scale-[1.1]"
       onClick={togglePlay}
@@ -76,8 +72,8 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
       )}
     </div>
   ) : (
-    <div className="h-8 aspect-square flex justify-center items-center bg-gray-450 dark:bg-gray-550 rounded-full cursor-pointer">
-      <PauseIcon className="fill-gray-350 dark:fill-gray-650 m-0 w-4 h-4 cursor-pointer" data-testid="playing" />
+    <div className="h-8 aspect-square flex justify-center items-center bg-gray-450 dark:bg-gray-550 rounded-full ">
+      <PauseIcon className="fill-gray-350 dark:fill-gray-650 m-0 w-4 h-4" />
     </div>
   );
 }
