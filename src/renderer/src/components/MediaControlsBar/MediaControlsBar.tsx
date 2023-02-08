@@ -162,16 +162,12 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
       const url = URL.createObjectURL(blob);
       setSongName(file.metadata.common.title ?? "");
       setArtistName(file.metadata.common.artist ?? "");
-      if (file.metadata.common.picture && file.metadata.common.picture?.length > 0) {
-        setCoverArt(
-          `data:${file.metadata.common.picture[0].type};base64,${file.metadata.common.picture[0].data.toString(
-            "base64"
-          )}` ?? ""
-        );
+      if (file.picture.base64 !== "") {
+        setCoverArt(`data:${file.picture.format};base64,${file.picture.base64}`);
       }
       setSrc(url);
     });
-  }, []);
+  });
 
   if (!timeFormat) {
     return <></>;

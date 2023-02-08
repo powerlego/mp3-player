@@ -31,6 +31,10 @@ const api = {
       file: {
         metadata: IAudioMetadata;
         uint8Array: Uint8Array;
+        picture: {
+          base64: string;
+          format: string;
+        };
       }
     ) => void
   ) => ipcRenderer.on("open-file", callback),

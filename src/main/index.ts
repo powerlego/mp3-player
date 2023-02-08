@@ -29,9 +29,23 @@ const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] 
             const buffer = fs.readFileSync(filePaths[0]);
             const uint8Array = new Uint8Array(buffer);
             const metadata = await parseBuffer(buffer, "audio/mpeg");
+            let pictureBase64 = "";
+            let pictureFormat = "";
+            if (metadata.common.picture && metadata.common.picture.length > 0) {
+              const picture = metadata.common.picture[0];
+              pictureBase64 = picture.data.toString("base64");
+              pictureFormat = picture.format;
+            }
             const window = BrowserWindow.getAllWindows()[0];
             if (window) {
-              window.webContents.send("open-file", { metadata, uint8Array });
+              window.webContents.send("open-file", {
+                metadata,
+                uint8Array,
+                picture: {
+                  base64: pictureBase64,
+                  format: pictureFormat,
+                },
+              });
             }
           }
         },

@@ -10,6 +10,10 @@ declare global {
           file: {
             metadata: IAudioMetadata;
             uint8Array: Uint8Array;
+            picture: {
+              base64: string;
+              format: string;
+            };
           }
         ) => void
       ) => Electron.IpcRenderer;
