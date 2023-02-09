@@ -5,7 +5,10 @@ import ElectronStore from "electron-store";
 import { setupTitlebar, attachTitlebarToWindow } from "custom-electron-titlebar/main";
 import { devTools } from "@electron-toolkit/utils";
 import fs from "fs";
+import os from "os";
 import { parseBuffer } from "music-metadata";
+
+const store = new ElectronStore();
 
 const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] = [
   // { role: 'fileMenu' }
@@ -50,6 +53,23 @@ const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] 
           }
         },
       },
+      {
+        label: "Add Folder",
+        click: async () => {
+          const { filePaths } = await dialog.showOpenDialog({
+            properties: ["openDirectory"],
+          });
+          if (filePaths.length > 0) {
+            const folderPaths: string[] = store.get("folderPaths", []) as string[];
+            folderPaths.push(filePaths[0]);
+            store.set("folderPaths", folderPaths);
+            const window = BrowserWindow.getAllWindows()[0];
+            if (window) {
+              window.webContents.send("add-folder");
+            }
+          }
+        },
+      },
       { type: "separator" },
       platform.isMacOS ? { role: "close" } : { role: "quit" },
     ],
@@ -70,8 +90,6 @@ const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] 
     ],
   },
 ];
-
-const store = new ElectronStore();
 
 setupTitlebar();
 
@@ -123,6 +141,14 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
+  const folderPaths: string[] = store.get("folderPaths", []) as string[];
+  if (folderPaths.length === 0) {
+    const MusicPath = join(os.homedir(), "Music");
+    if (fs.existsSync(MusicPath)) {
+      folderPaths.push(MusicPath);
+    }
+    store.set("folderPaths", folderPaths);
+  }
   // Install react devtools
   devTools.install("REACT_DEVELOPER_TOOLS", { allowFileAccess: true });
 

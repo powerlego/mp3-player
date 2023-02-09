@@ -6,6 +6,9 @@ import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
 import { Titlebar } from "custom-electron-titlebar";
 import { IAudioMetadata } from "music-metadata/lib/type";
+import { join } from "path";
+import os from "os";
+import fs from "fs";
 
 window.addEventListener("DOMContentLoaded", () => {
   const titleBar = new Titlebar({
