@@ -65,6 +65,14 @@ body {
   @apply !text-gray-900 dark:!text-gray-100 !flex-auto !flex-shrink !justify-center !flex;
 }
 
+.cet-submenu-indicator > svg {
+  @apply !fill-gray-550 dark:!fill-gray-450;
+}
+
+.cet-submenu-item:hover .cet-submenu-indicator > svg {
+  @apply !fill-gray-900 dark:!fill-gray-100;
+}
+
 @layer utilities {
   .non-scale-stroke {
     vector-effect: non-scaling-stroke;
