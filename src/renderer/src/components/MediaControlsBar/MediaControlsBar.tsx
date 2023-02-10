@@ -7,12 +7,12 @@ import TrackProgress from "./TrackProgress";
 import VolumeControls from "./VolumeControls";
 
 type MediaControlsBarProps = {
+  audio: React.RefObject<HTMLAudioElement>;
   progressUpdateInterval?: number;
 
   /**
    * HTML5 Audio tag preload property
    */
-  preload?: AUDIO_PRELOAD_ATTRIBUTE;
   i18nAriaLabels?: I18nAriaLabels;
   defaultCurrentTime?: ReactNode;
   defaultDuration?: ReactNode;
@@ -25,8 +25,8 @@ type MediaControlsBarProps = {
 
 function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
   const {
+    audio,
     progressUpdateInterval,
-    preload,
     i18nAriaLabels = {
       player: "Audio player",
       progressControl: "Audio progress control",
@@ -58,8 +58,6 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
   const [songName, setSongName] = React.useState("");
   const [artistName, setArtistName] = React.useState("");
   const [coverArt, setCoverArt] = React.useState("");
-  const [src, setSrc] = React.useState("");
-  const audio = React.useRef<HTMLAudioElement>(null);
 
   const lastVolume = React.useRef(volume);
 
@@ -158,14 +156,11 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
 
   React.useEffect(() => {
     window.api.onFileOpen((_event, file) => {
-      const blob = new Blob([file.uint8Array], { type: "audio/mpeg" });
-      const url = URL.createObjectURL(blob);
       setSongName(file.metadata.common.title ?? "");
       setArtistName(file.metadata.common.artist ?? "");
       if (file.picture.base64 !== "") {
         setCoverArt(`data:${file.picture.format};base64,${file.picture.base64}`);
       }
-      setSrc(url);
     });
   });
 
@@ -174,7 +169,6 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
   }
   return (
     <div aria-label={i18nAriaLabels?.player} className={className}>
-      <audio controls={false} preload={preload} ref={audio} src={src} />
       <div className="flex h-full w-full flex-row justify-between items-center">
         <SongDetails artistName={artistName} coverArt={coverArt} expandFunc={expandFunc} songName={songName} />
         <div className="flex w-1/2 min-w-fit max-w-[45rem] flex-col items-center justify-center">

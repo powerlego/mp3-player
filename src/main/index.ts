@@ -10,6 +10,27 @@ import { parseBuffer } from "music-metadata";
 
 const store = new ElectronStore();
 
+const readFileAndSend = async (window: BrowserWindow, filePath: string) => {
+  const buffer = fs.readFileSync(filePath);
+  const uint8Array = new Uint8Array(buffer);
+  const metadata = await parseBuffer(buffer, "audio/mpeg");
+  let pictureBase64 = "";
+  let pictureFormat = "";
+  if (metadata.common.picture && metadata.common.picture.length > 0) {
+    const picture = metadata.common.picture[0];
+    pictureBase64 = picture.data.toString("base64");
+    pictureFormat = picture.format;
+  }
+  window.webContents.send("open-file", {
+    metadata,
+    uint8Array,
+    picture: {
+      base64: pictureBase64,
+      format: pictureFormat,
+    },
+  });
+};
+
 const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] = [
   // { role: 'fileMenu' }
   {
@@ -29,26 +50,9 @@ const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] 
             ],
           });
           if (filePaths.length > 0) {
-            const buffer = fs.readFileSync(filePaths[0]);
-            const uint8Array = new Uint8Array(buffer);
-            const metadata = await parseBuffer(buffer, "audio/mpeg");
-            let pictureBase64 = "";
-            let pictureFormat = "";
-            if (metadata.common.picture && metadata.common.picture.length > 0) {
-              const picture = metadata.common.picture[0];
-              pictureBase64 = picture.data.toString("base64");
-              pictureFormat = picture.format;
-            }
             const window = BrowserWindow.getAllWindows()[0];
             if (window) {
-              window.webContents.send("open-file", {
-                metadata,
-                uint8Array,
-                picture: {
-                  base64: pictureBase64,
-                  format: pictureFormat,
-                },
-              });
+              readFileAndSend(window, filePaths[0]);
             }
           }
         },
@@ -96,7 +100,7 @@ setupTitlebar();
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 900,
+    width: 767,
     height: 670,
     show: false,
     minWidth: 600,
@@ -202,24 +206,11 @@ ipcMain.handle("getAudioFile", async () => {
   return null;
 });
 
-ipcMain.handle("loadAudioFile", async () => {
-  const { canceled, filePaths } = await dialog.showOpenDialog({
-    filters: [
-      {
-        name: "Audio",
-        extensions: ["mp3", "wav", "ogg"],
-      },
-    ],
-  });
-  if (!canceled) {
-    const filePath = filePaths[0];
-    // const metadata = await mm.parseFile(filePath);
-    return {
-      filePath,
-      // metadata,
-    };
+ipcMain.handle("loadAudioFile", async (_, file: string) => {
+  const window = BrowserWindow.getAllWindows()[0];
+  if (window) {
+    readFileAndSend(window, file);
   }
-  return {};
 });
 
 ipcMain.handle("getStoreKey", (_, key) => {
@@ -228,4 +219,27 @@ ipcMain.handle("getStoreKey", (_, key) => {
 
 ipcMain.handle("setStoreKey", (_, key, value) => {
   store.set(key, value);
+});
+
+ipcMain.handle("getAudioInfo", async (_, file: string) => {
+  await new Promise((resolve) => {
+    setTimeout(resolve, 2000);
+  });
+
+  const buffer = fs.readFileSync(file);
+  const metadata = await parseBuffer(buffer, "audio/mpeg");
+  let pictureBase64 = "";
+  let pictureFormat = "";
+  if (metadata.common.picture && metadata.common.picture.length > 0) {
+    const picture = metadata.common.picture[0];
+    pictureBase64 = picture.data.toString("base64");
+    pictureFormat = picture.format;
+  }
+  console.log("requested info");
+  return {
+    title: metadata.common.title,
+    artist: metadata.common.artist,
+    pictureBase64,
+    pictureFormat,
+  };
 });

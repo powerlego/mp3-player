@@ -5,14 +5,11 @@ type ThrottleFunction<T> = (arg: T) => void;
 export const getPosX = (event: TouchEvent | React.TouchEvent | MouseEvent | React.MouseEvent): number => {
   if (event instanceof MouseEvent) {
     return event.clientX;
-  }
-  else if (event instanceof TouchEvent) {
+  } else if (event instanceof TouchEvent) {
     return event.touches[0].clientX;
-  }
-  else if (event.nativeEvent instanceof MouseEvent) {
+  } else if (event.nativeEvent instanceof MouseEvent) {
     return event.nativeEvent.clientX;
-  }
-  else {
+  } else {
     return event.nativeEvent.touches[0].clientX;
   }
 };
@@ -38,18 +35,14 @@ export const getDisplayTimeBySeconds = (seconds: number, totalSeconds: number, t
   if (timeFormat === "auto") {
     if (totalSeconds >= 3600) {
       return hhMmSs;
-    }
-    else {
+    } else {
       return mmSs;
     }
-  }
-  else if (timeFormat === "mm:ss") {
+  } else if (timeFormat === "mm:ss") {
     return mmSs;
-  }
-  else if (timeFormat === "hh:mm:ss") {
+  } else if (timeFormat === "hh:mm:ss") {
     return hhMmSs;
-  }
-  else {
+  } else {
     return mmSs;
   }
 };
@@ -63,4 +56,32 @@ export function throttle<K>(func: ThrottleFunction<K>, limit: number): ThrottleF
       setTimeout(() => (inThrottle = false), limit);
     }
   };
+}
+
+export function wrapPromise<T>(promise: Promise<T>) {
+  let status = "pending";
+  let result: T;
+
+  const suspender = promise.then(
+    (res) => {
+      status = "success";
+      result = res;
+    },
+    (err) => {
+      status = "error";
+      result = err;
+    }
+  );
+  const read = () => {
+    if (status === "pending") {
+      throw suspender;
+    } else if (status === "error") {
+      throw result;
+    } else if (status === "success") {
+      return result;
+    } else {
+      throw new Error("Unexpected status");
+    }
+  };
+  return { read };
 }

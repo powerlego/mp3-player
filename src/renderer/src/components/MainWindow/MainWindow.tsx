@@ -1,6 +1,9 @@
 import React from "react";
+import SongCover from "./SongCoverCard";
+import placholderImg from "@/assets/icons/placeholder.png";
 
 type MainWindowProps = {
+  audio: React.RefObject<HTMLAudioElement>;
   className?: string;
 };
 
@@ -15,12 +18,8 @@ function MainWindow({ className }: MainWindowProps) {
   return (
     <div className={className}>
       <div className="h-16 sticky top-0" />
-      <div className="h-full w-full flex flex-col items-start justify-start overflow-y-scroll mx-2">
-        {arr.map((item, index) => (
-          <p key={index} className="w-full text-gray-800 dark:text-white">
-            {item}
-          </p>
-        ))}
+      <div className="h-full w-full grid auto-rows-min grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 overflow-y-scroll mx-2 items-center justify-center">
+        <SongCover fileLocation="G:\\Music\\0-59.mp3" />
       </div>
     </div>
   );
