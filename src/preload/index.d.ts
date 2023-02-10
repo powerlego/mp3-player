@@ -18,9 +18,15 @@ declare global {
         ) => void
       ) => Electron.IpcRenderer;
       getAudioFile: () => Promise<string>;
-      loadAudioFile: () => Promise<string>;
+      loadAudioFile: (file: string) => Promise<string>;
       getStoreKey: (key: string) => Promise<any>;
       setStoreKey: (key: string, value: any) => Promise<any>;
+      getAudioInfo: (file: string) => Promise<{
+        title: string;
+        artist: string;
+        pictureBase64: string;
+        pictureFormat: string;
+      }>;
     };
   }
 }
