@@ -1,5 +1,5 @@
 import { I18nAriaLabels } from "@/types";
-import { AUDIO_PRELOAD_ATTRIBUTE, TIME_FORMAT } from "@renderer/constants";
+import { TIME_FORMAT } from "@renderer/constants";
 import useForceUpdate from "@renderer/hooks/useForceUpdate";
 import React, { ReactNode } from "react";
 import MediaControls from "./MediaControls";
@@ -88,30 +88,6 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     });
   };
 
-  const handlePlay = (e: Event): void => {
-    if (!audio.current) {
-      return;
-    }
-    forceUpdate();
-    console.log("handlePlay", e);
-  };
-
-  const handlePause = (e: Event): void => {
-    if (!audio.current) {
-      return;
-    }
-    forceUpdate();
-    console.log("handlePause", e);
-  };
-
-  const handleEnded = (e: Event): void => {
-    if (!audio.current) {
-      return;
-    }
-    forceUpdate();
-    console.log("handleEnded", e);
-  };
-
   const handleClickVolumeButton = (): void => {
     const aud = audio.current;
     if (!aud) {
@@ -151,16 +127,8 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     } else {
       aud.volume = lastVolume.current;
     }
-
     window.api.onFileOpen(handleFileOpen);
-    aud.addEventListener("play", handlePlay);
-    aud.addEventListener("pause", handlePause);
-    aud.addEventListener("ended", handleEnded);
-
     return () => {
-      aud.removeEventListener("play", handlePlay);
-      aud.removeEventListener("pause", handlePause);
-      aud.removeEventListener("ended", handleEnded);
       window.api.offFileOpen(handleFileOpen);
     };
   });
