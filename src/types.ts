@@ -1,3 +1,5 @@
+import { IAudioMetadata } from "music-metadata/lib/type";
+
 export interface I18nAriaLabels {
   player?: string;
   progressControl?: string;
@@ -25,6 +27,15 @@ export interface MetaDataPayload {
       src?: string;
       format?: string;
     };
+  };
+}
+
+export interface FilePayload {
+  metadata: IAudioMetadata;
+  uint8Array: Uint8Array;
+  picture: {
+    base64: string;
+    format: string;
   };
 }
 

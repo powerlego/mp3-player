@@ -190,7 +190,7 @@ function VolumeBar({ audio, initVolume, i18nVolumeControl }: VolumeBarProps): JS
           className={`absolute z-10 box-border h-full rounded-full group-hover:bg-green-500 dark:group-hover:bg-green-500 ${
             isDragging
               ? "bg-green-500 dark:bg-green-500 hover:bg-green-500 dark:hover:bg-green-500"
-              : "bg-gray-800 dark:bg-gray-150"
+              : "bg-gray-600 dark:bg-gray-250"
           }`}
         />
       </div>
