@@ -10,7 +10,7 @@ import { parseBuffer } from "music-metadata";
 
 const store = new ElectronStore();
 
-const readFileAndSend = async (window: BrowserWindow, filePath: string) => {
+const readFileAndSend = async (window: BrowserWindow, filePath: string, play: boolean) => {
   const buffer = fs.readFileSync(filePath);
   const uint8Array = new Uint8Array(buffer);
   const metadata = await parseBuffer(buffer, "audio/mpeg");
@@ -21,14 +21,18 @@ const readFileAndSend = async (window: BrowserWindow, filePath: string) => {
     pictureBase64 = picture.data.toString("base64");
     pictureFormat = picture.format;
   }
-  window.webContents.send("open-file", {
-    metadata,
-    uint8Array,
-    picture: {
-      base64: pictureBase64,
-      format: pictureFormat,
+  window.webContents.send(
+    "open-file",
+    {
+      metadata,
+      uint8Array,
+      picture: {
+        base64: pictureBase64,
+        format: pictureFormat,
+      },
     },
-  });
+    play
+  );
 };
 
 const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] = [
@@ -52,7 +56,7 @@ const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] 
           if (filePaths.length > 0) {
             const window = BrowserWindow.getAllWindows()[0];
             if (window) {
-              readFileAndSend(window, filePaths[0]);
+              readFileAndSend(window, filePaths[0], false);
             }
           }
         },
@@ -206,10 +210,10 @@ ipcMain.handle("getAudioFile", async () => {
   return null;
 });
 
-ipcMain.handle("loadAudioFile", async (_, file: string) => {
+ipcMain.handle("loadAudioFile", async (_, file: string, play: boolean) => {
   const window = BrowserWindow.getAllWindows()[0];
   if (window) {
-    readFileAndSend(window, file);
+    readFileAndSend(window, file, play);
   }
 });
 
@@ -222,10 +226,6 @@ ipcMain.handle("setStoreKey", (_, key, value) => {
 });
 
 ipcMain.handle("getAudioInfo", async (_, file: string) => {
-  await new Promise((resolve) => {
-    setTimeout(resolve, 2000);
-  });
-
   const buffer = fs.readFileSync(file);
   const metadata = await parseBuffer(buffer, "audio/mpeg");
   let pictureBase64 = "";
@@ -235,7 +235,6 @@ ipcMain.handle("getAudioInfo", async (_, file: string) => {
     pictureBase64 = picture.data.toString("base64");
     pictureFormat = picture.format;
   }
-  console.log("requested info");
   return {
     title: metadata.common.title,
     artist: metadata.common.artist,

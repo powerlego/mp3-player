@@ -1,10 +1,12 @@
 import { I18nAriaLabels } from "@/types";
 import { AUDIO_PRELOAD_ATTRIBUTE, TIME_FORMAT } from "@renderer/constants";
+import useForceUpdate from "@renderer/hooks/useForceUpdate";
 import React, { ReactNode } from "react";
 import MediaControls from "./MediaControls";
 import SongDetails from "./SongDetails";
 import TrackProgress from "./TrackProgress";
 import VolumeControls from "./VolumeControls";
+import { FilePayload } from "@/types";
 
 type MediaControlsBarProps = {
   audio: React.RefObject<HTMLAudioElement>;
@@ -53,8 +55,7 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     className,
   } = props;
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const [_, forceUpdate] = React.useReducer((x: number) => x + 1, 0);
+  const forceUpdate = useForceUpdate();
   const [songName, setSongName] = React.useState("");
   const [artistName, setArtistName] = React.useState("");
   const [coverArt, setCoverArt] = React.useState("");
@@ -132,6 +133,14 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     forceUpdate();
   };
 
+  const handleFileOpen = (_event: Electron.IpcRendererEvent, file: FilePayload, _play: boolean) => {
+    setSongName(file.metadata.common.title ?? "");
+    setArtistName(file.metadata.common.artist ?? "");
+    if (file.picture.base64 !== "") {
+      setCoverArt(`data:${file.picture.format};base64,${file.picture.base64}`);
+    }
+  };
+
   React.useEffect(() => {
     const aud = audio.current;
     if (!aud) {
@@ -143,6 +152,7 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
       aud.volume = lastVolume.current;
     }
 
+    window.api.onFileOpen(handleFileOpen);
     aud.addEventListener("play", handlePlay);
     aud.addEventListener("pause", handlePause);
     aud.addEventListener("ended", handleEnded);
@@ -151,17 +161,8 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
       aud.removeEventListener("play", handlePlay);
       aud.removeEventListener("pause", handlePause);
       aud.removeEventListener("ended", handleEnded);
+      window.api.offFileOpen(handleFileOpen);
     };
-  });
-
-  React.useEffect(() => {
-    window.api.onFileOpen((_event, file) => {
-      setSongName(file.metadata.common.title ?? "");
-      setArtistName(file.metadata.common.artist ?? "");
-      if (file.picture.base64 !== "") {
-        setCoverArt(`data:${file.picture.format};base64,${file.picture.base64}`);
-      }
-    });
   });
 
   if (!timeFormat) {

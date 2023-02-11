@@ -1,11 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-
 import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
 import { Titlebar } from "custom-electron-titlebar";
-import { IAudioMetadata } from "music-metadata/lib/type";
+import { FilePayload } from "@/types";
 
 window.addEventListener("DOMContentLoaded", () => {
   const titleBar = new Titlebar({
@@ -25,21 +21,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
 // Custom APIs for renderer
 const api = {
-  onFileOpen: (
-    callback: (
-      _event,
-      file: {
-        metadata: IAudioMetadata;
-        uint8Array: Uint8Array;
-        picture: {
-          base64: string;
-          format: string;
-        };
-      }
-    ) => void
-  ) => ipcRenderer.on("open-file", callback),
+  onFileOpen: (callback: (_event: Electron.IpcRendererEvent, file: FilePayload, play: boolean) => void) =>
+    ipcRenderer.on("open-file", callback),
   getAudioFile: () => ipcRenderer.invoke("getAudioFile"),
-  loadAudioFile: (file: string) => ipcRenderer.invoke("loadAudioFile", file),
+  loadAudioFile: (file: string, play: boolean) => ipcRenderer.invoke("loadAudioFile", file, play),
   getStoreKey: (key: string) => ipcRenderer.invoke("getStoreKey", key),
   setStoreKey: (key: string, value: any) => ipcRenderer.invoke("setStoreKey", key, value),
   getAudioInfo: (file: string) =>
@@ -49,6 +34,8 @@ const api = {
       pictureBase64: string;
       pictureFormat: string;
     }>,
+  offFileOpen: (callback: (_event: Electron.IpcRendererEvent, file: FilePayload, play: boolean) => void) =>
+    ipcRenderer.removeListener("open-file", callback),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

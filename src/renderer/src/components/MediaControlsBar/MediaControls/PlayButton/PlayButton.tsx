@@ -13,7 +13,7 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
   const addedEventListeners = React.useRef(false);
   const isAudioAvailable = React.useMemo(() => audio && audio.src !== "", [audio]);
 
-  const handlePlayPause = React.useCallback((e: Event) => {
+  const handlePlayPause = (e: Event) => {
     e.preventDefault();
     if (e.type === "play") {
       setIsPlaying(true);
@@ -22,7 +22,7 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
     } else if (e.type === "ended") {
       setIsPlaying(false);
     }
-  }, []);
+  };
 
   const addEventListeners = React.useCallback(() => {
     if (!audio) {
@@ -51,7 +51,7 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
     return () => {
       removeEventListeners();
     };
-  }, [audio, addedEventListeners, removeEventListeners, addEventListeners]);
+  });
 
   return isAudioAvailable ? (
     <div

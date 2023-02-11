@@ -28,6 +28,9 @@ module.exports = {
         "9/4": "225%",
         "13/4": "325%",
       },
+      animation: {
+        imageFadeInAnimation: "imageFadeInAnimation .25s ease",
+      },
 
       spacing: {
         "1/8": "12.5%",

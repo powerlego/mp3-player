@@ -1,16 +1,6 @@
 import { wrapPromise } from "@renderer/utils";
 import React, { Suspense } from "react";
-
-type SongCoverCardProps = {
-  fileLocation: string;
-};
-function SongCoverCard({ fileLocation }: SongCoverCardProps) {
-  return (
-    <div>
-      <h1>Test</h1>
-    </div>
-  );
-}
+import ImageCard, { ImageCardSkeleton } from "@renderer/components/ImageCard";
 
 type SongCoverProps = {
   fileLocation: string;
@@ -20,9 +10,32 @@ const SongCover = (props: SongCoverProps) => {
   const { fileLocation } = props;
   const resource = React.useMemo(() => wrapPromise(window.api.getAudioInfo(fileLocation)), [fileLocation]);
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<ImageCardSkeleton />}>
       <SongCoverAsync fileLocation={fileLocation} resource={resource} />
     </Suspense>
+  );
+};
+
+const SongCoverButton = () => {
+  return (
+    <span
+      className="box-border relative flex rounded-full bg-green-450 dark:bg-green-350 items-center justify-center group-hover/button:scale-105"
+      style={{
+        WebkitTapHighlightColor: "transparent",
+        minBlockSize: "48px",
+        inlineSize: "48px",
+        blockSize: "48px",
+      }}
+    >
+      <span className="flex absolute top-3 left-3 ">
+        <svg role="img" width="24" height="24" viewBox="0 0 24 24" className="fill-black ">
+          <path
+            d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"
+            className="non-scaling-stroke"
+          />
+        </svg>
+      </span>
+    </span>
   );
 };
 
@@ -30,28 +43,22 @@ type SongCoverAsyncProps = {
   fileLocation: string;
   resource: { read: () => { title: string; artist: string; pictureFormat: string; pictureBase64: string } };
 };
-
 const SongCoverAsync = (props: SongCoverAsyncProps) => {
   const { fileLocation, resource } = props;
 
   const data = React.useMemo(() => resource.read(), [resource]);
 
   return (
-    <button
-      className="hover:scale-95 transition ease-in-out duration-300 self-center justify-self-center flex flex-col items-center justify-center"
+    <ImageCard
       onClick={() => {
-        window.api.loadAudioFile(fileLocation);
+        window.api.loadAudioFile(fileLocation, true);
       }}
-    >
-      <img
-        className="w-32 h-32 sm:w-40 sm:h-40 shadow-md shadow-gray-750 dark:shadow-gray-450/30"
-        src={`data:${data.pictureFormat};base64,${data.pictureBase64}`}
-      />
-      <div className="flex flex-row justify-center items-center gap-2">
-        <span className="text-sm text-gray-800 dark:text-white">{data.title}</span>
-        <span className="text-xs text-gray-800 dark:text-white">{data.artist}</span>
-      </div>
-    </button>
+      src={`data:image/${data.pictureFormat};base64,${data.pictureBase64}`}
+      line1={data.title}
+      line2={data.artist}
+      icon={<SongCoverButton />}
+      loading="lazy"
+    />
   );
 };
 

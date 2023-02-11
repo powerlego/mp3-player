@@ -73,12 +73,6 @@ body {
   @apply !fill-gray-900 dark:!fill-gray-100;
 }
 
-@layer components {
-  .song-card {
-    --card-container-border-radius: clamp(4px, (var(--column-width, 0px) - 32px) * 0.025, 8px);
-  }
-}
-
 @layer utilities {
   .non-scale-stroke {
     vector-effect: non-scaling-stroke;
