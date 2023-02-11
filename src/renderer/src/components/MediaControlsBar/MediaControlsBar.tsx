@@ -11,10 +11,6 @@ import { FilePayload } from "@/types";
 type MediaControlsBarProps = {
   audio: React.RefObject<HTMLAudioElement>;
   progressUpdateInterval?: number;
-
-  /**
-   * HTML5 Audio tag preload property
-   */
   i18nAriaLabels?: I18nAriaLabels;
   defaultCurrentTime?: ReactNode;
   defaultDuration?: ReactNode;
