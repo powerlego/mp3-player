@@ -50,7 +50,7 @@ const SongCoverAsync = (props: SongCoverAsyncProps) => {
 
   return (
     <ImageCard
-      onClick={() => {
+      onClickButton={() => {
         window.api.loadAudioFile(fileLocation, true);
       }}
       src={`data:image/${data.pictureFormat};base64,${data.pictureBase64}`}

@@ -55,20 +55,13 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
 
   return isAudioAvailable ? (
     <div
-      className="h-8 aspect-square flex justify-center items-center rounded-full
-        cursor-pointer bg-gray-800 dark:bg-gray-150 hover:bg-gray-600 dark:hover:bg-gray-350 transition-all ease-in-out duration-200 hover:scale-[1.1]"
+      className="h-8 aspect-square flex justify-center items-center rounded-full bg-gray-800 dark:bg-gray-150 hover:bg-gray-600 dark:hover:bg-gray-350 transition-all ease-in-out duration-200 hover:scale-[1.1]"
       onClick={togglePlay}
     >
       {isPlaying ? (
-        <PauseIcon
-          aria-label={i18nAriaLabels?.play}
-          className="fill-gray-150 dark:fill-gray-800 m-0 w-4 h-4 cursor-pointer"
-        />
+        <PauseIcon aria-label={i18nAriaLabels?.play} className="fill-gray-150 dark:fill-gray-800 m-0 w-4 h-4 " />
       ) : (
-        <PlayIcon
-          aria-label={i18nAriaLabels?.pause}
-          className="fill-gray-150 dark:fill-gray-800 m-0 w-4 h-4 cursor-pointer"
-        />
+        <PlayIcon aria-label={i18nAriaLabels?.pause} className="fill-gray-150 dark:fill-gray-800 m-0 w-4 h-4 " />
       )}
     </div>
   ) : (

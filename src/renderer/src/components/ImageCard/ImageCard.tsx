@@ -5,7 +5,8 @@ type ImageCardProps = {
   line1: string;
   line2: string;
   loading?: "lazy" | "eager";
-  onClick?: () => void;
+  onClickButton?: () => void;
+  onClickCard?: () => void;
   icon?: React.ReactNode;
 };
 
@@ -57,7 +58,7 @@ export function ImageCardSkeleton() {
   );
 }
 
-export default function ImageCard({ src, line1, line2, loading, onClick, icon }: ImageCardProps) {
+export default function ImageCard({ src, line1, line2, loading, onClickButton, icon, onClickCard }: ImageCardProps) {
   return (
     <div
       className="bg-gray-400 dark:bg-gray-700 group isolate relative w-full p-4 hover:bg-gray-450 hover:dark:bg-gray-600 transition-[background-color] duration-300 ease-[ease]"
@@ -95,7 +96,7 @@ export default function ImageCard({ src, line1, line2, loading, onClick, icon }:
               src={src}
             />
           </div>
-          {onClick ? (
+          {onClickButton ? (
             <div
               className="bottom-2 right-2 rounded-full z-[2] opacity-0 pointer-events-none absolute transition-all duration-300 ease-[ease] translate-y-2 group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0"
               style={{
@@ -103,8 +104,8 @@ export default function ImageCard({ src, line1, line2, loading, onClick, icon }:
               }}
             >
               <button
-                className="relative z-[1] transition-[background-color, border-color, color, box-shadow, filter, transform] select-none touch-manipulation inline-block duration-[33ms] group/button"
-                onClick={onClick}
+                className="relative z-[1] transition-[background-color, border-color, color, box-shadow, filter, transform] select-none touch-manipulation inline-block duration-[33ms] group/button cursor-default"
+                onClick={onClickButton}
               >
                 {icon}
               </button>
@@ -114,7 +115,10 @@ export default function ImageCard({ src, line1, line2, loading, onClick, icon }:
           )}
         </div>
         <div className="min-h-[62px]">
-          <a className="relative z-[1] inline-block w-full align-middle select-none touch-manipulation" title={line1}>
+          <a
+            className="relative z-[1] inline-block w-full align-middle select-none touch-manipulation cursor-pointer"
+            title={line1}
+          >
             <div
               className="box-border overflow-hidden text-ellipsis whitespace-nowrap font-bold text-base text-gray-800 dark:text-gray-100"
               style={{
@@ -134,6 +138,10 @@ export default function ImageCard({ src, line1, line2, loading, onClick, icon }:
             <span>{line2}</span>
           </div>
         </div>
+        <div
+          className="absolute z-0 bottom-0 top-0 left-0 right-0 overflow-hidden cursor-pointer"
+          onClick={onClickCard}
+        />
       </div>
     </div>
   );
