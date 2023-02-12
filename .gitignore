@@ -39,3 +39,4 @@ release
 /playwright/.cache/
 *.playground
 out/
+**/node_modules/
