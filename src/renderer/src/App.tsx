@@ -58,7 +58,7 @@ function App() {
       <audio controls={false} preload="false" ref={audio} src={src} />
       <div className="relative grid overflow-y-hidden h-full min-h-full w-full grid-areas-layout grid-rows-layout grid-cols-layout">
         <Topbar className="grid-in-main-view z-10 m-0 h-16 w-full flex flex-row items-center justify-evenly" />
-        <Sidebar className="z-20 m-0 w-56 grid-in-nav-bar bg-gray-200 text-gray-800 dark:bg-gray-900 dark:text-white" />
+        <Sidebar className="z-20 m-0 w-56 grid-in-nav-bar bg-gray-200 text-gray-800 dark:bg-[#141414] dark:text-white" />
         <MediaControlsBar
           audio={audio}
           expandFunc={expandSongDetails}
