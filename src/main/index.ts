@@ -82,12 +82,46 @@ const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] 
       platform.isMacOS ? { role: "close" } : { role: "quit" },
     ],
   },
-  { role: "editMenu" },
+  // { role: 'editMenu' }
+  {
+    label: "Edit",
+    submenu: [
+      { role: "undo" },
+      { role: "redo" },
+      { type: "separator" },
+      { role: "cut" },
+      { role: "copy" },
+      { role: "paste" },
+      { role: "delete" },
+      { type: "separator" },
+      {
+        label: "Preferences",
+        accelerator: "CmdOrCtrl+,",
+        click: () => {
+          const window = BrowserWindow.getAllWindows()[0];
+          if (window) {
+            window.webContents.send("open-preferences");
+          }
+        },
+      },
+    ],
+  },
   { role: "viewMenu" },
-  { role: "windowMenu" },
   {
     role: "help",
     submenu: [
+      {
+        label: "About",
+        click: () => {
+          dialog.showMessageBox({
+            type: "info",
+            title: "About",
+            message: "MP3 Player",
+            detail: "This is a music player.",
+          });
+        },
+      },
+      { type: "separator" },
       {
         label: "Learn More",
         click: async () => {
