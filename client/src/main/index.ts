@@ -1,14 +1,15 @@
 import { app, shell, BrowserWindow, ipcMain, dialog, Menu, protocol } from "electron";
 import { join } from "path";
-import { electronApp, optimizer, is, platform } from "@electron-toolkit/utils";
+import { electronApp, optimizer, is, platform, devTools } from "@electron-toolkit/utils";
 import ElectronStore from "electron-store";
 import { setupTitlebar, attachTitlebarToWindow } from "custom-electron-titlebar/main";
-import { devTools } from "@electron-toolkit/utils";
 import fs from "fs";
 import os from "os";
 import { parseBuffer } from "music-metadata";
+import SettingsWindow from "./SettingsWindow";
 
 const store = new ElectronStore();
+const settingsWindow = new SettingsWindow({});
 
 const readFileAndSend = async (window: BrowserWindow, filePath: string, play: boolean) => {
   const buffer = fs.readFileSync(filePath);
@@ -43,6 +44,7 @@ const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] 
       {
         label: "Open File",
         accelerator: "CmdOrCtrl+O",
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         click: async () => {
           const { filePaths } = await dialog.showOpenDialog({
             properties: ["openFile"],
@@ -56,13 +58,14 @@ const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] 
           if (filePaths.length > 0) {
             const window = BrowserWindow.getAllWindows()[0];
             if (window) {
-              readFileAndSend(window, filePaths[0], false);
+              await readFileAndSend(window, filePaths[0], false);
             }
           }
         },
       },
       {
         label: "Add Folder",
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         click: async () => {
           const { filePaths } = await dialog.showOpenDialog({
             properties: ["openDirectory"],
@@ -82,16 +85,48 @@ const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] 
       platform.isMacOS ? { role: "close" } : { role: "quit" },
     ],
   },
-  { role: "editMenu" },
+  // { role: 'editMenu' }
+  {
+    label: "Edit",
+    submenu: [
+      { role: "undo" },
+      { role: "redo" },
+      { type: "separator" },
+      { role: "cut" },
+      { role: "copy" },
+      { role: "paste" },
+      { role: "delete" },
+      { type: "separator" },
+      {
+        label: "Preferences",
+        accelerator: "CmdOrCtrl+,",
+        click: () => {
+          settingsWindow.show();
+        },
+      },
+    ],
+  },
   { role: "viewMenu" },
-  { role: "windowMenu" },
   {
     role: "help",
     submenu: [
       {
-        label: "Learn More",
+        label: "About",
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         click: async () => {
-          const { shell } = require("electron");
+          await dialog.showMessageBox({
+            type: "info",
+            title: "About",
+            message: "MP3 Player",
+            detail: "This is a music player.",
+          });
+        },
+      },
+      { type: "separator" },
+      {
+        label: "Learn More",
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        click: async () => {
           await shell.openExternal("https://electronjs.org");
         },
       },
@@ -101,7 +136,7 @@ const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] 
 
 setupTitlebar();
 
-function createWindow(): void {
+async function createWindow(): Promise<void> {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 767,
@@ -132,52 +167,65 @@ function createWindow(): void {
   });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url);
+    shell
+      .openExternal(details.url)
+      .then(null)
+      .catch((error: Error) => {
+        console.error(error);
+      });
     return { action: "deny" };
   });
 
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env["ELECTRON_RENDERER_URL"]) {
-    mainWindow.loadURL(process.env["ELECTRON_RENDERER_URL"]);
-  } else {
-    mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
+    await mainWindow.loadURL(process.env["ELECTRON_RENDERER_URL"]);
+  }
+  else {
+    await mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
   }
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(async () => {
-  const folderPaths: string[] = store.get("folderPaths", []) as string[];
-  if (folderPaths.length === 0) {
-    const MusicPath = join(os.homedir(), "Music");
-    if (fs.existsSync(MusicPath)) {
-      folderPaths.push(MusicPath);
+app
+  .whenReady()
+  .then(async () => {
+    const folderPaths: string[] = store.get("folderPaths", []) as string[];
+    if (folderPaths.length === 0) {
+      const MusicPath = join(os.homedir(), "Music");
+      if (fs.existsSync(MusicPath)) {
+        folderPaths.push(MusicPath);
+      }
+      store.set("folderPaths", folderPaths);
     }
-    store.set("folderPaths", folderPaths);
-  }
-  // Install react devtools
-  devTools.install("REACT_DEVELOPER_TOOLS", { allowFileAccess: true });
+    // Install react devtools
+    await devTools.install("REACT_DEVELOPER_TOOLS", { allowFileAccess: true });
 
-  // Set app user model id for windows
-  electronApp.setAppUserModelId("com.electron");
+    // Set app user model id for windows
+    electronApp.setAppUserModelId("com.electron");
 
-  // Default open or close DevTools by F12 in development
-  // and ignore CommandOrControl + R in production.
-  // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
-  app.on("browser-window-created", (_, window) => {
-    optimizer.watchWindowShortcuts(window);
+    // Default open or close DevTools by F12 in development
+    // and ignore CommandOrControl + R in production.
+    // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
+    app.on("browser-window-created", (_, window) => {
+      optimizer.watchWindowShortcuts(window);
+    });
+
+    await createWindow();
+
+    app.on("activate", () => {
+      // On macOS it's common to re-create a window in the app when the
+      // dock icon is clicked and there are no other windows open.
+      if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow().catch(console.error);
+      }
+    });
+  })
+  .catch((error) => {
+    console.error(error);
   });
-
-  createWindow();
-
-  app.on("activate", function () {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
-  });
-});
 
 app.on("ready", () => {
   protocol.registerFileProtocol("file", (request, callback) => {
@@ -213,7 +261,7 @@ ipcMain.handle("getAudioFile", async () => {
 ipcMain.handle("loadAudioFile", async (_, file: string, play: boolean) => {
   const window = BrowserWindow.getAllWindows()[0];
   if (window) {
-    readFileAndSend(window, file, play);
+    await readFileAndSend(window, file, play);
   }
 });
 

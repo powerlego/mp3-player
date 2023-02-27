@@ -9,9 +9,11 @@ window.addEventListener("DOMContentLoaded", () => {
   });
   titleBar._title.classList.remove("cet-center");
   titleBar._title.style.removeProperty("max-width");
-  const replaceText = (selector, text) => {
+  const replaceText = (selector: string, text: string | undefined) => {
     const element = document.getElementById(selector);
-    if (element) element.innerText = text;
+    if (element) {
+      element.innerText = text ?? "";
+    }
   };
 
   for (const type of ["chrome", "node", "electron"]) {
@@ -45,10 +47,12 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld("electron", electronAPI);
     contextBridge.exposeInMainWorld("api", api);
-  } catch (error) {
+  }
+  catch (error) {
     console.error(error);
   }
-} else {
+}
+else {
   // @ts-ignore (define in dts)
   window.electron = electronAPI;
   // @ts-ignore (define in dts)

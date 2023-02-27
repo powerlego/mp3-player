@@ -20,7 +20,7 @@ module.exports = {
       jsx: true,
     },
     sourceType: "module",
-    project: "./tsconfig.json",
+    project: ["./tsconfig.node.json", "./tsconfig.web.json"],
   },
   settings: {
     react: {

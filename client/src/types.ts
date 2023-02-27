@@ -57,3 +57,38 @@ export interface ScrollingAnimationProps {
 }
 
 export type Channels = "minimizeApp" | "maximizeApp" | "closeApp";
+
+export type SettingsSection = {
+  id: string;
+  label?: string;
+  icon?: string;
+  form: {
+    groups: Group[];
+  };
+};
+
+export type Group = {
+  id: string;
+  label?: string;
+  fields: SettingsItem[];
+};
+
+export type SettingsItem = {
+  name: string;
+  type:
+    | "text"
+    | "number"
+    | "dropdown"
+    | "checkbox"
+    | "radio"
+    | "slider"
+    | "file"
+    | "accelerator"
+    | "color"
+    | "button"
+    | "list"
+    | "directory";
+  label: string;
+  description?: string;
+  options?: string[];
+};

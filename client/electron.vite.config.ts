@@ -24,6 +24,14 @@ export default defineConfig({
         "@": resolve("src/"),
       },
     },
+    build: {
+      rollupOptions: {
+        input: {
+          index: resolve(__dirname, "src/preload/index.ts"),
+          settings: resolve(__dirname, "src/preload/settings.ts"),
+        },
+      },
+    },
   },
   renderer: {
     envPrefix: "REACT_APP_",

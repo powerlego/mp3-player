@@ -1,5 +1,4 @@
 import { ElectronAPI } from "@electron-toolkit/preload";
-import { IAudioMetadata } from "music-metadata/lib/type";
 import { FilePayload } from "@/types";
 import { IpcRendererEvent } from "electron";
 declare global {
