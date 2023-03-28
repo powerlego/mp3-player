@@ -19,29 +19,6 @@ const useLocalStorage = (key: string, initialValue?: any) => {
     [key]
   );
 
-  useEffect(() => {
-    window.api
-      .getStoreKey("settings")
-      .then((item) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        const json = JSON.parse(item);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        const value = json[key] || initialValue;
-        setStoredValue(value);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  });
-
-  useEffect(() => {
-    window.api.on("storeKeyUpdated", checkKeyAndSet);
-
-    return () => {
-      window.api.off("storeKeyUpdated", checkKeyAndSet);
-    };
-  }, [checkKeyAndSet]);
-
   const setValue = (value: any) => {
     try {
       const valueToStore = value instanceof Function ? value(storedValue) : value;
@@ -55,7 +32,6 @@ const useLocalStorage = (key: string, initialValue?: any) => {
             ...json,
             [key]: valueToStore,
           };
-          console.log(val);
           setStoredValue(valueToStore);
           window.api
             .setStoreKey("settings", JSON.stringify(val), key)
@@ -72,6 +48,30 @@ const useLocalStorage = (key: string, initialValue?: any) => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    window.api
+      .getStoreKey("settings")
+      .then((item) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        const json = JSON.parse(item);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        const value = json[key] ?? initialValue;
+        setStoredValue(value);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
+
+  useEffect(() => {
+    window.api.on("storeKeyUpdated", checkKeyAndSet);
+
+    return () => {
+      window.api.off("storeKeyUpdated", checkKeyAndSet);
+    };
+  });
+
   return [storedValue, setValue];
 };
 
