@@ -66,12 +66,13 @@ const useScrollingAnimation = (props: HookProps) => {
       if (endTime) {
         if (prevTime) {
           startTime > prevTime + pauseAtEndEdgeDurationMs && (prevTime = 0);
-        } else if (scrollingState.current !== "paused") {
+        }
+        else if (scrollingState.current !== "paused") {
           offset += direction * ((60 * (startTime - endTime)) / 1e3) * speed;
           offset > displayWidth
             ? ((direction *= -1), (prevTime = startTime), (offset = displayWidth))
-            : offset < 0 &&
-              ((direction *= -1), (prevTime = startTime), (offset = 0), (isInfinite = iterationType === "infinite"));
+            : offset < 0
+              && ((direction *= -1), (prevTime = startTime), (offset = 0), (isInfinite = iterationType === "infinite"));
         }
         prevOffset = offset;
         const offsetValue = getDirection() * prevOffset + getOffset();
@@ -114,7 +115,8 @@ const useScrollingAnimation = (props: HookProps) => {
       const focused = event.type === "mouseover" && event.currentTarget === event.target ? true : false;
       if (getCurrentAnimationId()) {
         setScrollingStatePaused();
-      } else if (!focused) {
+      }
+      else if (!focused) {
         timeOuts.current.initialMouseInteraction = setTimeout(() => {
           updateAnimation();
         }, initialMouseIntDelayMs);

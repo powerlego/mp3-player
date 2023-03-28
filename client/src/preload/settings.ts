@@ -1,27 +1,17 @@
-import { SettingsSection } from "@/types";
 import { contextBridge, ipcRenderer, OpenDialogReturnValue, OpenDialogSyncOptions } from "electron";
+import { electronAPI } from "@electron-toolkit/preload";
 import { Titlebar } from "custom-electron-titlebar";
+import { SettingsSection } from "@/types";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 const deserializeJson = (serializedJavascript: string) => eval("(" + serializedJavascript + ")");
 
-window.addEventListener("DOMContentLoaded", () => {
-  const titleBar = new Titlebar({
-    containerOverflow: "hidden",
-  });
-  titleBar._title.classList.remove("cet-center");
-  titleBar._title.style.removeProperty("max-width");
-  const replaceText = (selector: string, text: string | undefined) => {
-    const element = document.getElementById(selector);
-    if (element) {
-      element.innerText = text ?? "";
-    }
-  };
-
-  for (const type of ["chrome", "node", "electron"]) {
-    replaceText(`${type}-version`, process.versions[type]);
-  }
-});
+const api = {
+  getStoreKey: (key: string) => ipcRenderer.invoke("getStoreKey", key),
+  setStoreKey: (key: string, value: any, subkey?: string) => ipcRenderer.invoke("setStoreKey", key, value, subkey),
+  on: (channel: string, listener: (...args: any[]) => void) => ipcRenderer.on(channel, listener),
+  off: (channel: string, listener: (...args: any[]) => void) => ipcRenderer.off(channel, listener),
+};
 
 const settings = {
   getSections: (): SettingsSection[] =>
@@ -38,6 +28,8 @@ const settings = {
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld("settings", settings);
+    contextBridge.exposeInMainWorld("electron", electronAPI);
+    contextBridge.exposeInMainWorld("api", api);
   }
   catch (error) {
     console.error("contextBridge.exposeInMainWorld() failed:", error);
@@ -45,5 +37,9 @@ if (process.contextIsolated) {
 }
 else {
   // @ts-ignore (define in dts)
+  window.electron = electronAPI;
+  // @ts-ignore (define in dts)
   window.settings = settings;
+  // @ts-ignore (define in dts)
+  window.api = api;
 }

@@ -46,7 +46,7 @@ export function ImageCardSkeleton() {
                   borderRadius: "var(--card-image-border-radius)",
                 } as CustomCSSProperties
               }
-            ></div>
+            />
           </div>
         </div>
         <div className="flex flex-col justify-center">
@@ -83,6 +83,8 @@ export default function ImageCard({ src, line1, line2, loading, onClickButton, i
           >
             <img
               className="h-full w-full absolute top-0 left-0 object-cover animate-imageFadeInAnimation"
+              loading={loading || "lazy"}
+              src={src}
               style={
                 {
                   animationFillMode: "forwards",
@@ -92,27 +94,27 @@ export default function ImageCard({ src, line1, line2, loading, onClickButton, i
                   objectPosition: "center center",
                 } as CustomCSSProperties
               }
-              loading={loading || "lazy"}
-              src={src}
             />
           </div>
-          {onClickButton ? (
-            <div
-              className="bottom-2 right-2 rounded-full z-[2] opacity-0 pointer-events-none absolute transition-all duration-300 ease-[ease] translate-y-2 group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0"
-              style={{
-                boxShadow: "0 8px 8px rgb(0 0 0 / 30%)",
-              }}
-            >
-              <button
-                className="relative z-[1] transition-[background-color, border-color, color, box-shadow, filter, transform] select-none touch-manipulation inline-block duration-[33ms] group/button cursor-default"
-                onClick={onClickButton}
+          {onClickButton
+            ? (
+              <div
+                className="bottom-2 right-2 rounded-full z-[2] opacity-0 pointer-events-none absolute transition-all duration-300 ease-[ease] translate-y-2 group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0"
+                style={{
+                  boxShadow: "0 8px 8px rgb(0 0 0 / 30%)",
+                }}
               >
-                {icon}
-              </button>
-            </div>
-          ) : (
-            <></>
-          )}
+                <button
+                  className="relative z-[1] transition-[background-color, border-color, color, box-shadow, filter, transform] select-none touch-manipulation inline-block duration-[33ms] group/button cursor-default"
+                  onClick={onClickButton}
+                >
+                  {icon}
+                </button>
+              </div>
+            )
+            : (
+              <></>
+            )}
         </div>
         <div className="min-h-[62px]">
           <a

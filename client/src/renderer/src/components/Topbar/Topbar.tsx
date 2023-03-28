@@ -21,17 +21,19 @@ function ThemeIcon(): JSX.Element {
   const handleMode = () => setDarkTheme(!darkTheme);
   return (
     <span onClick={handleMode}>
-      {darkTheme ? (
-        <FaSun
-          className="cursor-pointer mr-3 ml-4 text-gray-500 hover:text-stone-400 transition duration-300 ease-in-out"
-          size="24"
-        />
-      ) : (
-        <FaMoon
-          className="cursor-pointer mr-3 ml-4 text-gray-500 hover:text-stone-400 transition duration-300 ease-in-out"
-          size="24"
-        />
-      )}
+      {darkTheme
+        ? (
+          <FaSun
+            className="cursor-pointer mr-3 ml-4 text-gray-500 hover:text-stone-400 transition duration-300 ease-in-out"
+            size="24"
+          />
+        )
+        : (
+          <FaMoon
+            className="cursor-pointer mr-3 ml-4 text-gray-500 hover:text-stone-400 transition duration-300 ease-in-out"
+            size="24"
+          />
+        )}
     </span>
   );
 }

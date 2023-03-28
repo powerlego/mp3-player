@@ -16,9 +16,24 @@ export default defineConfig({
         "@": resolve("src/"),
       },
     },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes("music-metadata")) {
+              return "music-metadata";
+            }
+          },
+        },
+      },
+    },
   },
   preload: {
-    plugins: [externalizeDepsPlugin()],
+    plugins: [
+      externalizeDepsPlugin({
+        exclude: ["music-metadata"],
+      }),
+    ],
     resolve: {
       alias: {
         "@": resolve("src/"),
@@ -27,8 +42,15 @@ export default defineConfig({
     build: {
       rollupOptions: {
         input: {
-          index: resolve(__dirname, "src/preload/index.ts"),
+          main: resolve(__dirname, "src/preload/main.ts"),
           settings: resolve(__dirname, "src/preload/settings.ts"),
+        },
+        output: {
+          manualChunks(id) {
+            if (id.includes("music-metadata")) {
+              return "music-metadata";
+            }
+          },
         },
       },
     },
@@ -40,6 +62,14 @@ export default defineConfig({
       alias: {
         "@": resolve("src/"),
         "@renderer": resolve("src/renderer/src"),
+      },
+    },
+    build: {
+      rollupOptions: {
+        input: {
+          index: resolve(__dirname, "src/renderer/index.html"),
+          settings: resolve(__dirname, "src/renderer/settings.html"),
+        },
       },
     },
     plugins: [

@@ -1,15 +1,12 @@
-import { app, shell, BrowserWindow, ipcMain, dialog, Menu, protocol } from "electron";
+import { app, shell, BrowserWindow, ipcMain, dialog, protocol, Menu } from "electron";
 import { join } from "path";
-import { electronApp, optimizer, is, platform, devTools } from "@electron-toolkit/utils";
-import ElectronStore from "electron-store";
+import { electronApp, optimizer, is, devTools, platform } from "@electron-toolkit/utils";
+import store from "@/store";
 import { setupTitlebar, attachTitlebarToWindow } from "custom-electron-titlebar/main";
 import fs from "fs";
 import os from "os";
-import { parseBuffer } from "music-metadata";
 import SettingsWindow from "./SettingsWindow";
-
-const store = new ElectronStore();
-const settingsWindow = new SettingsWindow({});
+import { parseBuffer } from "music-metadata";
 
 const readFileAndSend = async (window: BrowserWindow, filePath: string, play: boolean) => {
   const buffer = fs.readFileSync(filePath);
@@ -36,8 +33,11 @@ const readFileAndSend = async (window: BrowserWindow, filePath: string, play: bo
   );
 };
 
+const storeInstance = store.getInstance();
+const settingsWindow = new SettingsWindow({});
+
 const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] = [
-  // { role: 'fileMenu' }
+  // { role: "fileMenu" },
   {
     label: "File",
     submenu: [
@@ -71,9 +71,9 @@ const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] 
             properties: ["openDirectory"],
           });
           if (filePaths.length > 0) {
-            const folderPaths: string[] = store.get("folderPaths", []) as string[];
+            const folderPaths: string[] = storeInstance.get("folderPaths", []) as string[];
             folderPaths.push(filePaths[0]);
-            store.set("folderPaths", folderPaths);
+            storeInstance.set("folderPaths", folderPaths);
             const window = BrowserWindow.getAllWindows()[0];
             if (window) {
               window.webContents.send("add-folder");
@@ -100,8 +100,9 @@ const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] 
       {
         label: "Preferences",
         accelerator: "CmdOrCtrl+,",
-        click: () => {
-          settingsWindow.show();
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        click: async () => {
+          await settingsWindow.show();
         },
       },
     ],
@@ -146,14 +147,14 @@ async function createWindow(): Promise<void> {
     titleBarStyle: "hidden",
     // ...(process.platform === "linux" ? { icon } : {}),
     webPreferences: {
-      preload: join(__dirname, "../preload/index.js"),
+      preload: join(__dirname, "../preload/main.js"),
       sandbox: false,
     },
   });
-
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
 
+  // mainWindow.setMenu(Menu.buildFromTemplate(menuTemplate));
   attachTitlebarToWindow(mainWindow);
 
   mainWindow.on("ready-to-show", () => {
@@ -192,13 +193,13 @@ async function createWindow(): Promise<void> {
 app
   .whenReady()
   .then(async () => {
-    const folderPaths: string[] = store.get("folderPaths", []) as string[];
+    const folderPaths: string[] = storeInstance.get("folderPaths", []) as string[];
     if (folderPaths.length === 0) {
       const MusicPath = join(os.homedir(), "Music");
       if (fs.existsSync(MusicPath)) {
         folderPaths.push(MusicPath);
       }
-      store.set("folderPaths", folderPaths);
+      storeInstance.set("folderPaths", folderPaths);
     }
     // Install react devtools
     await devTools.install("REACT_DEVELOPER_TOOLS", { allowFileAccess: true });
@@ -266,11 +267,23 @@ ipcMain.handle("loadAudioFile", async (_, file: string, play: boolean) => {
 });
 
 ipcMain.handle("getStoreKey", (_, key) => {
-  return store.get(key);
+  return storeInstance.get(key);
 });
 
-ipcMain.handle("setStoreKey", (_, key, value) => {
-  store.set(key, value);
+ipcMain.handle("setStoreKey", (event, key: string, value, subkey: string) => {
+  storeInstance.set(key, value);
+  console.log(subkey);
+  if (key === "settings" && subkey) {
+    for (const window of BrowserWindow.getAllWindows()) {
+      console.log("here2");
+      window.webContents.send("storeKeyUpdated", subkey, value);
+    }
+  }
+  else {
+    for (const window of BrowserWindow.getAllWindows()) {
+      window.webContents.send("storeKeyUpdated", key, value);
+    }
+  }
 });
 
 ipcMain.handle("getAudioInfo", async (_, file: string) => {

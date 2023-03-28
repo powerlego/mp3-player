@@ -6,14 +6,13 @@ import path from "path";
 import jsonSerializer from "serialize-javascript";
 import { SettingsSection } from "@/types";
 import { is } from "@electron-toolkit/utils";
-import { setupTitlebar, attachTitlebarToWindow } from "custom-electron-titlebar/main";
+import { attachTitlebarToWindow } from "custom-electron-titlebar/main";
 
 type SettingsWindowConfig = {
   sections?: SettingsSection[];
   defaults?: { [key: string]: any };
 };
 
-setupTitlebar();
 export default class SettingsWindow extends EventEmitter2 {
   options = {} as SettingsWindowConfig;
   _preferences = {} as { [key: string]: any };
@@ -143,7 +142,10 @@ export default class SettingsWindow extends EventEmitter2 {
   }
 
   getBrowserWindowOptions() {
+    const parentWindow = BrowserWindow.getAllWindows()[0];
     const browserWindowOptions = {
+      parent: parentWindow,
+      modal: true,
       title: "Preferences",
       width: 800,
       maxWidth: 800,
@@ -152,30 +154,13 @@ export default class SettingsWindow extends EventEmitter2 {
       resizable: false,
       acceptFirstMouse: true,
       maximizable: false,
-      backgroundColor: "#E7E7E7",
       show: false,
-      titleBarStyle: "hidden",
+      frame: false,
       webPreferences: {
-        devTools: false,
+        preload: path.join(__dirname, "../preload/settings.js"),
+        sandbox: false,
       },
     } as Electron.BrowserWindowConstructorOptions;
-
-    const defaultWebPreferences = {
-      nodeIntegration: false,
-      enableRemoteModule: false,
-      preload: path.join(__dirname, "../preload/settings.js"),
-    };
-
-    const unOverridableWebPreferences = {
-      contextIsolation: true,
-    };
-
-    // Object.assign is shallow, let's process browserWindow.webPreferences
-    browserWindowOptions.webPreferences = Object.assign(
-      defaultWebPreferences,
-      browserWindowOptions.webPreferences,
-      unOverridableWebPreferences
-    );
 
     return browserWindowOptions;
   }
@@ -207,7 +192,7 @@ export default class SettingsWindow extends EventEmitter2 {
 
     this.prefsWindow = new BrowserWindow(this.getBrowserWindowOptions());
     this.prefsWindow.removeMenu();
-    attachTitlebarToWindow(this.prefsWindow);
+
     if (is.dev && process.env["ELECTRON_RENDERER_URL"]) {
       await this.prefsWindow.loadURL(process.env["ELECTRON_RENDERER_URL"] + "/settings.html");
       this.prefsWindow.webContents.openDevTools();

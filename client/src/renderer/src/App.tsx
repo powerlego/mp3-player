@@ -11,22 +11,6 @@ function App() {
   const audio = React.useRef<HTMLAudioElement>(null);
   const requestedPlay = React.useRef(false);
 
-  const playAudioPromise = (): void => {
-    if (src === "") {
-      console.log("No src");
-      return;
-    }
-    const aud = audio.current;
-    if (!aud) {
-      return;
-    }
-    const playPromise = aud.play();
-    // playPromise is null in IE 11
-    playPromise.then(null).catch((err) => {
-      console.log(err);
-    });
-  };
-
   const handleFileOpen = (_event: Electron.IpcRendererEvent, file: FilePayload, play: boolean): void => {
     const blob = new Blob([file.uint8Array], { type: "audio/mpeg" });
     const url = URL.createObjectURL(blob);
@@ -42,11 +26,26 @@ function App() {
   });
 
   React.useEffect(() => {
+    const playAudioPromise = (): void => {
+      if (src === "") {
+        console.log("No src");
+        return;
+      }
+      const aud = audio.current;
+      if (!aud) {
+        return;
+      }
+      const playPromise = aud.play();
+      // playPromise is null in IE 11
+      playPromise.then(null).catch((err) => {
+        console.log(err);
+      });
+    };
     if (audio.current && requestedPlay.current) {
       playAudioPromise();
       requestedPlay.current = false;
     }
-  }, [audio, playAudioPromise, requestedPlay]);
+  }, [audio, src, requestedPlay]);
 
   const expandSongDetails = () => {
     console.log("Expand song details");
@@ -66,7 +65,7 @@ function App() {
         />
         <MainWindow
           audio={audio}
-          className="grid-in-main-view flex flex-col overflow-hidden w-full bg-gray-300 dark:bg-gray-800"
+          className="grid-in-main-view flex flex-col overflow-hidden w-full bg-gray-300 dark:bg-[#1f2123]"
         />
       </div>
     </>
