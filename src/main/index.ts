@@ -34,7 +34,28 @@ const readFileAndSend = async (window: BrowserWindow, filePath: string, play: bo
 };
 
 const storeInstance = store.getInstance();
-const settingsWindow = new SettingsWindow({});
+const settingsWindow = new SettingsWindow({
+  sections: [
+    {
+      id: "general",
+      label: "General",
+      form: {
+        groups: [
+          {
+            label: "General",
+            fields: [
+              {
+                type: "text",
+                label: "Test",
+                key: "test",
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+});
 
 const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] = [
   // { role: "fileMenu" },
@@ -272,10 +293,8 @@ ipcMain.handle("getStoreKey", (_, key) => {
 
 ipcMain.handle("setStoreKey", (event, key: string, value, subkey: string) => {
   storeInstance.set(key, value);
-  console.log(subkey);
   if (key === "settings" && subkey) {
     for (const window of BrowserWindow.getAllWindows()) {
-      console.log("here2");
       window.webContents.send("storeKeyUpdated", subkey, value);
     }
   }
