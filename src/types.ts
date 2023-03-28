@@ -68,13 +68,12 @@ export type SettingsSection = {
 };
 
 export type Group = {
-  id: string;
+  id?: string;
   label?: string;
   fields: SettingsItem[];
 };
 
 export type SettingsItem = {
-  name: string;
   type:
     | "text"
     | "number"
@@ -89,6 +88,7 @@ export type SettingsItem = {
     | "list"
     | "directory";
   label: string;
+  key: string;
   description?: string;
   options?: string[];
 };
