@@ -16,7 +16,7 @@ export default function Settings(): JSX.Element {
           <SettingsButton onClick={() => window.close()}>
             <span className="text-sm">Cancel</span>
           </SettingsButton>
-          <SettingsButton>
+          <SettingsButton onClick={() => console.log(window.settings.getSections())}>
             <span className="text-sm">Apply</span>
           </SettingsButton>
           <SettingsButton>
