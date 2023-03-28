@@ -6,7 +6,6 @@ import path from "path";
 import jsonSerializer from "serialize-javascript";
 import { SettingsSection } from "@/types";
 import { is } from "@electron-toolkit/utils";
-import { attachTitlebarToWindow } from "custom-electron-titlebar/main";
 
 type SettingsWindowConfig = {
   sections?: SettingsSection[];
