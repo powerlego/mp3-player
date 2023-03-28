@@ -5,7 +5,9 @@
     "src/main/*",
     "src/preload/*",
     "src/types.ts",
-    "src/utils.ts, src/store.ts, src/mainTitleBar.ts"
+    "src/utils.ts",
+    "src/store.ts",
+    "src/mainTitleBar.ts"
   ],
   "compilerOptions": {
     "composite": true,
