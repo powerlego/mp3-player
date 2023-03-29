@@ -1,4 +1,4 @@
-import React, { Children, PropsWithChildren } from "react";
+import React from "react";
 import { getColumns } from "@renderer/constants";
 
 type Props = {
@@ -42,10 +42,10 @@ export default function Shelf({ title, children }: Props) {
       width < config.TWO_COLUMNS_MAX_WIDTH
         ? 2
         : width < config.THREE_COLUMNS_MAX_WIDTH
-        ? 3
-        : width < config.FOUR_COLUMNS_MAX_WIDTH
-        ? 4
-        : Math.floor((width + defaultColGap) / (config.MINIMUM_COLUMN_WIDTH + defaultColGap)))(width, columnConfig);
+          ? 3
+          : width < config.FOUR_COLUMNS_MAX_WIDTH
+            ? 4
+            : Math.floor((width + defaultColGap) / (config.MINIMUM_COLUMN_WIDTH + defaultColGap)))(width, columnConfig);
     const gridGap = (temp = params) === 2 ? 12 : temp === 3 ? 18 : defaultColGap;
     return {
       columnCountMainGrid: params,
@@ -91,6 +91,7 @@ export default function Shelf({ title, children }: Props) {
   return (
     <section
       className="flex flex-col mb-4 flex-auto max-w-full"
+      ref={ref}
       style={
         {
           "--shelf-min-height": "300px",
@@ -99,7 +100,6 @@ export default function Shelf({ title, children }: Props) {
           minWidth: "var(--min-container-width)",
         } as CustomCSSProps
       }
-      ref={ref}
     >
       <div className="mb-4">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">{title}</h2>
@@ -122,10 +122,10 @@ export default function Shelf({ title, children }: Props) {
       >
         {Array.isArray(children)
           ? children.map((child, index) => {
-              if (index < columns.columnsCount) {
-                return child;
-              }
-            })
+            if (index < columns.columnsCount) {
+              return child;
+            }
+          })
           : children}
       </div>
     </section>

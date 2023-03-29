@@ -1,12 +1,11 @@
-import { I18nAriaLabels } from "@/types";
+import { I18nAriaLabels, FilePayload } from "@/types";
 import { TIME_FORMAT } from "@renderer/constants";
-import useForceUpdate from "@renderer/hooks/useForceUpdate";
+// import useForceUpdate from "@renderer/hooks/useForceUpdate";
 import React, { ReactNode } from "react";
 import MediaControls from "./MediaControls";
 import SongDetails from "./SongDetails";
 import TrackProgress from "./TrackProgress";
 import VolumeControls from "./VolumeControls";
-import { FilePayload } from "@/types";
 
 type MediaControlsBarProps = {
   audio: React.RefObject<HTMLAudioElement>;
@@ -51,7 +50,7 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     className,
   } = props;
 
-  const forceUpdate = useForceUpdate();
+  // const forceUpdate = useForceUpdate();
   const [songName, setSongName] = React.useState("");
   const [artistName, setArtistName] = React.useState("");
   const [coverArt, setCoverArt] = React.useState("");
@@ -66,7 +65,8 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     }
     if ((aud.paused || aud.ended) && aud.src) {
       playAudioPromise();
-    } else if (!aud.paused) {
+    }
+    else if (!aud.paused) {
       aud.pause();
     }
   };
@@ -92,20 +92,21 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     if (aud.volume > 0) {
       lastVolume.current = aud.volume;
       aud.volume = 0;
-    } else {
+    }
+    else {
       aud.volume = lastVolume.current;
     }
   };
 
-  const handleClickLoopButton = (): void => {
-    if (!audio.current) {
-      return;
-    }
-    audio.current.loop = !audio.current.loop;
-    forceUpdate();
-  };
+  // const handleClickLoopButton = (): void => {
+  //   if (!audio.current) {
+  //     return;
+  //   }
+  //   audio.current.loop = !audio.current.loop;
+  //   forceUpdate();
+  // };
 
-  const handleFileOpen = (_event: Electron.IpcRendererEvent, file: FilePayload, _play: boolean) => {
+  const handleFileOpen = (_event: Electron.IpcRendererEvent, file: FilePayload) => {
     setSongName(file.metadata.common.title ?? "");
     setArtistName(file.metadata.common.artist ?? "");
     if (file.picture.base64 !== "") {
@@ -120,7 +121,8 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     }
     if (muted) {
       aud.volume = 0;
-    } else {
+    }
+    else {
       aud.volume = lastVolume.current;
     }
     window.api.onFileOpen(handleFileOpen);

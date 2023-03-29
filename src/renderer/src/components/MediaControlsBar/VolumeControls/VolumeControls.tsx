@@ -1,6 +1,7 @@
 import VolumeBar from "./VolumeBar";
 import { I18nAriaLabels } from "@/types";
 import VolumeButton from "./VolumeButton";
+import React from "react";
 
 interface VolumeControlsProps {
   audio: HTMLAudioElement | null;

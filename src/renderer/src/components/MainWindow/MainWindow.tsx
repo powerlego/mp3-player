@@ -1,6 +1,5 @@
 import React from "react";
 import SongCover from "./SongCoverCard";
-import placholderImg from "@/assets/icons/placeholder.png";
 import Shelf from "@renderer/components/Shelf";
 
 type MainWindowProps = {
@@ -38,7 +37,7 @@ function MainWindow({ className }: MainWindowProps) {
           </div>
         </div>
       </section>
-      <div className="h-full w-full grid auto-rows-min grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 overflow-y-scroll mx-2 items-center justify-center"></div>
+      <div className="h-full w-full grid auto-rows-min grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 overflow-y-scroll mx-2 items-center justify-center" />
     </div>
   );
 }

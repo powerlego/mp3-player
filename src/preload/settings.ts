@@ -1,6 +1,5 @@
 import { contextBridge, ipcRenderer, OpenDialogReturnValue, OpenDialogSyncOptions } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
-import { Titlebar } from "custom-electron-titlebar";
 import { SettingsSection } from "@/types";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
