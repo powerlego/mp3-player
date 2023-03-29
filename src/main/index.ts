@@ -35,6 +35,11 @@ const readFileAndSend = async (window: BrowserWindow, filePath: string, play: bo
 
 const storeInstance = store.getInstance();
 const settingsWindow = new SettingsWindow({
+  defaults: {
+    general: {
+      test: "test",
+    },
+  },
   sections: [
     {
       id: "general",
@@ -291,7 +296,7 @@ ipcMain.handle("getStoreKey", (_, key) => {
   return storeInstance.get(key);
 });
 
-ipcMain.handle("setStoreKey", (event, key: string, value, subkey: string) => {
+ipcMain.handle("setStoreKey", (_, key: string, value, subkey: string) => {
   storeInstance.set(key, value);
   if (key === "settings" && subkey) {
     for (const window of BrowserWindow.getAllWindows()) {
