@@ -53,6 +53,7 @@ const settingsWindow = new SettingsWindow({
                 type: "text",
                 label: "Test",
                 key: "test",
+                description: "Test",
               },
             ],
           },

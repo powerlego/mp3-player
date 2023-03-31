@@ -14,6 +14,11 @@ body {
   width: 100vw;
 }
 
+:root {
+  --tooltip-margin: 32px;
+  --tooltip-arrow-size: 8px;
+}
+
 #root {
   position: relative;
   isolation: isolate;
@@ -71,6 +76,38 @@ body {
 
 .cet-submenu-item:hover .cet-submenu-indicator > svg {
   @apply !fill-gray-900 dark:!fill-gray-100;
+}
+
+@layer components {
+  .tooltip-tip {
+    @apply absolute rounded left-1/2 -translate-x-1/2 p-2
+      bg-gray-600 dark:bg-gray-550 text-white dark:text-white text-sm leading-none whitespace-nowrap z-50
+      before:left-1/2 before:border-solid before:border-transparent before:h-0 before:w-0 before:absolute
+      before:pointer-events-none before:border-[calc(1*var(--tooltip-arrow-size))]
+      before:ml-[calc(-1*var(--tooltip-arrow-size))];
+  }
+
+  .tooltip-tip.top {
+    @apply before:top-full before:border-t-gray-600 dark:before:border-t-gray-550
+      top-[calc(-1*var(--tooltip-margin))];
+  }
+
+  .tooltip-tip.right {
+    @apply before:left-[calc(-1*var(--tooltip-arrow-size))] before:top-1/2 
+      before:translate-x-0 before:-translate-y-1/2 before:border-r-gray-600 dark:before:border-r-gray-550
+      left-[calc(100%+var(--tooltip-margin))] top-1/2 translate-x-0 -translate-y-1/2;
+  }
+
+  .tooltip-tip.bottom {
+    @apply before:bottom-full before:border-b-gray-600 dark:before:border-b-gray-550
+      bottom-[calc(-1*var(--tooltip-margin))];
+  }
+
+  .tooltip-tip.left {
+    @apply before:left-auto before:right-[calc(-2*var(--tooltip-arrow-size))] before:top-1/2 
+      before:translate-x-0 before:-translate-y-1/2 before:border-l-gray-600 dark:before:border-l-gray-550
+      left-auto right-[calc(100%+var(--tooltip-margin))] top-1/2 translate-x-0 -translate-y-1/2;
+  }
 }
 
 @layer utilities {
