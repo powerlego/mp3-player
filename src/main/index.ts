@@ -55,6 +55,12 @@ const settingsWindow = new SettingsWindow({
                 key: "test",
                 description: "Test",
               },
+              {
+                type: "slider",
+                label: "Test",
+                key: "test2",
+                description: "Test",
+              },
             ],
           },
         ],
