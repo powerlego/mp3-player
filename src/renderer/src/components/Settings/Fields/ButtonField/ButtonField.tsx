@@ -38,6 +38,6 @@ export default class ButtonField extends React.Component<ButtonFieldProps> {
   }
 
   get onChange() {
-    return this.props.onChange;
+    return this.props.onChange.bind(this);
   }
 }

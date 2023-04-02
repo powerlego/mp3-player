@@ -38,6 +38,6 @@ export default class DropdownField extends React.Component<DropdownFieldProps> {
   }
 
   get onChange() {
-    return this.props.onChange;
+    return this.props.onChange.bind(this);
   }
 }

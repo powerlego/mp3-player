@@ -38,6 +38,6 @@ export default class ColorField extends React.Component<ColorFieldProps> {
   }
 
   get onChange() {
-    return this.props.onChange;
+    return this.props.onChange.bind(this);
   }
 }

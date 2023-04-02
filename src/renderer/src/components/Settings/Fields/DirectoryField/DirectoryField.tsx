@@ -38,6 +38,6 @@ export default class DirectoryField extends React.Component<DirectoryFieldProps>
   }
 
   get onChange() {
-    return this.props.onChange;
+    return this.props.onChange.bind(this);
   }
 }

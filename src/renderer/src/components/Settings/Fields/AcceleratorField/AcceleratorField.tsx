@@ -38,6 +38,6 @@ export default class AcceleratorField extends React.Component<AcceleratorFieldPr
   }
 
   get onChange() {
-    return this.props.onChange;
+    return this.props.onChange.bind(this);
   }
 }

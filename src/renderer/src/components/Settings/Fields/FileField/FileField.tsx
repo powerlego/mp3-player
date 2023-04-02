@@ -38,6 +38,6 @@ export default class FileField extends React.Component<FileFieldProps> {
   }
 
   get onChange() {
-    return this.props.onChange;
+    return this.props.onChange.bind(this);
   }
 }

@@ -38,6 +38,6 @@ export default class ListField extends React.Component<ListFieldProps> {
   }
 
   get onChange() {
-    return this.props.onChange;
+    return this.props.onChange.bind(this);
   }
 }

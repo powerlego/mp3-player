@@ -40,6 +40,6 @@ export default class RadioField extends React.Component<RadioFieldProps> {
   }
 
   get onChange() {
-    return this.props.onChange;
+    return this.props.onChange.bind(this);
   }
 }

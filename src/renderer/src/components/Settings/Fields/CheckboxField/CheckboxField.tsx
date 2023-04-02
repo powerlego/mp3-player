@@ -38,6 +38,6 @@ export default class CheckboxField extends React.Component<CheckboxFieldProps> {
   }
 
   get onChange() {
-    return this.props.onChange;
+    return this.props.onChange.bind(this);
   }
 }

@@ -38,6 +38,6 @@ export default class NumberField extends React.Component<NumberFieldProps> {
   }
 
   get onChange() {
-    return this.props.onChange;
+    return this.props.onChange.bind(this);
   }
 }
