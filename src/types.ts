@@ -89,6 +89,19 @@ export type SettingsItem = {
     | "directory";
   label: string;
   key: string;
+  min?: number;
+  max?: number;
+  step?: number;
   description?: string;
-  options?: string[];
+  options?: RadioOption[] | DropdownOption[];
+};
+
+export type RadioOption = {
+  label: string;
+  value: string | number | boolean;
+};
+
+export type DropdownOption = {
+  label: string;
+  value: string | number | boolean;
 };
