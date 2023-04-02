@@ -1,5 +1,5 @@
 import React, { SyntheticEvent } from "react";
-import { getPosX } from "@renderer/utils";
+import getPosX from "@utils/getPosX";
 
 type VolumeBarProps = {
   audio: HTMLAudioElement | null;
@@ -45,10 +45,12 @@ function VolumeBar({ audio, initVolume, i18nVolumeControl }: VolumeBarProps): JS
     if (relativePos < 0) {
       currentVol = 0;
       currentVolPos = "0%";
-    } else if (relativePos > volumeBarRect.width) {
+    }
+    else if (relativePos > volumeBarRect.width) {
       currentVol = 1;
       currentVolPos = "100%";
-    } else {
+    }
+    else {
       currentVol = relativePos / maxRelativePos;
       currentVolPos = `${(relativePos / maxRelativePos) * 100}%`;
     }
@@ -86,7 +88,8 @@ function VolumeBar({ audio, initVolume, i18nVolumeControl }: VolumeBarProps): JS
     if (event instanceof MouseEvent) {
       window.removeEventListener("mousemove", handleWindowMouseOrTouchMove);
       window.removeEventListener("mouseup", handleWindowMouseOrTouchUp);
-    } else {
+    }
+    else {
       window.removeEventListener("touchmove", handleWindowMouseOrTouchMove);
       window.removeEventListener("touchend", handleWindowMouseOrTouchUp);
     }
@@ -105,7 +108,8 @@ function VolumeBar({ audio, initVolume, i18nVolumeControl }: VolumeBarProps): JS
     if (event.nativeEvent instanceof MouseEvent) {
       window.addEventListener("mousemove", handleWindowMouseOrTouchMove);
       window.addEventListener("mouseup", handleWindowMouseOrTouchUp);
-    } else {
+    }
+    else {
       window.addEventListener("touchmove", handleWindowMouseOrTouchMove);
       window.addEventListener("touchend", handleWindowMouseOrTouchUp);
     }
@@ -148,54 +152,56 @@ function VolumeBar({ audio, initVolume, i18nVolumeControl }: VolumeBarProps): JS
       </div>
     );
   }
-  return !isAudioAvailable ? (
-    <div
-      aria-label={i18nVolumeControl}
-      className="flex h-5 w-full flex-1 flex-row items-center justify-center"
-      ref={volumeBar}
-      role="progressbar"
-    >
-      <div className="relative box-border h-1 w-full rounded-full bg-gray-450 dark:bg-gray-600">
-        <div className="absolute z-10 box-border h-full rounded-full bg-gray-500 dark:bg-gray-550" />
+  return !isAudioAvailable
+    ? (
+      <div
+        aria-label={i18nVolumeControl}
+        className="flex h-5 w-full flex-1 flex-row items-center justify-center"
+        ref={volumeBar}
+        role="progressbar"
+      >
+        <div className="relative box-border h-1 w-full rounded-full bg-gray-450 dark:bg-gray-600">
+          <div className="absolute z-10 box-border h-full rounded-full bg-gray-500 dark:bg-gray-550" />
+        </div>
       </div>
-    </div>
-  ) : (
-    <div
-      aria-label={i18nVolumeControl}
-      aria-valuemax={100}
-      aria-valuemin={0}
-      aria-valuenow={Number((audio.volume * 100).toFixed(0))}
-      className="flex h-5 w-full flex-1 flex-row items-center justify-center group"
-      ref={volumeBar}
-      role="progressbar"
-      onContextMenu={handleContextMenu}
-      onMouseDown={handleVolumeControlMouseOrTouchDown}
-      onTouchStart={handleVolumeControlMouseOrTouchDown}
-    >
-      <div className="relative box-border h-1 w-full rounded-full bg-gray-450 dark:bg-gray-600">
-        <div
-          style={{ left: currentVolumePos }}
-          className={`absolute z-20 box-border rounded-full h-13/4 aspect-square group-hover:scale-100 ${
-            isDragging ? "scale-100" : "scale-0"
-          }`}
-        >
+    )
+    : (
+      <div
+        aria-label={i18nVolumeControl}
+        aria-valuemax={100}
+        aria-valuemin={0}
+        aria-valuenow={Number((audio.volume * 100).toFixed(0))}
+        className="flex h-5 w-full flex-1 flex-row items-center justify-center group"
+        ref={volumeBar}
+        role="progressbar"
+        onContextMenu={handleContextMenu}
+        onMouseDown={handleVolumeControlMouseOrTouchDown}
+        onTouchStart={handleVolumeControlMouseOrTouchDown}
+      >
+        <div className="relative box-border h-1 w-full rounded-full bg-gray-450 dark:bg-gray-600">
           <div
-            className={`absolute h-full w-full top-[calc((50%*-1)+1px)] ml-[calc(50%*-1)] box-border rounded-full shadow shadow-gray-800 dark:shadow-gray-250 group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250 ${
-              isDragging ? "bg-gray-550 dark:bg-gray-250" : "bg-gray-450 dark:bg-gray-600"
+            style={{ left: currentVolumePos }}
+            className={`absolute z-20 box-border rounded-full h-13/4 aspect-square group-hover:scale-100 ${
+              isDragging ? "scale-100" : "scale-0"
+            }`}
+          >
+            <div
+              className={`absolute h-full w-full top-[calc((50%*-1)+1px)] ml-[calc(50%*-1)] box-border rounded-full shadow shadow-gray-800 dark:shadow-gray-250 group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250 ${
+                isDragging ? "bg-gray-550 dark:bg-gray-250" : "bg-gray-450 dark:bg-gray-600"
+              }`}
+            />
+          </div>
+          <div
+            style={{ width: currentVolumePos }}
+            className={`absolute z-10 box-border h-full rounded-full group-hover:bg-green-500 dark:group-hover:bg-green-500 ${
+              isDragging
+                ? "bg-green-500 dark:bg-green-500 hover:bg-green-500 dark:hover:bg-green-500"
+                : "bg-gray-600 dark:bg-gray-250"
             }`}
           />
         </div>
-        <div
-          style={{ width: currentVolumePos }}
-          className={`absolute z-10 box-border h-full rounded-full group-hover:bg-green-500 dark:group-hover:bg-green-500 ${
-            isDragging
-              ? "bg-green-500 dark:bg-green-500 hover:bg-green-500 dark:hover:bg-green-500"
-              : "bg-gray-600 dark:bg-gray-250"
-          }`}
-        />
       </div>
-    </div>
-  );
+    );
 }
 
 // class VolumeBarClass extends Component<VolumeBarProps, VolumeBarState> {
