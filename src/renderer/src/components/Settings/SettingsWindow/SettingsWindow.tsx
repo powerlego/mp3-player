@@ -1,72 +1,53 @@
 import { SettingsSection } from "@/types";
 import React from "react";
-import _ from "lodash";
-import SettingsGroup from "../Fields/SettingsGroup";
+import debounce from "@utils/debounce";
+import SettingsMainWindow from "../SettingsMainWindow";
 
-type SettingsWindowProps = {
-  activeSection?: string;
+const allSections = window.settings.getSections();
+const preferences = window.settings.getPreferences();
+
+const dSavePreferences = debounce((preferences) => {
+  window.settings.setPreferences(preferences);
+}, 200);
+
+type SettingsWindowState = {
+  activeSection: string;
   sections: SettingsSection[];
   preferences: { [key: string]: any };
-  onFieldChange: (key: string, value: any) => void;
 };
 
-export default class SettingsWindow extends React.Component<SettingsWindowProps> {
-  private mainRef: React.RefObject<HTMLDivElement>;
-  constructor(props: SettingsWindowProps) {
-    super(props);
-    this.mainRef = React.createRef();
+for (const section of allSections) {
+  if (!preferences[section.id]) {
+    preferences[section.id] = {};
   }
+}
 
-  componentDidUpdate(prevProps: Readonly<SettingsWindowProps>): void {
-    if (this.props.activeSection !== prevProps.activeSection) {
-      this.mainRef.current?.scrollTo({ top: 0 });
-    }
+export default class SettingsWindow extends React.Component<Record<string, never>, SettingsWindowState> {
+  constructor(props: Record<string, never>) {
+    super(props);
+    this.state = {
+      activeSection: allSections[0].id,
+      sections: allSections,
+      preferences,
+    };
   }
 
   render() {
-    const { preferences, section, onFieldChange } = this;
-    const groups = this.form?.groups.map((group, idx) => (
-      <SettingsGroup
-        group={group}
-        key={idx}
-        label={group.label}
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-non-null-assertion
-        preferences={preferences[section!.id]}
-        onFieldChange={onFieldChange}
-      />
-    ));
-
     return (
-      <div
-        className="settings-window h-full min-h-full w-[600px] min-w-[600px] max-w-[600px] p-3 text-sm cursor-default overflow-x-hidden overflow-y-auto"
-        ref={this.mainRef}
-      >
-        {groups}
-      </div>
+      <>
+        <SettingsMainWindow {...this.state} onFieldChange={this.onFieldChange.bind(this)} />
+      </>
     );
   }
 
-  get preferences() {
-    return this.props.preferences;
-  }
+  onFieldChange(key: string, value: any) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    preferences[this.state.activeSection][key] = value;
 
-  get section() {
-    return _.find(this.sections, { id: this.activeSection });
-  }
+    this.setState({
+      preferences,
+    });
 
-  get sections() {
-    return this.props.sections;
-  }
-
-  get activeSection() {
-    return this.props.activeSection;
-  }
-
-  get form() {
-    return this.section?.form;
-  }
-
-  get onFieldChange() {
-    return this.props.onFieldChange;
+    dSavePreferences(preferences);
   }
 }
