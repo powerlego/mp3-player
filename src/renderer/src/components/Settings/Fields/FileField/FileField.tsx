@@ -2,16 +2,42 @@ import { SettingsItem } from "@/types";
 import React from "react";
 
 type FileFieldProps = {
+  className?: string;
   field: SettingsItem;
   value: number;
-  onChange: (value: number) => void;
+  onChange: (value: any) => void;
 };
 
-export default function FileField({ field, value, onChange }: FileFieldProps) {
-  return (
-    <div className={`key-${field.key}`}>
-      <div>{field.label}</div>
-      <span>{value}</span>
-    </div>
-  );
+export default class FileField extends React.Component<FileFieldProps> {
+  render() {
+    return (
+      <div className={`key-${this.field.key}`}>
+        <div>{this.label}</div>
+        <span>{this.value}</span>
+      </div>
+    );
+  }
+
+  get className() {
+    return this.props.className || "";
+  }
+
+  get description() {
+    return this.field.description || "";
+  }
+  get field() {
+    return this.props.field;
+  }
+
+  get label() {
+    return this.field.label;
+  }
+
+  get value() {
+    return this.props.value || "";
+  }
+
+  get onChange() {
+    return this.props.onChange;
+  }
 }
