@@ -61,6 +61,16 @@ const settingsWindow = new SettingsWindow({
                 key: "test2",
                 description: "Test",
               },
+              {
+                type: "radio",
+                label: "Test",
+                key: "test3",
+                description: "Test",
+                options: [
+                  { label: "Test 1", value: "test1" },
+                  { label: "Test 2", value: "test2" },
+                ],
+              },
             ],
           },
         ],
