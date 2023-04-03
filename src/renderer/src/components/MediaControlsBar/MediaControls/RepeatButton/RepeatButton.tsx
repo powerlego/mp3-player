@@ -12,32 +12,39 @@ export default function RepeatButton({ audio }: RepeatButtonProps): JSX.Element 
   const handleRepeat = () => {
     if (repeat === 2) {
       setRepeat(0);
-    } else {
+    }
+    else {
       setRepeat(repeat + 1);
     }
   };
-  return isAudioAvailable ? (
-    <div className="h-8 aspect-square flex justify-center items-center" onClick={() => handleRepeat()}>
-      {repeat === 1 ? (
-        <LoopIcon
-          className="m-0 w-4 h-4 transition-all duration-300 ease-in-out fill-green-450 hover:fill-green-500 dark:fill-green-350 hover:dark:fill-green-450"
-          id="repeat-all"
-        />
-      ) : repeat === 2 ? (
-        <LoopOnceIcon
-          className="m-0 w-4 h-4 transition-all duration-300 ease-in-out fill-green-450 hover:fill-green-500 dark:fill-green-350 hover:dark:fill-green-450"
-          id="repeat-one"
-        />
-      ) : (
-        <LoopIcon
-          className="m-0 w-4 h-4 transition-all duration-300 ease-in-out non-scale-stroke fill-gray-600 hover:fill-gray-550 dark:fill-gray-500 hover:dark:fill-gray-350"
-          id="repeat-none"
-        />
-      )}
-    </div>
-  ) : (
-    <div className="h-8 aspect-square flex justify-center items-center">
-      <LoopIcon className="m-0 w-4 h-4 fill-gray-450 dark:fill-gray-550" id="repeat-none" />
-    </div>
-  );
+  return isAudioAvailable
+    ? (
+      <div className="h-8 aspect-square flex justify-center items-center" onClick={() => handleRepeat()}>
+        {repeat === 1
+          ? (
+            <LoopIcon
+              className="m-0 w-4 h-4 transition-all duration-300 ease-in-out fill-green-700 hover:fill-green-800 dark:fill-green-600 hover:dark:fill-green-700"
+              id="repeat-all"
+            />
+          )
+          : repeat === 2
+            ? (
+              <LoopOnceIcon
+                className="m-0 w-4 h-4 transition-all duration-300 ease-in-out fill-green-700 hover:fill-green-800 dark:fill-green-600 hover:dark:fill-green-700"
+                id="repeat-one"
+              />
+            )
+            : (
+              <LoopIcon
+                className="m-0 w-4 h-4 transition-all duration-300 ease-in-out non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
+                id="repeat-none"
+              />
+            )}
+      </div>
+    )
+    : (
+      <div className="h-8 aspect-square flex justify-center items-center">
+        <LoopIcon className="m-0 w-4 h-4 fill-gray-350 dark:fill-gray-750" id="repeat-none" />
+      </div>
+    );
 }

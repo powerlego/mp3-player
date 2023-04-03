@@ -25,7 +25,7 @@ export default function SongArtists(props: SongArtistsProps) {
   const renderArtist = React.useCallback((artist: string, index: number) => {
     return (
       <span
-        className="text-sm text-gray-800 dark:text-gray-200 font-normal truncate cursor-default hover:underline"
+        className="text-sm text-gray-900 dark:text-gray-100 font-normal truncate cursor-default hover:underline"
         key={index}
       >
         {artist}

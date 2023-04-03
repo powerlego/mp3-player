@@ -30,7 +30,7 @@ function TrackProgress({
     <div className="w-full flex flex-row items-center justify-evenly gap-2">
       <CurrentTime
         audio={audio}
-        className="min-w-[2.5rem] text-xs text-gray-700 dark:text-gray-350 text-right"
+        className="min-w-[2.5rem] text-xs text-gray-800 dark:text-gray-250 text-right"
         defaultCurrentTime={defaultCurrentTime}
         timeFormat={timeFormat}
       />
@@ -42,7 +42,7 @@ function TrackProgress({
       />
       <Duration
         audio={audio}
-        className="min-w-[2.5rem] text-xs text-gray-700 dark:text-gray-350 text-left"
+        className="min-w-[2.5rem] text-xs text-gray-800 dark:text-gray-250 text-left"
         defaultDuration={defaultDuration}
         timeFormat={timeFormat}
       />

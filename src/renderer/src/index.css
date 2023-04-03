@@ -27,31 +27,38 @@ body {
 }
 
 .cet-titlebar {
-  @apply !bg-gray-150 dark:!bg-gray-850;
+  @apply !bg-gray-100 dark:!bg-gray-920;
 }
 
 .cet-menubar-menu-container {
-  @apply !bg-gray-200 dark:!bg-gray-900;
+  @apply !bg-gray-150 dark:!bg-gray-850;
 }
 
 .cet-action-label.separator {
-  @apply !border-gray-750 dark:!border-gray-250;
+  @apply !border-gray-700 dark:!border-gray-300;
+}
+
+.cet-menubar-menu-button:hover {
+  @apply !bg-gray-800 dark:!bg-gray-150 !bg-opacity-10 dark:!bg-opacity-10;
+}
+.cet-menubar-menu-button:focus {
+  @apply !bg-gray-800 dark:!bg-gray-150 !bg-opacity-10 dark:!bg-opacity-10;
 }
 
 .keybinding {
-  @apply !text-gray-900 dark:!text-gray-100;
+  @apply !text-black dark:!text-white;
 }
 
 .cet-menu-item-icon {
-  @apply !fill-gray-900 dark:!fill-gray-100;
+  @apply !fill-black dark:!fill-white;
 }
 
 .cet-action-label {
-  @apply !text-gray-900 dark:!text-gray-100;
+  @apply !text-black dark:!text-white;
 }
 
 .focused > .cet-action-menu-item {
-  @apply !bg-gray-900 dark:!bg-gray-100 !bg-opacity-10 dark:!bg-opacity-10;
+  @apply !bg-gray-800 dark:!bg-gray-150 !bg-opacity-10 dark:!bg-opacity-10;
 }
 
 .cet-icon {
@@ -59,53 +66,53 @@ body {
 }
 
 .cet-icon > svg {
-  @apply !fill-gray-850 dark:!fill-gray-150;
+  @apply !fill-gray-900 dark:!fill-gray-200;
 }
 
 .cet-menubar-menu-title {
-  @apply !text-gray-900 dark:!text-gray-100;
+  @apply !text-black dark:!text-white;
 }
 
 .cet-titlebar .cet-window-title {
-  @apply !text-gray-900 dark:!text-gray-100 !flex-auto !flex-shrink !justify-center !flex;
+  @apply !text-black dark:!text-white !flex-auto !flex-shrink !justify-center !flex;
 }
 
 .cet-submenu-indicator > svg {
-  @apply !fill-gray-550 dark:!fill-gray-450;
+  @apply !fill-gray-600 dark:!fill-gray-500;
 }
 
 .cet-submenu-item:hover .cet-submenu-indicator > svg {
-  @apply !fill-gray-900 dark:!fill-gray-100;
+  @apply !fill-black dark:!fill-white;
 }
 
 @layer components {
   .tooltip-tip {
     @apply absolute rounded left-1/2 -translate-x-1/2 p-2
-      bg-gray-600 dark:bg-gray-550 text-white dark:text-white text-sm leading-none whitespace-nowrap z-50
+      bg-gray-850 dark:bg-gray-800 text-white dark:text-white text-sm leading-none whitespace-nowrap z-50
       before:left-1/2 before:border-solid before:border-transparent before:h-0 before:w-0 before:absolute
       before:pointer-events-none before:border-[calc(1*var(--tooltip-arrow-size))]
       before:ml-[calc(-1*var(--tooltip-arrow-size))];
   }
 
   .tooltip-tip.top {
-    @apply before:top-full before:border-t-gray-600 dark:before:border-t-gray-550
+    @apply before:top-full before:border-t-gray-850 dark:before:border-t-gray-800
       top-[calc(-1*var(--tooltip-margin))];
   }
 
   .tooltip-tip.right {
     @apply before:left-[calc(-1*var(--tooltip-arrow-size))] before:top-1/2 
-      before:translate-x-0 before:-translate-y-1/2 before:border-r-gray-600 dark:before:border-r-gray-550
+      before:translate-x-0 before:-translate-y-1/2 before:border-r-gray-850 dark:before:border-r-gray-800
       left-[calc(100%+var(--tooltip-margin))] top-1/2 translate-x-0 -translate-y-1/2;
   }
 
   .tooltip-tip.bottom {
-    @apply before:bottom-full before:border-b-gray-600 dark:before:border-b-gray-550
+    @apply before:bottom-full before:border-b-gray-850 dark:before:border-b-gray-800
       bottom-[calc(-1*var(--tooltip-margin))];
   }
 
   .tooltip-tip.left {
     @apply before:left-auto before:right-[calc(-2*var(--tooltip-arrow-size))] before:top-1/2 
-      before:translate-x-0 before:-translate-y-1/2 before:border-l-gray-600 dark:before:border-l-gray-550
+      before:translate-x-0 before:-translate-y-1/2 before:border-l-gray-850 dark:before:border-l-gray-800
       left-auto right-[calc(100%+var(--tooltip-margin))] top-1/2 translate-x-0 -translate-y-1/2;
   }
 
@@ -130,11 +137,53 @@ body {
   .slider-field::-webkit-slider-thumb {
     -webkit-appearance: none;
     border: 0;
-    @apply -mt-3 w-4 h-8 rounded-xl cursor-pointer bg-blue-300;
+    @apply -mt-3 w-4 h-8 rounded-xl cursor-pointer bg-blue-500;
   }
 
   .slider-field:focus::-webkit-slider-thumb {
-    @apply bg-blue-50;
+    @apply bg-blue-300;
+  }
+
+  .field-radio {
+    .radio-option {
+      @apply block relative pl-8 mb-3 cursor-pointer select-none transition-all duration-300 ease-out;
+
+      input {
+        @apply absolute opacity-0 cursor-pointer;
+      }
+
+      .check-circle {
+        @apply absolute top-0 left-0 w-5 h-5 bg-black dark:bg-white bg-opacity-0 dark:bg-opacity-0
+          border-gray-650 dark:border-gray-200 border border-solid rounded-full transition-all duration-300 ease-out;
+      }
+
+      &:hover input ~ .check-circle {
+        @apply bg-opacity-[0.05] dark:bg-opacity-10;
+      }
+
+      input:checked ~ .check-circle {
+        @apply bg-blue-500 dark:bg-blue-500 border-blue-500 dark:border-blue-500;
+      }
+
+      /* input:focus ~ .check-circle {
+        @apply;
+      } */
+
+      @keyframes zoom-in-check-circle {
+        0% {
+          transform: scale(0);
+        }
+        25% {
+          transform: scale(0.3);
+        }
+        50% {
+          transform: scale(0.8);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+    }
   }
 }
 

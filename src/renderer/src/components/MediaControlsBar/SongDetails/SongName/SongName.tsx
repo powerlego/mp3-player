@@ -57,7 +57,7 @@ export default function SongName(props: SongNameProps) {
               width: "fit-content",
             }}
           >
-            <span className="text-base text-gray-800 dark:text-gray-200 font-semibold cursor-default">{songName}</span>
+            <span className="text-base text-gray-900 dark:text-gray-100 font-semibold cursor-default">{songName}</span>
           </div>
         </div>
       </div>

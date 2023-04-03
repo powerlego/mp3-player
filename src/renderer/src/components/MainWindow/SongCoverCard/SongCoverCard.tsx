@@ -19,7 +19,7 @@ function SongCover(props: SongCoverProps) {
 function SongCoverButton() {
   return (
     <span
-      className="box-border relative flex rounded-full bg-green-450 dark:bg-green-350 items-center justify-center group-hover/button:scale-105"
+      className="box-border relative flex rounded-full bg-green-550 items-center justify-center group-hover/button:scale-105"
       style={{
         // eslint-disable-next-line @typescript-eslint/naming-convention
         WebkitTapHighlightColor: "transparent",

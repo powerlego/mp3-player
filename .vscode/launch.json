@@ -8,12 +8,17 @@
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron-vite",
       "windows": {
-        "name": "Launch Main Process (Windows)",
-        "type": "node",
-        "request": "launch",
         "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron-vite.cmd"
       },
       "runtimeArgs": ["--sourcemap"]
+    },
+    {
+      "name": "Electron: Renderer",
+      "type": "chrome",
+      "request": "attach",
+      "port": 5173,
+      "webRoot": "${workspaceRoot}",
+      "timeout": 30000
     }
   ]
 }

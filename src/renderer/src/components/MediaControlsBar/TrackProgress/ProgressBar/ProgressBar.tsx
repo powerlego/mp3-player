@@ -165,7 +165,7 @@ function ProgressBar({
         onMouseDown={handleMouseDownOrTouchStart}
         onTouchStart={handleMouseDownOrTouchStart}
       >
-        <div className="relative box-border rounded-full h-1 w-full bg-gray-450 dark:bg-gray-600 ">
+        <div className="relative box-border rounded-full h-1 w-full bg-gray-350 dark:bg-gray-750 ">
           <div
             style={{ left: currentTimePos }}
             className={`absolute z-20 box-border rounded-full h-13/4 aspect-square group-hover:scale-100 ${
@@ -180,8 +180,8 @@ function ProgressBar({
           </div>
           <div
             style={{ width: currentTimePos }}
-            className={`absolute z-10 box-border rounded-full h-full group-hover:bg-green-500 dark:group-hover:bg-green-500 ${
-              isDragging ? "bg-green-500 dark:bg-green-500" : "bg-gray-550 dark:bg-gray-250"
+            className={`absolute z-10 box-border rounded-full h-full group-hover:bg-green-700 dark:group-hover:bg-green-600 ${
+              isDragging ? "bg-green-700 dark:bg-green-600" : "bg-gray-550 dark:bg-gray-250"
             }`}
           />
         </div>
@@ -194,8 +194,8 @@ function ProgressBar({
         ref={progressRef}
         role="progressbar"
       >
-        <div className="relative box-border h-1 w-full rounded-full bg-gray-450 dark:bg-gray-600">
-          <div className="absolute z-10 box-border h-full rounded-full bg-gray-500 dark:bg-gray-550" />
+        <div className="relative box-border h-1 w-full rounded-full bg-gray-350 dark:bg-gray-750">
+          <div className="absolute z-10 box-border h-full rounded-full bg-gray-300 dark:bg-gray-600" />
         </div>
       </div>
     );
