@@ -148,7 +148,7 @@ export default class SettingsWindow extends EventEmitter2 {
       resizable: false,
       acceptFirstMouse: true,
       maximizable: false,
-      show: false,
+      show: true,
       frame: false,
       webPreferences: {
         preload: path.join(__dirname, "../preload/settings.js"),
