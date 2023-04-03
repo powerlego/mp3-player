@@ -14,18 +14,18 @@ export default class SliderField extends React.Component<SliderFieldProps> {
     return (
       <div className={`${this.className} field-slider key-${this.field.key}`}>
         <div className="font-bold mb-3 text-base p-1 text-black dark:text-white">{this.label}</div>
-        {/* <Tooltip className="w-full" content={this.description}> */}
-        <input
-          className="slider-field"
-          max={this.max}
-          min={this.min}
-          step={this.step}
-          type={"range"}
-          value={this.value}
-          onChange={this.onChange.bind(this)}
-        />
-        <label className="w-1/12 p-1 text-base">{this.value}</label>
-        {/* </Tooltip> */}
+        <Tooltip className="w-full" content={this.description}>
+          <input
+            className="slider-field"
+            max={this.max}
+            min={this.min}
+            step={this.step}
+            type={"range"}
+            value={this.value}
+            onChange={this.onChange.bind(this)}
+          />
+          <label className="w-1/12 p-1 text-base">{this.value}</label>
+        </Tooltip>
       </div>
     );
   }
