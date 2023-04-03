@@ -120,7 +120,7 @@ body {
     -webkit-appearance: none;
     -webkit-animation: 0.2s;
     outline: none;
-    @apply w-[88%] my-3 mx-0 bg-transparent transition-opacity ease-[ease] duration-200 opacity-[0.85]
+    @apply w-11/12 my-3 mx-0 bg-transparent transition-opacity ease-[ease] duration-200 opacity-[0.85]
       dark:opacity-100 hover:opacity-100 dark:hover:opacity-[0.85];
   }
 

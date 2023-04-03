@@ -9,10 +9,10 @@ export default function Settings(): JSX.Element {
 
   return (
     <>
-      <div className="absolute top-0 left-0 right-0 bottom-[4.5rem] bg-gray-300 dark:bg-[#1f2123] text-gray-800 dark:text-white flex flex-col">
+      <div className="absolute top-0 left-0 right-0 bottom-[4.5rem] bg-gray-180 dark:bg-gray-860 text-gray-800 dark:text-white flex flex-col">
         <SettingsWindow />
       </div>
-      <div className="absolute bottom-8 left-0 right-0 h-10 bg-gray-350 dark:bg-gray-900 text-gray-800 dark:text-white flex flex-row justify-end items-center">
+      <div className="absolute bottom-8 left-0 right-0 h-10 bg-gray-220 dark:bg-gray-880 text-gray-800 dark:text-white flex flex-row justify-end items-center">
         <div className="flex flex-row justify-between gap-2 mr-2">
           <SettingsButton onClick={() => window.close()}>
             <span className="text-sm">Cancel</span>

@@ -59,7 +59,7 @@ export default class SettingsGroup extends React.Component<SettingsGroupProps> {
       .filter((field) => field);
     return (
       <div className={`group-${this.group.id ?? ""}`}>
-        {this.label ? <div className="text-xl mb-3 font-bold">{this.label}</div> : <></>}
+        {this.label ? <div className="text-xl mb-3 font-bold text-black dark:text-white">{this.label}</div> : <></>}
         {fields}
       </div>
     );
