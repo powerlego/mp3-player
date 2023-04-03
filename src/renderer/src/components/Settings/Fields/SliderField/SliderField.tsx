@@ -22,7 +22,7 @@ export default class SliderField extends React.Component<SliderFieldProps> {
           step={this.step}
           type={"range"}
           value={this.value}
-          onChange={(e) => this.onChange(e.target.value)}
+          onChange={this.onChange.bind(this)}
         />
         {/* </Tooltip> */}
       </div>
@@ -61,7 +61,7 @@ export default class SliderField extends React.Component<SliderFieldProps> {
     return this.props.value || this.min;
   }
 
-  get onChange() {
-    return this.props.onChange.bind(this);
+  onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    return this.props.onChange(Number.parseInt(e.target.value, 10));
   }
 }

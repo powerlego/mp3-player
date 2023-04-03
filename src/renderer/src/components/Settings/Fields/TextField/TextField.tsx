@@ -21,9 +21,9 @@ export default class TextField extends React.Component<TextFieldProps> {
             type="text"
             value={this.value}
             className={
-              "w-full rounded-lg text-sm m-[1px] p-2 bg-gray-100 dark:bg-gray-650 border border-solid border-gray-350 dark:border-gray-550 transition-[border-color] duration-300 ease-out focus:m-0 focus:border-blue-200 dark:focus:border-blue-300 focus:border-2"
+              "w-full rounded-lg text-sm m-[1px] p-2 bg-gray-100 dark:bg-gray-850 border border-solid border-gray-350 dark:border-gray-750 transition-[border-color] duration-300 ease-out focus:m-0 focus:border-blue-500 dark:focus:border-blue-400 focus:border-2"
             }
-            onChange={(e) => this.onChange(e.target.value)}
+            onChange={this.onChange.bind(this)}
           />
         </Tooltip>
       </div>
@@ -49,7 +49,7 @@ export default class TextField extends React.Component<TextFieldProps> {
     return this.props.value || "";
   }
 
-  get onChange() {
-    return this.props.onChange.bind(this);
+  onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    return this.props.onChange(e.target.value);
   }
 }
