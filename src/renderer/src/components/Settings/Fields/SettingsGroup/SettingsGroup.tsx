@@ -47,7 +47,7 @@ export default class SettingsGroup extends React.Component<SettingsGroupProps> {
         }
         return (
           <Field
-            className={"mb-5 last:mb-0"}
+            className={"mb-5 pl-2 last:mb-0"}
             field={field}
             key={idx}
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

@@ -13,7 +13,7 @@ export default class SliderField extends React.Component<SliderFieldProps> {
   render() {
     return (
       <div className={`${this.className} field-slider key-${this.field.key}`}>
-        <div className="font-bold mb-3 text-base p-1 text-black dark:text-white">{this.label}</div>
+        <div className="font-bold mb-3 text-base text-black dark:text-white">{this.label}</div>
         <Tooltip className="w-full" content={this.description}>
           <input
             className="slider-field"
