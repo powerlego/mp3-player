@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require("tailwindcss/plugin");
 module.exports = {
   darkMode: "class",
   content: ["./src/**/*.{js,jsx,ts,tsx,html}", "./public/index.html"],
@@ -16,6 +17,16 @@ module.exports = {
       minWidth: {
         56: "14rem",
         "2/5": "40%",
+      },
+
+      animationDelay: {
+        50: "50ms",
+        75: "75ms",
+        100: "100ms",
+        250: "250ms",
+        500: "500ms",
+        750: "750ms",
+        1000: "1000ms",
       },
 
       height: {
@@ -149,5 +160,19 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@savvywombat/tailwindcss-grid-areas")],
+  plugins: [
+    require("@savvywombat/tailwindcss-grid-areas"),
+    plugin(function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          "animation-delay": (value) => ({
+            "animation-delay": value,
+          }),
+        },
+        {
+          values: theme("animationDelay"),
+        }
+      );
+    }),
+  ],
 };
