@@ -28,8 +28,25 @@ module.exports = {
         "9/4": "225%",
         "13/4": "325%",
       },
+      keyframes: {
+        "zoom-in-check-circle": {
+          "0%": {
+            transform: "scale(0)",
+          },
+          "25%": {
+            transform: "scale(0.3)",
+          },
+          "50%": {
+            transform: "scale(0.8)",
+          },
+          "100%": {
+            transform: "scale(1)",
+          },
+        },
+      },
       animation: {
         imageFadeInAnimation: "imageFadeInAnimation .25s ease",
+        "zoom-in-check-circle": "zoom-in-check-circle 0.3s 1",
       },
 
       spacing: {

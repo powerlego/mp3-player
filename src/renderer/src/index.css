@@ -154,7 +154,7 @@ body {
 
       .check-circle {
         @apply absolute top-0 left-0 w-5 h-5 bg-black dark:bg-white bg-opacity-0 dark:bg-opacity-0
-          border-gray-650 dark:border-gray-200 border border-solid rounded-full transition-all duration-300 ease-out;
+          border-gray-650 dark:border-gray-400 border border-solid rounded-full transition-all duration-300 ease-out;
       }
 
       &:hover input ~ .check-circle {
@@ -165,38 +165,38 @@ body {
         @apply bg-blue-500 dark:bg-blue-500 border-blue-500 dark:border-blue-500;
       }
 
-      /* input:focus ~ .check-circle {
-        @apply;
-      } */
+      input:focus ~ .check-circle {
+        @apply bg-blue-400 dark:bg-blue-400 border-blue-400 dark:border-blue-400;
+      }
 
-      @keyframes zoom-in-check-circle {
-        0% {
-          transform: scale(0);
-        }
-        25% {
-          transform: scale(0.3);
-        }
-        50% {
-          transform: scale(0.8);
-        }
-        100% {
-          transform: scale(1);
-        }
+      &:hover input:checked ~ .check-circle {
+        @apply bg-blue-600 dark:bg-blue-600 border-blue-600 dark:border-blue-600;
+      }
+
+      .check-circle:after {
+        content: "";
+        animation-delay: 0.3s;
+        @apply absolute hidden scale-100 animate-zoom-in-check-circle top-[3px] left-[3px] w-3 h-3 rounded-full
+          bg-transparent border-2 border-solid border-white dark:border-gray-900;
+      }
+
+      input:checked ~ .check-circle:after {
+        @apply block;
       }
     }
   }
-}
 
-@layer utilities {
-  .non-scale-stroke {
-    vector-effect: non-scaling-stroke;
+  @layer utilities {
+    .non-scale-stroke {
+      vector-effect: non-scaling-stroke;
+    }
   }
-}
 
-::-webkit-scrollbar {
-  background-color: transparent;
-}
+  ::-webkit-scrollbar {
+    background-color: transparent;
+  }
 
-::-webkit-scrollbar-thumb {
-  @apply bg-gray-500 dark:bg-green-400;
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-500 dark:bg-green-400;
+  }
 }
