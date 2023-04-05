@@ -4,9 +4,6 @@ import debounce from "@utils/debounce";
 import SettingsMainWindow from "../SettingsMainWindow";
 import SettingsButton from "@renderer/components/Settings/SettingsButton/";
 
-const allSections = window.settings.getSections();
-const preferences = window.settings.getPreferences();
-
 const dSavePreferences = debounce((preferences) => {
   window.settings.setPreferences(preferences);
 }, 200);
@@ -15,23 +12,43 @@ type SettingsWindowState = {
   activeSection: string;
   sections: SettingsSection[];
   preferences: { [key: string]: any };
+  oldPreferences: { [key: string]: any };
 };
-
-for (const section of allSections) {
-  if (!preferences[section.id]) {
-    preferences[section.id] = {};
-  }
-}
 
 export default class SettingsWindow extends React.Component<Record<string, never>, SettingsWindowState> {
   constructor(props: Record<string, never>) {
     super(props);
+    const allSections = window.settings.getSections();
+    const preferences = window.settings.getPreferences();
+    for (const section of allSections) {
+      if (!preferences[section.id]) {
+        preferences[section.id] = {};
+      }
+    }
+
     this.state = {
       activeSection: allSections[0].id,
       sections: allSections,
       preferences,
+      oldPreferences: structuredClone(preferences) as { [key: string]: any },
     };
   }
+
+  isDifferentPreferences = (a: { [key: string]: any }, b: { [key: string]: any }) => {
+    for (const key of Object.keys(a)) {
+      if (typeof a[key] === "object") {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        if (this.isDifferentPreferences(a[key], b[key])) {
+          return true;
+        }
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      else if (a[key] !== b[key]) {
+        return true;
+      }
+    }
+    return false;
+  };
 
   render() {
     return (
@@ -44,14 +61,19 @@ export default class SettingsWindow extends React.Component<Record<string, never
             <SettingsButton onClick={() => window.close()}>
               <span className="text-sm">Cancel</span>
             </SettingsButton>
-            {/* eslint-disable-next-line @typescript-eslint/no-misused-promises*/}
-            <SettingsButton onClick={() => dSavePreferences(preferences)}>
+            <SettingsButton
+              enabled={this.isDifferentPreferences(this.preferences, this.state.oldPreferences)}
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+              onClick={async () => {
+                await dSavePreferences(this.preferences);
+              }}
+            >
               <span className="text-sm">Apply</span>
             </SettingsButton>
             <SettingsButton
               // eslint-disable-next-line @typescript-eslint/no-misused-promises
               onClick={async () => {
-                await dSavePreferences(preferences);
+                await dSavePreferences(this.preferences);
                 window.close();
               }}
             >
@@ -62,13 +84,16 @@ export default class SettingsWindow extends React.Component<Record<string, never
       </>
     );
   }
+  get preferences() {
+    return this.state.preferences;
+  }
 
   onFieldChange(key: string, value: any) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    preferences[this.state.activeSection][key] = value;
+    this.preferences[this.state.activeSection][key] = value;
 
     this.setState({
-      preferences,
+      preferences: this.preferences,
     });
 
     // dSavePreferences(preferences);
