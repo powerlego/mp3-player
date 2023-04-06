@@ -66,6 +66,9 @@ export default class SettingsWindow extends React.Component<Record<string, never
               // eslint-disable-next-line @typescript-eslint/no-misused-promises
               onClick={async () => {
                 await dSavePreferences(this.preferences);
+                this.setState({
+                  oldPreferences: structuredClone(this.preferences) as { [key: string]: any },
+                });
               }}
             >
               <span className="text-sm">Apply</span>
