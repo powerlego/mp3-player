@@ -92,6 +92,7 @@ export type SettingsItem = {
   min?: number;
   max?: number;
   step?: number;
+  precision?: number;
   description?: string;
   options?: RadioOption[] | DropdownOption[];
 };
