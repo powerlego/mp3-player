@@ -71,6 +71,12 @@ const settingsWindow = new SettingsWindow({
                   { label: "Test 2", value: "test2" },
                 ],
               },
+              {
+                type: "number",
+                label: "Test",
+                key: "test4",
+                description: "Test",
+              },
             ],
           },
         ],
