@@ -21,7 +21,7 @@ export default function Tooltip({ children, content, direction, delay, className
     clearTimeout(timeout);
     setActive(false);
   };
-
+  if (!content) {return <>{children}</>;}
   return (
     <div className={`${className ?? ""} inline-block relative`} onMouseEnter={showTip} onMouseLeave={hideTip}>
       {children}
