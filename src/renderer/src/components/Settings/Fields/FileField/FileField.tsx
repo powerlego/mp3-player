@@ -1,4 +1,5 @@
 import { SettingsItem } from "@/types";
+import Tooltip from "@renderer/components/Tooltip";
 import React from "react";
 
 type FileFieldProps = {
@@ -11,9 +12,11 @@ type FileFieldProps = {
 export default class FileField extends React.Component<FileFieldProps> {
   render() {
     return (
-      <div className={`key-${this.field.key}`}>
-        <div>{this.label}</div>
-        <span>{this.value}</span>
+      <div className={`${this.className} field-file key-${this.field.key}`}>
+        <div className="font-bold mb-3 text-base text-black dark:text-white">{this.label}</div>
+        <Tooltip className="w-full" content={this.description}>
+          <span>{this.value}</span>
+        </Tooltip>
       </div>
     );
   }
@@ -37,7 +40,7 @@ export default class FileField extends React.Component<FileFieldProps> {
     return this.props.value || "";
   }
 
-  get onChange() {
-    return this.props.onChange.bind(this);
+  onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    return this.props.onChange(e.target.value);
   }
 }
