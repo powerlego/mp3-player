@@ -1,7 +1,7 @@
 import React from "react";
 import { SettingsItem } from "@/types";
 import newGuid from "@utils/newGuid";
-import Tooltip from "@renderer/components/Tooltip/Tooltip";
+import Tooltip from "@renderer/components/Tooltip";
 
 type RadioFieldProps = {
   className?: string;
