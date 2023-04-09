@@ -81,6 +81,13 @@ const settingsWindow = new SettingsWindow({
                 description: "Test",
                 min: 0,
               } as SettingsNumberField,
+              {
+                type: "list",
+                label: "Test",
+                key: "test5",
+                description: "Test",
+                orderable: true,
+              },
             ],
           },
         ],
