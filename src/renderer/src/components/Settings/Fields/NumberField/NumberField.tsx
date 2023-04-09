@@ -1,11 +1,11 @@
-import { SettingsItem } from "@/types";
+import { SettingsNumberField } from "@/types";
 import Tooltip from "@renderer/components/Tooltip";
 import { evaluate, round } from "mathjs";
 import React from "react";
 
 type NumberFieldProps = {
   className?: string;
-  field: SettingsItem;
+  field: SettingsNumberField;
   value: number;
   onChange: (value: any) => void;
 };
@@ -46,7 +46,7 @@ export default class NumberField extends React.Component<NumberFieldProps, Numbe
             <div className="w-5 flex flex-col gap-[1px]">
               <button
                 aria-label="button"
-                className="transition-[opacity, background-color] duration-300 ease-out opacity-0 group-hover:opacity-100 py-1 w-full h-1/2 rounded-t-md bg-gray-50 dark:bg-gray-650 hover:bg-gray-150 dark:hover:bg-gray-500"
+                className="transition-[opacity, background-color] duration-300 ease-out opacity-0 group-hover:opacity-100 py-1 w-full h-1/2 rounded-t-md bg-gray-50 dark:bg-gray-650 hover:bg-gray-150 dark:hover:bg-gray-500 active:bg-gray-200 dark:active:bg-gray-700"
                 onMouseDown={() => {
                   this.handleMouseDown("up");
                 }}
@@ -63,7 +63,7 @@ export default class NumberField extends React.Component<NumberFieldProps, Numbe
               </button>
               <button
                 aria-label="button"
-                className="opacity-0 transition-[opacity, background-color] duration-300 ease-out group-hover:opacity-100 w-full py-1 h-1/2 rounded-b-md bg-gray-50 dark:bg-gray-650 hover:bg-gray-150 dark:hover:bg-gray-500"
+                className="opacity-0 transition-[opacity, background-color] duration-300 ease-out group-hover:opacity-100 w-full py-1 h-1/2 rounded-b-md bg-gray-50 dark:bg-gray-650 hover:bg-gray-150 dark:hover:bg-gray-500 active:bg-gray-200 dark:active:bg-gray-700"
                 onMouseDown={() => {
                   this.handleMouseDown("down");
                 }}
@@ -101,26 +101,27 @@ export default class NumberField extends React.Component<NumberFieldProps, Numbe
   }
 
   get min() {
-    return this.field.min || Number.MIN_SAFE_INTEGER;
+    return this.field.min ?? Number.MIN_SAFE_INTEGER;
   }
 
   get max() {
-    return this.field.max || Number.MAX_SAFE_INTEGER;
+    return this.field.max ?? Number.MAX_SAFE_INTEGER;
   }
 
   get step() {
-    return this.field.step || 1;
+    return this.field.step ?? 1;
   }
 
   get precision() {
-    return this.field.precision || 0;
+    const _precision = this.field.precision ?? 0;
+    if (_precision < 0) {
+      return 0;
+    }
+    return _precision;
   }
 
   get value() {
-    if (this.state.value === 0) {
-      return 0;
-    }
-    return this.state.value || "";
+    return this.state.value ?? "";
   }
 
   stop() {
@@ -158,7 +159,7 @@ export default class NumberField extends React.Component<NumberFieldProps, Numbe
       value = this.max;
     }
     this.setState({ value, oldValue: value });
-    if (value + 1 < this.max || isNaN(value)) {
+    if (value < this.max || isNaN(value)) {
       this._timer = setTimeout(
         () => {
           this.increment(true);
@@ -176,7 +177,7 @@ export default class NumberField extends React.Component<NumberFieldProps, Numbe
       value = this.min;
     }
     this.setState({ value, oldValue: value });
-    if (value - 1 > this.min || isNaN(value)) {
+    if (value > this.min || isNaN(value)) {
       this._timer = setTimeout(
         () => {
           this.decrement(true);
@@ -190,23 +191,35 @@ export default class NumberField extends React.Component<NumberFieldProps, Numbe
     const value = this.value as string;
     try {
       let result = evaluate(value) as number | undefined;
-
       if (typeof result === "undefined" || isNaN(result)) {
-        this.setState({ value: this.state.oldValue });
-        return this.props.onChange(this.state.oldValue);
+        const oldValueClamped = this.clamp(this.state.oldValue);
+        this.setState({ value: oldValueClamped, oldValue: oldValueClamped });
+        return this.props.onChange(oldValueClamped);
       }
       result = round(result, this.precision);
       if (result < this.min || result > this.max) {
-        this.setState({ value: this.state.oldValue });
-        return this.props.onChange(this.state.oldValue);
+        const oldValueClamped = this.clamp(this.state.oldValue);
+        this.setState({ value: oldValueClamped, oldValue: oldValueClamped });
+        return this.props.onChange(oldValueClamped);
       }
       this.setState({ value: result, oldValue: result });
       return this.props.onChange(result);
     }
     catch (e) {
-      this.setState({ value: this.state.oldValue });
-      return this.props.onChange(this.state.oldValue);
+      const oldValueClamped = this.clamp(this.state.oldValue);
+      this.setState({ value: oldValueClamped, oldValue: oldValueClamped });
+      return this.props.onChange(oldValueClamped);
     }
+  }
+
+  clamp(value: number) {
+    if (value < this.min) {
+      return this.min;
+    }
+    if (value > this.max) {
+      return this.max;
+    }
+    return value;
   }
 
   onChange(e: React.ChangeEvent<HTMLInputElement>) {

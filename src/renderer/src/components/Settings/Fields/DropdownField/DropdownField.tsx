@@ -1,10 +1,10 @@
-import { SettingsItem } from "@/types";
+import { SettingsDropdownField } from "@/types";
 import Tooltip from "@renderer/components/Tooltip";
 import React from "react";
 
 type DropdownFieldProps = {
   className?: string;
-  field: SettingsItem;
+  field: SettingsDropdownField;
   value: number;
   onChange: (value: any) => void;
 };

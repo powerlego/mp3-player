@@ -1,4 +1,18 @@
-import { Group } from "@/types";
+import {
+  Group,
+  SettingsAcceleratorField,
+  SettingsButtonField,
+  SettingsCheckboxField,
+  SettingsColorField,
+  SettingsDirectoryField,
+  SettingsDropdownField,
+  SettingsFileField,
+  SettingsListField,
+  SettingsNumberField,
+  SettingsRadioField,
+  SettingsSliderField,
+  SettingsTextField,
+} from "@/types";
 import React from "react";
 
 import AcceleratorField from "../AcceleratorField";
@@ -39,23 +53,40 @@ type SettingsGroupProps = {
 export default class SettingsGroup extends React.Component<SettingsGroupProps> {
   render() {
     const fields = this.fields
-      .map((field, idx) => {
-        const Field = fieldMap[field.type] as React.ComponentType<any>;
-        if (!Field) {
-          console.error(`Unknown field type: ${field.type}`);
-          return;
+      .map(
+        (
+          field:
+            | SettingsAcceleratorField
+            | SettingsButtonField
+            | SettingsCheckboxField
+            | SettingsColorField
+            | SettingsDirectoryField
+            | SettingsDropdownField
+            | SettingsFileField
+            | SettingsListField
+            | SettingsNumberField
+            | SettingsRadioField
+            | SettingsSliderField
+            | SettingsTextField,
+          idx: number
+        ) => {
+          const Field = fieldMap[field.type] as React.ComponentType<any>;
+          if (!Field) {
+            console.error(`Unknown field type: ${field.type}`);
+            return;
+          }
+          return (
+            <Field
+              className={"mb-5 pl-2 last:mb-0"}
+              field={field}
+              key={idx}
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              value={this.preferences[field.key]}
+              onChange={this.onFieldChange.bind(this, field.key)}
+            />
+          );
         }
-        return (
-          <Field
-            className={"mb-5 pl-2 last:mb-0"}
-            field={field}
-            key={idx}
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            value={this.preferences[field.key]}
-            onChange={this.onFieldChange.bind(this, field.key)}
-          />
-        );
-      })
+      )
       .filter((field) => field);
     return (
       <div className={`group-${this.group.id ?? ""}`}>

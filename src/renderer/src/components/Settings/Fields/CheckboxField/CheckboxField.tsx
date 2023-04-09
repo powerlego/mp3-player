@@ -1,10 +1,10 @@
-import { SettingsItem } from "@/types";
+import { SettingsCheckboxField } from "@/types";
 import Tooltip from "@renderer/components/Tooltip";
 import React from "react";
 
 type CheckboxFieldProps = {
   className?: string;
-  field: SettingsItem;
+  field: SettingsCheckboxField;
   value: number;
   onChange: (value: any) => void;
 };

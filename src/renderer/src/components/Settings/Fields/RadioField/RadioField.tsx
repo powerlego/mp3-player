@@ -1,11 +1,11 @@
 import React from "react";
-import { SettingsItem } from "@/types";
+import { SettingsRadioField } from "@/types";
 import newGuid from "@utils/newGuid";
 import Tooltip from "@renderer/components/Tooltip";
 
 type RadioFieldProps = {
   className?: string;
-  field: SettingsItem;
+  field: SettingsRadioField;
   value: number;
   onChange: (value: any) => void;
 };
@@ -51,11 +51,11 @@ export default class RadioField extends React.Component<RadioFieldProps> {
   }
 
   get className() {
-    return this.props.className || "";
+    return this.props.className ?? "";
   }
 
   get description() {
-    return this.field.description || "";
+    return this.field.description ?? "";
   }
   get field() {
     return this.props.field;
@@ -66,11 +66,11 @@ export default class RadioField extends React.Component<RadioFieldProps> {
   }
 
   get value() {
-    return this.props.value || "";
+    return this.props.value ?? "";
   }
 
   get options() {
-    return this.field.options || [];
+    return this.field.options ?? [];
   }
 
   onChange(e: React.ChangeEvent<HTMLInputElement>) {

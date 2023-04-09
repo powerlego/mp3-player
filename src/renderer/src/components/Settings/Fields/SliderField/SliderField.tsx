@@ -1,10 +1,10 @@
-import { SettingsItem } from "@/types";
+import { SettingsSliderField } from "@/types";
 import Tooltip from "@renderer/components/Tooltip";
 import React from "react";
 
 type SliderFieldProps = {
   className?: string;
-  field: SettingsItem;
+  field: SettingsSliderField;
   value: number;
   onChange: (value: any) => void;
 };
@@ -31,11 +31,11 @@ export default class SliderField extends React.Component<SliderFieldProps> {
   }
 
   get className() {
-    return this.props.className || "";
+    return this.props.className ?? "";
   }
 
   get description() {
-    return this.field.description || "";
+    return this.field.description ?? "";
   }
 
   get field() {
@@ -47,19 +47,19 @@ export default class SliderField extends React.Component<SliderFieldProps> {
   }
 
   get min() {
-    return this.field.min || 0;
+    return this.field.min ?? 0;
   }
 
   get max() {
-    return this.field.max || 100;
+    return this.field.max ?? 100;
   }
 
   get step() {
-    return this.field.step || 1;
+    return this.field.step ?? 1;
   }
 
   get value() {
-    return this.props.value || this.min;
+    return this.props.value ?? this.min;
   }
 
   onChange(e: React.ChangeEvent<HTMLInputElement>) {

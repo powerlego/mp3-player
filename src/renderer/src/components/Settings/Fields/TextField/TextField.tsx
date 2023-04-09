@@ -1,10 +1,10 @@
-import { SettingsItem } from "@/types";
+import { SettingsTextField } from "@/types";
 import React from "react";
 import Tooltip from "@/renderer/src/components/Tooltip";
 
 type TextFieldProps = {
   className?: string;
-  field: SettingsItem;
+  field: SettingsTextField;
   value: string;
   onChange: (value: any) => void;
 };
@@ -28,11 +28,11 @@ export default class TextField extends React.Component<TextFieldProps> {
   }
 
   get className() {
-    return this.props.className || "";
+    return this.props.className ?? "";
   }
 
   get description() {
-    return this.field.description || "";
+    return this.field.description ?? "";
   }
   get field() {
     return this.props.field;
@@ -43,7 +43,7 @@ export default class TextField extends React.Component<TextFieldProps> {
   }
 
   get value() {
-    return this.props.value || "";
+    return this.props.value ?? "";
   }
 
   onChange(e: React.ChangeEvent<HTMLInputElement>) {

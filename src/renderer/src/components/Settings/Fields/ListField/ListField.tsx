@@ -1,10 +1,10 @@
-import { SettingsItem } from "@/types";
+import { SettingsListField } from "@/types";
 import Tooltip from "@renderer/components/Tooltip";
 import React from "react";
 
 type ListFieldProps = {
   className?: string;
-  field: SettingsItem;
+  field: SettingsListField;
   value: number;
   onChange: (value: any) => void;
 };
@@ -22,11 +22,11 @@ export default class ListField extends React.Component<ListFieldProps> {
   }
 
   get className() {
-    return this.props.className || "";
+    return this.props.className ?? "";
   }
 
   get description() {
-    return this.field.description || "";
+    return this.field.description ?? "";
   }
   get field() {
     return this.props.field;
@@ -37,7 +37,7 @@ export default class ListField extends React.Component<ListFieldProps> {
   }
 
   get value() {
-    return this.props.value || "";
+    return this.props.value ?? [];
   }
 
   onChange(e: React.ChangeEvent<HTMLInputElement>) {

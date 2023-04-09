@@ -1,10 +1,10 @@
-import { SettingsItem } from "@/types";
+import { SettingsButtonField } from "@/types";
 import Tooltip from "@renderer/components/Tooltip";
 import React from "react";
 
 type ButtonFieldProps = {
   className?: string;
-  field: SettingsItem;
+  field: SettingsButtonField;
   value: number;
   onChange: (value: any) => void;
 };

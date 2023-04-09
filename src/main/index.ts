@@ -7,6 +7,7 @@ import fs from "fs";
 import os from "os";
 import SettingsWindow from "./SettingsWindow";
 import { parseBuffer } from "music-metadata";
+import { SettingsNumberField, SettingsRadioField } from "@/types";
 
 const readFileAndSend = async (window: BrowserWindow, filePath: string, play: boolean) => {
   const buffer = fs.readFileSync(filePath);
@@ -60,6 +61,8 @@ const settingsWindow = new SettingsWindow({
                 label: "Test",
                 key: "test2",
                 description: "Test",
+                min: 0,
+                max: 100,
               },
               {
                 type: "radio",
@@ -70,13 +73,14 @@ const settingsWindow = new SettingsWindow({
                   { label: "Test 1", value: "test1" },
                   { label: "Test 2", value: "test2" },
                 ],
-              },
+              } as SettingsRadioField,
               {
                 type: "number",
                 label: "Test",
                 key: "test4",
                 description: "Test",
-              },
+                min: 0,
+              } as SettingsNumberField,
             ],
           },
         ],

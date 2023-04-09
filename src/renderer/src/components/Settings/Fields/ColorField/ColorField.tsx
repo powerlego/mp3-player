@@ -1,10 +1,10 @@
-import { SettingsItem } from "@/types";
+import { SettingsColorField } from "@/types";
 import Tooltip from "@renderer/components/Tooltip";
 import React from "react";
 
 type ColorFieldProps = {
   className?: string;
-  field: SettingsItem;
+  field: SettingsColorField;
   value: number;
   onChange: (value: any) => void;
 };

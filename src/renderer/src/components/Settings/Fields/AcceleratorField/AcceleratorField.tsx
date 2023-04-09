@@ -1,10 +1,10 @@
-import { SettingsItem } from "@/types";
+import { SettingsAcceleratorField } from "@/types";
 import Tooltip from "@renderer/components/Tooltip";
 import React from "react";
 
 type AcceleratorFieldProps = {
   className?: string;
-  field: SettingsItem;
+  field: SettingsAcceleratorField;
   value: number;
   onChange: (value: any) => void;
 };

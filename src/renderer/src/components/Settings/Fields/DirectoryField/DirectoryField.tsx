@@ -1,10 +1,10 @@
-import { SettingsItem } from "@/types";
+import { SettingsDirectoryField } from "@/types";
 import Tooltip from "@renderer/components/Tooltip";
 import React from "react";
 
 type DirectoryFieldProps = {
   className?: string;
-  field: SettingsItem;
+  field: SettingsDirectoryField;
   value: number;
   onChange: (value: any) => void;
 };

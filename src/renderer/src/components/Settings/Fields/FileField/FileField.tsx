@@ -1,10 +1,10 @@
-import { SettingsItem } from "@/types";
+import { SettingsFileField } from "@/types";
 import Tooltip from "@renderer/components/Tooltip";
 import React from "react";
 
 type FileFieldProps = {
   className?: string;
-  field: SettingsItem;
+  field: SettingsFileField;
   value: number;
   onChange: (value: any) => void;
 };
