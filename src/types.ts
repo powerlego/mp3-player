@@ -132,10 +132,11 @@ export type SettingsDropdownField = SettingsItem & {
 export type SettingsListField = SettingsItem & {
   orderable?: boolean;
   size?: number;
-  addItemValidator?: string | RegExp;
+  addItemValidator?: string;
   addItemLabel?: string;
   modalCloseTimeoutMS?: number;
-  modalStyle?: React.CSSProperties;
+  min?: number;
+  max?: number;
 };
 
 export type SettingsFileField = SettingsItem & {
