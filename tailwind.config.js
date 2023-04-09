@@ -17,6 +17,9 @@ module.exports = {
       minWidth: {
         56: "14rem",
         "2/5": "40%",
+        "1/2": "50%",
+        "1/4": "25%",
+        "1/3": "33.333333%",
       },
 
       animationDelay: {
@@ -63,6 +66,7 @@ module.exports = {
       spacing: {
         "1/8": "12.5%",
         2.5: "0.625rem",
+        "1/2": "50%",
       },
       dropShadow: {
         dark: ["0 1px 2px rgb(255 255 255 / 0.1)", "0 1px 1px rgb(255 255 255 / 0.06)"],
