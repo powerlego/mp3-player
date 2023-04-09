@@ -36,7 +36,23 @@ export default class SettingsWindow extends React.Component<Record<string, never
 
   isDifferentPreferences = (a: { [key: string]: any }, b: { [key: string]: any }) => {
     for (const key of Object.keys(a)) {
+      if (!(key in b)) {
+        return true;
+      }
       if (typeof a[key] === "object") {
+        if (Array.isArray(a[key])) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          if (a[key].length !== b[key].length) {
+            return true;
+          }
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          for (let i = 0; i < a[key].length; i++) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            if (a[key][i] !== b[key][i]) {
+              return true;
+            }
+          }
+        }
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         if (this.isDifferentPreferences(a[key], b[key])) {
           return true;
