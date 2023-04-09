@@ -17,7 +17,7 @@ export default class TextField extends React.Component<TextFieldProps> {
         <Tooltip className="w-full" content={this.description}>
           <input
             aria-label={this.label}
-            className="w-full rounded-lg text-sm m-[1px] p-2 bg-gray-100 dark:bg-gray-800 border border-solid border-gray-350 dark:border-gray-700 transition-[border-color] duration-300 ease-out focus:m-0 focus:border-blue-500 dark:focus:border-blue-400 focus:border-2 text-black dark:text-white outline-nothing"
+            className="w-full rounded-lg text-sm m-0.5 p-2 bg-gray-100 dark:bg-gray-800 border border-solid border-gray-350 dark:border-gray-700 transition-[border-color] duration-300 ease-out focus:m-0 focus:border-blue-500 dark:focus:border-blue-400 focus:border-2 text-black dark:text-white outline-nothing"
             type="text"
             value={this.value}
             onChange={this.onChange.bind(this)}

@@ -34,7 +34,7 @@ export default class NumberField extends React.Component<NumberFieldProps, Numbe
       <div className={`${this.className} field-number key-${this.field.key}`}>
         <div className="font-bold mb-3 text-base text-black dark:text-white">{this.label}</div>
         <Tooltip className="w-full" content={this.description}>
-          <div className="flex flex-row w-full content-center rounded-lg m-[1px] p-1 bg-gray-100 dark:bg-gray-800 border border-solid border-gray-350 dark:border-gray-700 transition-[border-color] duration-300 ease-out focus-within:m-0 focus-within:border-blue-500 dark:focus-within:border-blue-400 focus-within:border-2 outline-nothing group">
+          <div className="flex flex-row w-full content-center rounded-lg m-0.5 p-1 bg-gray-100 dark:bg-gray-800 border border-solid border-gray-350 dark:border-gray-700 transition-[border-color] duration-300 ease-out focus-within:m-0 focus-within:border-blue-500 dark:focus-within:border-blue-400 focus-within:border-2 outline-nothing group">
             <input
               aria-label={this.label}
               className="w-full text-sm text-black dark:text-white bg-gray-100 dark:bg-gray-800 focus:outline-none"
