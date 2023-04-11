@@ -7,7 +7,7 @@ import fs from "fs";
 import os from "os";
 import SettingsWindow from "./SettingsWindow";
 import { parseBuffer } from "music-metadata";
-import { SettingsNumberField, SettingsRadioField } from "@/types";
+import { SettingsFileField, SettingsNumberField, SettingsRadioField } from "@/types";
 
 const readFileAndSend = async (window: BrowserWindow, filePath: string, play: boolean) => {
   const buffer = fs.readFileSync(filePath);
@@ -52,23 +52,23 @@ const settingsWindow = new SettingsWindow({
             fields: [
               {
                 type: "text",
-                label: "Test",
+                label: "Text",
                 key: "test",
-                description: "Test",
+                description: "Text",
               },
               {
                 type: "slider",
-                label: "Test",
+                label: "Slider",
                 key: "test2",
-                description: "Test",
+                description: "Slider",
                 min: 0,
                 max: 100,
               },
               {
                 type: "radio",
-                label: "Test",
+                label: "Radio",
                 key: "test3",
-                description: "Test",
+                description: "Radio",
                 options: [
                   { label: "Test 1", value: "test1" },
                   { label: "Test 2", value: "test2" },
@@ -76,18 +76,47 @@ const settingsWindow = new SettingsWindow({
               } as SettingsRadioField,
               {
                 type: "number",
-                label: "Test",
+                label: "Number",
                 key: "test4",
-                description: "Test",
+                description: "Number",
                 min: 0,
               } as SettingsNumberField,
               {
                 type: "list",
-                label: "Test",
+                label: "List",
                 key: "test5",
-                description: "Test",
+                description: "List",
                 orderable: true,
               },
+              {
+                type: "file",
+                label: "File (Single)",
+                key: "test6",
+                description: "File (Single)",
+                dontAddToRecent: true,
+              } as SettingsFileField,
+              {
+                type: "file",
+                label: "File (Multiple)",
+                key: "test7",
+                description: "File (Multiple)",
+                multiSelections: true,
+                dontAddToRecent: true,
+              } as SettingsFileField,
+              {
+                type: "file",
+                label: "File (Filter)",
+                key: "test8",
+                description: "File (Filter)",
+                filters: [
+                  {
+                    name: "Audio Files",
+                    extensions: ["mp3", "wav", "ogg", "flac"],
+                  },
+                ],
+                multiSelections: true,
+                dontAddToRecent: true,
+              } as SettingsFileField,
             ],
           },
         ],
