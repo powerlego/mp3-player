@@ -18,7 +18,7 @@ const settings = {
   getPreferences: (): { [key: string]: any } => ipcRenderer.sendSync("getPreferences") as { [key: string]: any },
   getDefaults: (): { [key: string]: any } => ipcRenderer.sendSync("getDefaults") as { [key: string]: any },
   setPreferences: (preferences: any) => ipcRenderer.send("setPreferences", preferences),
-  showOpenDialog: (dialogOptions: OpenDialogSyncOptions): OpenDialogReturnValue =>
+  showOpenDialog: (dialogOptions: OpenDialogSyncOptions): string[] | undefined =>
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     ipcRenderer.sendSync("showOpenDialog", dialogOptions),
   sendButtonClick: (channel: string) => ipcRenderer.send("sendButtonClick", channel),
