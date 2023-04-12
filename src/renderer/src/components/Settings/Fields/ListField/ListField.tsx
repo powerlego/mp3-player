@@ -57,7 +57,7 @@ export default class ListField extends React.Component<ListFieldProps, ListField
                 );
               })}
             </select>
-            <div className="mt-3">
+            <div className="ml-0.5 mt-0.5">
               <button
                 aria-label="Add"
                 className="bg-gray-50 dark:bg-gray-800 cursor-pointer border-t border-r border-b border-solid border-gray-800 dark:border-gray-300 p-1 text-sm first:border first:rounded-tl-lg first:rounded-bl-lg last:border last:border-l-0 last:rounded-tr-lg last:rounded-br-lg enabled:active:border-blue-500 dark:enabled:active:border-blue-400 enabled:active:text-blue-500 dark:enabled:active:text-blue-400 disabled:bg-gray-100 dark:disabled:bg-gray-850 disabled:text-gray-450 dark:disabled:text-gray-200 enabled:hover:bg-gray-100 dark:enabled:hover:bg-gray-700 transition ease-in-out disabled:cursor-default"

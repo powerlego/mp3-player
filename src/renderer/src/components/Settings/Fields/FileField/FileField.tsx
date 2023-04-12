@@ -29,23 +29,34 @@ export default class FileField extends React.Component<FileFieldProps> {
         </div>
         <Tooltip className="w-full" content={this.description}>
           <div onClick={this.choose.bind(this)}>
-            {this.multiSelections ? "Files" : "File"}:&nbsp;
+            <div className="w-full px-2 py-1 font-bold border-x-2 border-t-2 border-solid bg-gray-150 dark:bg-gray-750 border-gray-350 dark:border-gray-700 rounded-t-lg">
+              {this.multiSelections ? "Files" : "File"}:&nbsp;
+            </div>
             {this.value
               ? (
                 this.multiSelections || this.value.length > 1
                   ? (
                     <ul>
                       {this.value.map((v, i) => (
-                        <li key={i}>{v}</li>
+                        <li
+                          className="border-x-2 border-t last:border-b-2 w-full px-2 py-1 border-solid bg-gray-100 dark:bg-gray-800 border-gray-350 dark:border-gray-700 last:mb-1 last:rounded-b-lg"
+                          key={i}
+                        >
+                          {v}
+                        </li>
                       ))}
                     </ul>
                   )
                   : (
-                    this.value[0]
+                    <div className="border border-x-2 border-b-2 w-full px-2 py-1 border-solid bg-gray-100 dark:bg-gray-800 border-gray-350 dark:border-gray-700 mb-1 rounded-b-lg">
+                      {this.value[0]}
+                    </div>
                   )
               )
               : (
-                "None"
+                <div className="border border-x-2 border-b-2 w-full px-2 py-1 border-solid bg-gray-100 dark:bg-gray-800 border-gray-350 dark:border-gray-700 mb-1 rounded-b-lg">
+                  {"None"}
+                </div>
               )}
           </div>
           <button
