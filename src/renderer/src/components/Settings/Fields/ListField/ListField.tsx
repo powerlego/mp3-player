@@ -2,6 +2,7 @@ import { SettingsListField } from "@/types";
 import Tooltip from "@renderer/components/Tooltip";
 import React from "react";
 import ReactModal from "react-modal";
+import "./ListField.css";
 
 ReactModal.setAppElement("#settings");
 
