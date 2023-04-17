@@ -60,6 +60,7 @@ export default class FileField extends React.Component<FileFieldProps> {
               )}
           </div>
           <button
+            aria-label={btnLabel}
             className="bg-gray-50 dark:bg-gray-800 px-2 rounded-md py-1 enabled:hover:bg-gray-100 dark:enabled:hover:bg-gray-700 transition ease-in-out disabled:bg-gray-100 dark:disabled:bg-gray-850 disabled:cursor-not-allowed"
             onClick={this.choose.bind(this)}
           >
