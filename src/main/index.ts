@@ -7,7 +7,7 @@ import fs from "fs";
 import os from "os";
 import SettingsWindow from "./SettingsWindow";
 import { parseBuffer } from "music-metadata";
-import { SettingsFileField, SettingsNumberField, SettingsRadioField } from "@/types";
+import { SettingsFileField, SettingsListField, SettingsNumberField, SettingsRadioField } from "@/types";
 
 const readFileAndSend = async (window: BrowserWindow, filePath: string, play: boolean) => {
   const buffer = fs.readFileSync(filePath);
@@ -87,7 +87,7 @@ const settingsWindow = new SettingsWindow({
                 key: "test5",
                 description: "List",
                 orderable: true,
-              },
+              } as SettingsListField,
               {
                 type: "file",
                 label: "File (Single)",
@@ -144,6 +144,27 @@ const settingsWindow = new SettingsWindow({
                 description: "Directory (Multiple)",
                 multiSelections: true,
                 dontAddToRecent: true,
+              },
+              {
+                type: "color",
+                label: "Color (Hex)",
+                key: "test12",
+                description: "Color (Hex)",
+                format: "hex",
+              },
+              {
+                type: "color",
+                label: "Color (RGB)",
+                key: "test13",
+                description: "Color (RGB)",
+                format: "rgb",
+              },
+              {
+                type: "color",
+                label: "Color (HSL)",
+                key: "test14",
+                description: "Color (HSL)",
+                format: "hsl",
               },
             ],
           },
