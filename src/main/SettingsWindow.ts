@@ -125,7 +125,25 @@ export default class SettingsWindow extends EventEmitter2 {
   }
 
   save() {
-    const prefString = JSON.stringify(this.preferences, null, 4);
+    const orderedPrefs = {} as { [key: string]: any };
+    for (const key of Object.keys(this.preferences)) {
+      if (this.preferences[key] !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const subPrefs = this.preferences[key];
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        const ordered = Object.keys(subPrefs)
+          // eslint-disable-next-line no-undefined
+          .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }))
+          .reduce((obj, key) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+            obj[key] = subPrefs[key];
+            return obj;
+          }, {});
+        orderedPrefs[key] = ordered;
+      }
+    }
+
+    const prefString = JSON.stringify(orderedPrefs, null, 4);
     fs.writeFileSync(this.dataStore, prefString, "utf8");
   }
 
