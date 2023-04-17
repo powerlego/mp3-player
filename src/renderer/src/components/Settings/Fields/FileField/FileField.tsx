@@ -16,11 +16,11 @@ export default class FileField extends React.Component<FileFieldProps> {
       = this.buttonLabel
       || (this.value && this.value.length > 0
         ? this.multiSelections
-          ? "Choose other Files"
-          : "Choose another File"
+          ? "Choose Other Files"
+          : "Choose Another File"
         : this.multiSelections
           ? "Choose Files"
-          : "Choose a File");
+          : "Choose A File");
 
     return (
       <div className={`${this.className} field-file key-${this.field.key}`}>
