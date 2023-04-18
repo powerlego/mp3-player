@@ -1,7 +1,6 @@
 import {
   Group,
   SettingsAcceleratorField,
-  SettingsButtonField,
   SettingsCheckboxField,
   SettingsColorField,
   SettingsDirectoryField,
