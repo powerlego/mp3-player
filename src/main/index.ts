@@ -7,7 +7,14 @@ import fs from "fs";
 import os from "os";
 import SettingsWindow from "./SettingsWindow";
 import { parseBuffer } from "music-metadata";
-import { CheckboxOption, SettingsFileField, SettingsListField, SettingsNumberField, SettingsRadioField } from "@/types";
+import {
+  CheckboxOption,
+  SettingsColorField,
+  SettingsFileField,
+  SettingsListField,
+  SettingsNumberField,
+  SettingsRadioField,
+} from "@/types";
 
 const readFileAndSend = async (window: BrowserWindow, filePath: string, play: boolean) => {
   const buffer = fs.readFileSync(filePath);
@@ -151,7 +158,7 @@ const settingsWindow = new SettingsWindow({
                 key: "test12",
                 description: "Color (Hex)",
                 format: "hex",
-              },
+              } as SettingsColorField,
               {
                 type: "color",
                 label: "Color (RGB)",
@@ -185,6 +192,26 @@ const settingsWindow = new SettingsWindow({
                   { label: "Test 4", value: "test4" },
                   { label: "Test 5", value: "test5" },
                 ] as CheckboxOption[],
+              },
+              {
+                type: "accelerator",
+                label: "Accelerator (Regular)",
+                key: "test17",
+                description: "Accelerator (Regular)",
+              },
+              {
+                type: "accelerator",
+                label: "Accelerator (Modifier Required)",
+                key: "test18",
+                description: "Accelerator (Modifier Required)",
+                modifierRequired: true,
+              },
+              {
+                type: "accelerator",
+                label: "Accelerator (Allow Only Modifier)",
+                key: "test19",
+                description: "Accelerator (Allow Only Modifier)",
+                allowOnlyModifier: true,
               },
             ],
           },
