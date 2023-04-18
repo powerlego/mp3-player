@@ -5,7 +5,7 @@ import React from "react";
 type DropdownFieldProps = {
   className?: string;
   field: SettingsDropdownField;
-  value: number;
+  value: string | number;
   onChange: (value: any) => void;
 };
 
