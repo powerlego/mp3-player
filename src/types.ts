@@ -166,6 +166,7 @@ export type SettingsCheckboxField = SettingsItem & {
 
 export type SettingsAcceleratorField = SettingsItem & {
   modifierRequired?: boolean;
+  allowOnlyModifier?: boolean;
 };
 
 export type HexColor = string;
