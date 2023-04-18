@@ -7,7 +7,7 @@ import fs from "fs";
 import os from "os";
 import SettingsWindow from "./SettingsWindow";
 import { parseBuffer } from "music-metadata";
-import { SettingsFileField, SettingsListField, SettingsNumberField, SettingsRadioField } from "@/types";
+import { CheckboxOption, SettingsFileField, SettingsListField, SettingsNumberField, SettingsRadioField } from "@/types";
 
 const readFileAndSend = async (window: BrowserWindow, filePath: string, play: boolean) => {
   const buffer = fs.readFileSync(filePath);
@@ -165,6 +165,26 @@ const settingsWindow = new SettingsWindow({
                 key: "test14",
                 description: "Color (HSL)",
                 format: "hsl",
+              },
+              {
+                type: "checkbox",
+                label: "Checkbox (Single)",
+                key: "test15",
+                description: "Checkbox (Single)",
+                options: [{ label: "Test 1", value: "test1" }] as CheckboxOption[],
+              },
+              {
+                type: "checkbox",
+                label: "Checkbox (Multiple)",
+                key: "test16",
+                description: "Checkbox (Multiple)",
+                options: [
+                  { label: "Test 1", value: "test1" },
+                  { label: "Test 2", value: "test2" },
+                  { label: "Test 3", value: "test3" },
+                  { label: "Test 4", value: "test4" },
+                  { label: "Test 5", value: "test5" },
+                ] as CheckboxOption[],
               },
             ],
           },
