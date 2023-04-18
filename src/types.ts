@@ -201,5 +201,5 @@ export type DropdownOption = {
 
 export type CheckboxOption = {
   label: string;
-  value: boolean;
+  value: boolean | string | number;
 };
