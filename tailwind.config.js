@@ -57,10 +57,25 @@ module.exports = {
             transform: "scale(1)",
           },
         },
+        "zoom-in-check-square": {
+          "0%": {
+            transform: "scale(0) rotate(0deg)",
+          },
+          "25%": {
+            transform: "scale(0.3) rotate(30deg)",
+          },
+          "50%": {
+            transform: "scale(0.8) rotate(45deg)",
+          },
+          "100%": {
+            transform: "scale(1) rotate(45deg)",
+          },
+        },
       },
       animation: {
         imageFadeInAnimation: "imageFadeInAnimation .25s ease",
         "zoom-in-check-circle": "zoom-in-check-circle 0.3s 1",
+        "zoom-in-check-square": "zoom-in-check-square 0.3s 1",
       },
 
       spacing: {
