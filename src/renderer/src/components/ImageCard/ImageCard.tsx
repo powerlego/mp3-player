@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import React from "react";
 
 type ImageCardProps = {
@@ -18,7 +19,7 @@ interface CustomCSSProperties extends React.CSSProperties {
 export function ImageCardSkeleton() {
   return (
     <div
-      className="bg-gray-400 dark:bg-gray-700 group isolate relative w-full p-4 hover:bg-gray-450 hover:dark:bg-gray-600 transition-[background-color] duration-300 ease-[ease]"
+      className="bg-gray-250 dark:bg-gray-800 group isolate relative w-full p-4 hover:bg-gray-300 hover:dark:bg-gray-750 transition-[background-color] duration-300 ease-[ease]"
       style={
         {
           "--card-container-border-radius": "clamp(4px,(var(--column-width,0px) - 32px) * 0.025,8px)",
@@ -39,7 +40,7 @@ export function ImageCardSkeleton() {
             }
           >
             <div
-              className="absolute top-0 left-0 h-full w-full bg-gray-400 dark:bg-gray-600 animate-pulse"
+              className="absolute top-0 left-0 h-full w-full bg-gray-350 dark:bg-gray-700 animate-pulse"
               style={
                 {
                   "--card-image-border-radius": "clamp(4px,(var(--column-width,0px) - 32px) * 0.025,8px)",
@@ -50,8 +51,8 @@ export function ImageCardSkeleton() {
           </div>
         </div>
         <div className="flex flex-col justify-center">
-          <div className="w-full h-5 rounded-full bg-gray-400 dark:bg-gray-600 animate-pulse" />
-          <div className="w-2/3 h-4 rounded-full bg-gray-400 dark:bg-gray-600 animate-pulse mt-2" />
+          <div className="w-full h-5 rounded-full bg-gray-350 dark:bg-gray-700 animate-pulse" />
+          <div className="w-2/3 h-4 rounded-full bg-gray-350 dark:bg-gray-700 animate-pulse mt-2" />
         </div>
       </div>
     </div>
@@ -61,7 +62,7 @@ export function ImageCardSkeleton() {
 export default function ImageCard({ src, line1, line2, loading, onClickButton, icon, onClickCard }: ImageCardProps) {
   return (
     <div
-      className="bg-gray-400 dark:bg-gray-700 group isolate relative w-full p-4 hover:bg-gray-450 hover:dark:bg-gray-600 transition-[background-color] duration-300 ease-[ease]"
+      className="bg-gray-250 dark:bg-gray-800 group isolate relative w-full p-4 hover:bg-gray-300 hover:dark:bg-gray-750 transition-[background-color] duration-300 ease-[ease]"
       style={
         {
           "--card-container-border-radius": "clamp(4px,(var(--column-width,0px) - 32px) * 0.025,8px)",
@@ -72,7 +73,7 @@ export default function ImageCard({ src, line1, line2, loading, onClickButton, i
       <div className="h-full select-none">
         <div className="mb-4 relative">
           <div
-            className="relative pb-[100%] bg-gray-400 dark:bg-gray-600"
+            className="relative pb-[100%] bg-gray-350 dark:bg-gray-750"
             style={
               {
                 "--card-image-border-radius": "clamp(4px,(var(--column-width,0px) - 32px) * 0.025,8px)",
@@ -132,7 +133,7 @@ export default function ImageCard({ src, line1, line2, loading, onClickButton, i
             </div>
           </a>
           <div
-            className="text-[0.8125rem] md:text-sm box-border font-normal text-gray-550 dark:text-gray-450 overflow-hidden mt-1 text-ellipsis "
+            className="text-[0.8125rem] md:text-sm box-border font-normal text-gray-700 dark:text-gray-300 overflow-hidden mt-1 text-ellipsis "
             style={{
               marginBlock: "0px",
             }}

@@ -1,4 +1,5 @@
 import { IAudioMetadata } from "music-metadata/lib/type";
+import { FileFilter } from "electron";
 
 export interface I18nAriaLabels {
   player?: string;
@@ -70,10 +71,21 @@ export type SettingsSection = {
 export type Group = {
   id?: string;
   label?: string;
-  fields: SettingsItem[];
+  fields:
+    | SettingsTextField[]
+    | SettingsNumberField[]
+    | SettingsSliderField[]
+    | SettingsRadioField[]
+    | SettingsDropdownField[]
+    | SettingsListField[]
+    | SettingsFileField[]
+    | SettingsDirectoryField[]
+    | SettingsColorField[]
+    | SettingsCheckboxField[]
+    | SettingsAcceleratorField[];
 };
 
-export type SettingsItem = {
+type SettingsItem = {
   type:
     | "text"
     | "number"
@@ -84,11 +96,104 @@ export type SettingsItem = {
     | "file"
     | "accelerator"
     | "color"
-    | "button"
     | "list"
     | "directory";
   label: string;
   key: string;
   description?: string;
-  options?: string[];
+};
+
+export type SettingsTextField = SettingsItem;
+
+export type SettingsNumberField = SettingsItem & {
+  min?: number;
+  max?: number;
+  step?: number;
+  precision?: number;
+};
+
+export type SettingsSliderField = SettingsItem & {
+  min?: number;
+  max?: number;
+  step?: number;
+  precision?: number;
+};
+
+export type SettingsRadioField = SettingsItem & {
+  options: RadioOption[];
+};
+
+export type SettingsDropdownField = SettingsItem & {
+  options: DropdownOption[];
+};
+
+export type SettingsListField = SettingsItem & {
+  orderable?: boolean;
+  size?: number;
+  addItemValidator?: string;
+  addItemLabel?: string;
+  modalCloseTimeoutMS?: number;
+  min?: number;
+  max?: number;
+};
+
+export type SettingsFileField = SettingsItem & {
+  buttonLabel?: string;
+  filters?: FileFilter[];
+  multiSelections?: boolean;
+  showHiddenFiles?: boolean;
+  noResolveAliases?: boolean;
+  treatPackageAsDirectory?: boolean;
+  dontAddToRecent?: boolean;
+};
+
+export type SettingsDirectoryField = SettingsItem & {
+  buttonLabel?: string;
+  multiSelections?: boolean;
+  showHiddenFiles?: boolean;
+  noResolveAliases?: boolean;
+  treatPackageAsDirectory?: boolean;
+  dontAddToRecent?: boolean;
+};
+
+export type SettingsColorField = SettingsItem & {
+  format?: "hex" | "rgb" | "hsl";
+};
+
+export type SettingsCheckboxField = SettingsItem & {
+  options?: CheckboxOption[];
+};
+
+export type SettingsAcceleratorField = SettingsItem & {
+  modifierRequired?: boolean;
+  allowOnlyModifier?: boolean;
+};
+
+export type HexColor = string;
+export type RgbColor = {
+  r: number;
+  g: number;
+  b: number;
+  a?: number;
+};
+export type HslColor = {
+  h: number;
+  s: number;
+  l: number;
+  a?: number;
+};
+
+export type RadioOption = {
+  label: string;
+  value: string | number | boolean;
+};
+
+export type DropdownOption = {
+  label: string;
+  value: string | number;
+};
+
+export type CheckboxOption = {
+  label: string;
+  value: boolean | string | number;
 };

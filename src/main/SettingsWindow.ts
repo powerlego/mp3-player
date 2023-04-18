@@ -16,7 +16,6 @@ export default class SettingsWindow extends EventEmitter2 {
   options = {} as SettingsWindowConfig;
   _preferences = {} as { [key: string]: any };
   dataStore = app.getPath("userData") + "/settings.json";
-  prefsWindow: BrowserWindow | null = null;
 
   get preferences() {
     return this._preferences;
@@ -80,10 +79,6 @@ export default class SettingsWindow extends EventEmitter2 {
       this.show(section).catch(console.error);
     });
 
-    ipcMain.on("closePreferences", () => {
-      this.close();
-    });
-
     ipcMain.on("getSections", (event) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
       event.returnValue = jsonSerializer(this.options.sections);
@@ -130,7 +125,25 @@ export default class SettingsWindow extends EventEmitter2 {
   }
 
   save() {
-    const prefString = JSON.stringify(this.preferences, null, 4);
+    const orderedPrefs = {} as { [key: string]: any };
+    for (const key of Object.keys(this.preferences)) {
+      if (this.preferences[key] !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const subPrefs = this.preferences[key];
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        const ordered = Object.keys(subPrefs)
+          // eslint-disable-next-line no-undefined
+          .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }))
+          .reduce((obj, key) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+            obj[key] = subPrefs[key];
+            return obj;
+          }, {});
+        orderedPrefs[key] = ordered;
+      }
+    }
+
+    const prefString = JSON.stringify(orderedPrefs, null, 4);
     fs.writeFileSync(this.dataStore, prefString, "utf8");
   }
 
@@ -153,7 +166,7 @@ export default class SettingsWindow extends EventEmitter2 {
       resizable: false,
       acceptFirstMouse: true,
       maximizable: false,
-      show: false,
+      show: true,
       frame: false,
       webPreferences: {
         preload: path.join(__dirname, "../preload/settings.js"),
@@ -174,46 +187,28 @@ export default class SettingsWindow extends EventEmitter2 {
         }
       }
     }
-    if (this.prefsWindow) {
-      this.prefsWindow.focus();
-      if (section) {
-        this.prefsWindow.webContents
-          .executeJavaScript(
-            ` \
-              document.getElementById("tab-${section}").click() \
-              ;0
-            `
-          )
-          .catch(console.error);
-      }
-      return this.prefsWindow;
-    }
 
-    this.prefsWindow = new BrowserWindow(this.getBrowserWindowOptions());
-    this.prefsWindow.removeMenu();
+    const prefsWindow = new BrowserWindow(this.getBrowserWindowOptions());
+    prefsWindow.removeMenu();
 
     if (is.dev && process.env["ELECTRON_RENDERER_URL"]) {
-      await this.prefsWindow.loadURL(process.env["ELECTRON_RENDERER_URL"] + "/settings.html");
-      this.prefsWindow.webContents.openDevTools();
+      await prefsWindow.loadURL(process.env["ELECTRON_RENDERER_URL"] + "/settings.html");
+      prefsWindow.webContents.openDevTools();
     }
     else {
-      await this.prefsWindow.loadFile(path.join(__dirname, "../renderer/settings.html"));
+      await prefsWindow.loadFile(path.join(__dirname, "../renderer/settings.html"));
     }
 
-    this.prefsWindow.once("ready-to-show", () => {
+    prefsWindow.on("ready-to-show", () => {
       // Show: false by default, then show when ready to prevent page "flicker"
-      if (this.prefsWindow) {
-        this.prefsWindow.show();
-      }
+      prefsWindow.show();
     });
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    this.prefsWindow.webContents.on("dom-ready", async () => {
+    prefsWindow.webContents.on("dom-ready", async () => {
       if (section) {
         try {
-          if (this.prefsWindow) {
-            await this.prefsWindow.webContents.executeJavaScript(`document.getElementById("tab-${section}").click();0`); // ";0" is needed so nothing is returned (especially not an non-cloneable IPC object) by JS.
-          }
+          await prefsWindow.webContents.executeJavaScript(`document.getElementById("tab-${section}").click();0`); // ";0" is needed so nothing is returned (especially not an non-cloneable IPC object) by JS.
         }
         catch (error) {
           console.error(`Could not open the requested section ${section}:`, error);
@@ -221,18 +216,7 @@ export default class SettingsWindow extends EventEmitter2 {
       }
     });
 
-    this.prefsWindow.on("closed", () => {
-      this.prefsWindow = null;
-    });
-
-    return this.prefsWindow;
-  }
-
-  close() {
-    if (!this.prefsWindow) {
-      return;
-    }
-    this.prefsWindow.close();
+    return prefsWindow;
   }
 
   resetToDefaults() {

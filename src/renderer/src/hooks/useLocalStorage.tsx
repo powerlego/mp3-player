@@ -9,7 +9,7 @@ const useLocalStorage = (key: string, initialValue?: any) => {
   const [storedValue, setStoredValue] = useState<any>();
 
   const checkKeyAndSet = React.useCallback(
-    (event: IpcMainEvent, eventKey: string, value: any) => {
+    (_: IpcMainEvent, eventKey: string, value: any) => {
       if (key === eventKey) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
         const val = JSON.parse(value)[key];

@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { TIME_FORMAT } from "@renderer/constants";
-import { getDisplayTimeBySeconds } from "@renderer/utils";
+import getDisplayTimeBySeconds from "@utils/getDisplayTimeBySeconds";
 
 interface DurationProps {
   audio?: HTMLAudioElement | null;

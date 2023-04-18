@@ -40,3 +40,4 @@ release
 *.playground
 out/
 **/node_modules/
+palletes.json

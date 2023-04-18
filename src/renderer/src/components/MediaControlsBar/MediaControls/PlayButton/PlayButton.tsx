@@ -17,9 +17,11 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
     e.preventDefault();
     if (e.type === "play") {
       setIsPlaying(true);
-    } else if (e.type === "pause") {
+    }
+    else if (e.type === "pause") {
       setIsPlaying(false);
-    } else if (e.type === "ended") {
+    }
+    else if (e.type === "ended") {
       setIsPlaying(false);
     }
   };
@@ -53,20 +55,24 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
     };
   });
 
-  return isAudioAvailable ? (
-    <div
-      className="h-8 aspect-square flex justify-center items-center rounded-full bg-gray-800 dark:bg-gray-150 hover:bg-gray-600 dark:hover:bg-gray-350 transition-all ease-in-out duration-200 hover:scale-[1.1]"
-      onClick={togglePlay}
-    >
-      {isPlaying ? (
-        <PauseIcon aria-label={i18nAriaLabels?.play} className="fill-gray-150 dark:fill-gray-800 m-0 w-4 h-4 " />
-      ) : (
-        <PlayIcon aria-label={i18nAriaLabels?.pause} className="fill-gray-150 dark:fill-gray-800 m-0 w-4 h-4 " />
-      )}
-    </div>
-  ) : (
-    <div className="h-8 aspect-square flex justify-center items-center bg-gray-450 dark:bg-gray-550 rounded-full ">
-      <PauseIcon className="fill-gray-350 dark:fill-gray-650 m-0 w-4 h-4" />
-    </div>
-  );
+  return isAudioAvailable
+    ? (
+      <div
+        className="h-8 aspect-square flex justify-center items-center rounded-full bg-gray-850 dark:bg-gray-150 hover:bg-gray-800 dark:hover:bg-gray-200 transition-all ease-in-out duration-200 hover:scale-[1.1]"
+        onClick={togglePlay}
+      >
+        {isPlaying
+          ? (
+            <PauseIcon aria-label={i18nAriaLabels?.play} className="fill-gray-220 dark:fill-gray-880 m-0 w-4 h-4 " />
+          )
+          : (
+            <PlayIcon aria-label={i18nAriaLabels?.pause} className="fill-gray-220 dark:fill-gray-880 m-0 w-4 h-4 " />
+          )}
+      </div>
+    )
+    : (
+      <div className="h-8 aspect-square flex justify-center items-center bg-gray-350 dark:bg-gray-750 rounded-full ">
+        <PauseIcon className="fill-gray-220 dark:fill-gray-880 m-0 w-4 h-4" />
+      </div>
+    );
 }

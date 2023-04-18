@@ -14,7 +14,7 @@ declare global {
       getPreferences: () => { [key: string]: any };
       getDefaults: () => { [key: string]: any };
       setPreferences: (preferences: any) => void;
-      showOpenDialog: (dialogOptions: Electron.OpenDialogSyncOptions) => Electron.OpenDialogReturnValue;
+      showOpenDialog: (dialogOptions: Electron.OpenDialogSyncOptions) => string[] | undefined;
       sendButtonClick: (channel: string) => void;
     };
   }

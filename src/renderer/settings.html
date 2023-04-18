@@ -10,26 +10,13 @@
   </head>
   <body class="m-0 overflow-hidden">
     <div
-      class="absolute top-0 left-0 right-0 h-8 w-full select-none z-[9999] bg-gray-150 dark:bg-gray-850 justify-center content-center flex"
+      class="absolute top-0 left-0 right-0 h-8 w-full select-none z-[9999] bg-gray-100 dark:bg-gray-920 justify-center content-center flex flex-col"
     >
       <div style="-webkit-app-region: drag" class="absolute top-0 left-0 right-0 w-full h-full block -z-[1]"></div>
-      <span class="text-center text-gray-800 dark:text-white align-middle w-full">Settings</span>
+      <span class="text-center text-black dark:text-white align-middle w-full leading-none inline-block">Settings</span>
     </div>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root" class="absolute top-8 left-0 right-0 bottom-0 overflow-hidden"></div>
+    <div id="settings" class="relative h-full min-h-full w-full min-w-full top-8 overflow-hidden"></div>
     <script type="module" src="/src/settings.tsx"></script>
-    <!-- <div
-      class="absolute bottom-0 left-0 right-0 h-8 w-full select-none z-[9999] bg-gray-150 dark:bg-gray-850 justify-end content-center flex"
-    >
-      <div class="flex flex-row justify-between gap-2">
-        <button
-          class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-white rounded-md px-2 py-1"
-          onclick="window.close()"
-        >
-          Cancel
-        </button>
-        <button class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-white rounded-md px-2 py-1">Apply</button>
-      </div>
-    </div> -->
   </body>
 </html>

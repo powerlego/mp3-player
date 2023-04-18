@@ -1,5 +1,6 @@
 import React, { forwardRef } from "react";
-import { getPosX, throttle } from "@renderer/utils";
+import getPosX from "@utils/getPosX";
+import throttle from "@utils/throttle";
 
 interface ProgressBarForwardRefProps {
   audio: HTMLAudioElement | null;
@@ -52,7 +53,8 @@ function ProgressBar({
 
       if (relativePos < 0) {
         relativePos = 0;
-      } else if (relativePos > maxRelativePos) {
+      }
+      else if (relativePos > maxRelativePos) {
         relativePos = maxRelativePos;
       }
       const duration = getDuration();
@@ -90,13 +92,15 @@ function ProgressBar({
     }
     if (audio.readyState === audio.HAVE_NOTHING || audio.readyState === audio.HAVE_METADATA || !isFinite(newTime)) {
       setCurrentTimePos("0.00%");
-    } else {
+    }
+    else {
       audio.currentTime = newTime;
     }
     if (event instanceof MouseEvent) {
       window.removeEventListener("mousemove", handleMouseOrTouchMove);
       window.removeEventListener("mouseup", handleMouseOrTouchUp);
-    } else {
+    }
+    else {
       window.removeEventListener("touchmove", handleMouseOrTouchMove);
       window.removeEventListener("touchend", handleMouseOrTouchUp);
     }
@@ -113,7 +117,8 @@ function ProgressBar({
       if (event.nativeEvent instanceof MouseEvent) {
         window.addEventListener("mousemove", handleMouseOrTouchMove);
         window.addEventListener("mouseup", handleMouseOrTouchUp);
-      } else {
+      }
+      else {
         window.addEventListener("touchmove", handleMouseOrTouchMove);
         window.addEventListener("touchend", handleMouseOrTouchUp);
       }
@@ -147,51 +152,53 @@ function ProgressBar({
   if (!currentTimePos) {
     return <></>;
   }
-  return isAudioAvailable ? (
-    <div
-      aria-label={i18nProgressBar}
-      aria-valuemax={100}
-      aria-valuemin={0}
-      aria-valuenow={Number(currentTimePos.split("%")[0])}
-      className="h-5 w-4/5 flex flex-row flex-1 items-center justify-center group "
-      ref={progressRef}
-      style={style}
-      onMouseDown={handleMouseDownOrTouchStart}
-      onTouchStart={handleMouseDownOrTouchStart}
-    >
-      <div className="relative box-border rounded-full h-1 w-full bg-gray-450 dark:bg-gray-600 ">
-        <div
-          style={{ left: currentTimePos }}
-          className={`absolute z-20 box-border rounded-full h-13/4 aspect-square group-hover:scale-100 ${
-            isDragging ? "scale-100" : "scale-0"
-          }`}
-        >
+  return isAudioAvailable
+    ? (
+      <div
+        aria-label={i18nProgressBar}
+        aria-valuemax={100}
+        aria-valuemin={0}
+        aria-valuenow={Number(currentTimePos.split("%")[0])}
+        className="h-5 w-4/5 flex flex-row flex-1 items-center justify-center group "
+        ref={progressRef}
+        style={style}
+        onMouseDown={handleMouseDownOrTouchStart}
+        onTouchStart={handleMouseDownOrTouchStart}
+      >
+        <div className="relative box-border rounded-full h-1 w-full bg-gray-350 dark:bg-gray-750 ">
           <div
-            className={`absolute h-full w-full top-[calc((50%*-1)+1px)] ml-[calc(50%*-1)] box-border rounded-full group-hover:bg-gray-550 dark:group-hover:bg-gray-250 shadow shadow-gray-800 dark:shadow-gray-250 ${
-              isDragging ? "bg-gray-550 dark:bg-gray-250" : "bg-gray-450 dark:bg-gray-600"
+            style={{ left: currentTimePos }}
+            className={`absolute z-20 box-border rounded-full h-13/4 aspect-square group-hover:scale-100 ${
+              isDragging ? "scale-100" : "scale-0"
+            }`}
+          >
+            <div
+              className={`absolute h-full w-full top-[calc((50%*-1)+1px)] ml-[calc(50%*-1)] box-border rounded-full group-hover:bg-gray-550 dark:group-hover:bg-gray-250 shadow shadow-gray-800 dark:shadow-gray-250 ${
+                isDragging ? "bg-gray-550 dark:bg-gray-250" : "bg-gray-450 dark:bg-gray-600"
+              }`}
+            />
+          </div>
+          <div
+            style={{ width: currentTimePos }}
+            className={`absolute z-10 box-border rounded-full h-full group-hover:bg-green-700 dark:group-hover:bg-green-600 ${
+              isDragging ? "bg-green-700 dark:bg-green-600" : "bg-gray-550 dark:bg-gray-250"
             }`}
           />
         </div>
-        <div
-          style={{ width: currentTimePos }}
-          className={`absolute z-10 box-border rounded-full h-full group-hover:bg-green-500 dark:group-hover:bg-green-500 ${
-            isDragging ? "bg-green-500 dark:bg-green-500" : "bg-gray-550 dark:bg-gray-250"
-          }`}
-        />
       </div>
-    </div>
-  ) : (
-    <div
-      aria-label={i18nProgressBar}
-      className="h-5 w-4/5 flex flex-row flex-1 items-center justify-center group"
-      ref={progressRef}
-      role="progressbar"
-    >
-      <div className="relative box-border h-1 w-full rounded-full bg-gray-450 dark:bg-gray-600">
-        <div className="absolute z-10 box-border h-full rounded-full bg-gray-500 dark:bg-gray-550" />
+    )
+    : (
+      <div
+        aria-label={i18nProgressBar}
+        className="h-5 w-4/5 flex flex-row flex-1 items-center justify-center group"
+        ref={progressRef}
+        role="progressbar"
+      >
+        <div className="relative box-border h-1 w-full rounded-full bg-gray-350 dark:bg-gray-750">
+          <div className="absolute z-10 box-border h-full rounded-full bg-gray-300 dark:bg-gray-600" />
+        </div>
       </div>
-    </div>
-  );
+    );
 }
 
 function ProgressBarForwardRef(props: ProgressBarForwardRefProps, ref: React.Ref<HTMLDivElement>): React.ReactElement {

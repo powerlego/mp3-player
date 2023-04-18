@@ -5,16 +5,18 @@
     "src/renderer/src/**/*",
     "src/renderer/src/**/*.tsx",
     "src/preload/*.d.ts",
-    "src/types.ts"
+    "src/types.ts",
+    "src/renderer/src/**/*.ts"
   ],
   "compilerOptions": {
     "composite": true,
-    "jsx": "react-jsx",
+    "jsx": "react",
     "baseUrl": ".",
     "paths": {
       "@renderer/*": ["src/renderer/src/*"],
       "@settings/*": ["src/settings/src/*"],
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@utils/*": ["src/renderer/src/utils/*"]
     }
   }
 }
