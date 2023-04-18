@@ -16,7 +16,6 @@ import {
 import React from "react";
 
 import AcceleratorField from "../AcceleratorField";
-import ButtonField from "../ButtonField";
 import CheckboxField from "../CheckboxField";
 import ColorField from "../ColorField";
 import DirectoryField from "../DirectoryField";
@@ -30,7 +29,6 @@ import TextField from "../TextField";
 
 const fieldMap = {
   accelerator: AcceleratorField,
-  button: ButtonField,
   checkbox: CheckboxField,
   color: ColorField,
   directory: DirectoryField,
@@ -57,7 +55,6 @@ export default class SettingsGroup extends React.Component<SettingsGroupProps> {
         (
           field:
             | SettingsAcceleratorField
-            | SettingsButtonField
             | SettingsCheckboxField
             | SettingsColorField
             | SettingsDirectoryField

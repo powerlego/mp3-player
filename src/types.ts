@@ -82,7 +82,6 @@ export type Group = {
     | SettingsDirectoryField[]
     | SettingsColorField[]
     | SettingsCheckboxField[]
-    | SettingsButtonField[]
     | SettingsAcceleratorField[];
 };
 
@@ -97,7 +96,6 @@ type SettingsItem = {
     | "file"
     | "accelerator"
     | "color"
-    | "button"
     | "list"
     | "directory";
   label: string;
@@ -164,11 +162,6 @@ export type SettingsColorField = SettingsItem & {
 
 export type SettingsCheckboxField = SettingsItem & {
   options?: CheckboxOption[];
-};
-
-export type SettingsButtonField = SettingsItem & {
-  buttonLabel?: string;
-  hideLabel?: boolean;
 };
 
 export type SettingsAcceleratorField = SettingsItem & {
