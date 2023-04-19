@@ -16,11 +16,10 @@ function Topbar({ className }: TopbarProps): JSX.Element {
 
 function ThemeIcon(): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const [darkTheme, setDarkTheme] = useDarkMode();
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
-  const handleMode = () => setDarkTheme(!darkTheme);
+  const [darkTheme] = useDarkMode();
+
   return (
-    <span onClick={handleMode}>
+    <span>
       {darkTheme
         ? (
           <FaSun

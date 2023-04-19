@@ -2,20 +2,65 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { useEffect } from "react";
-import useLocalStorage from "./useLocalStorage";
+import { useEffect, useState } from "react";
 
 const useDarkMode = () => {
-  const [enabled, setEnabled] = useLocalStorage("dark-theme");
-  const isEnabled = typeof enabled !== "undefined" ? enabled : true;
+  const [darkTheme, setDarkTheme] = useState(false);
 
   useEffect(() => {
+    const preferences = window.settings.getPreferences();
     const className = "dark";
     const bodyClass = window.document.body.classList;
-    isEnabled ? bodyClass.add(className) : bodyClass.remove(className);
-  }, [enabled, isEnabled]);
+    if (preferences["ui"]) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (preferences["ui"]["theme"] === "dark") {
+        bodyClass.add(className);
+        setDarkTheme(true);
+      }
+      else {
+        bodyClass.remove(className);
+        setDarkTheme(false);
+      }
+    }
+  }, []);
 
-  return [enabled, setEnabled];
+  useEffect(() => {
+    window.api.on("preferencesUpdated", (_: Electron.IpcRendererEvent, preferences: any) => {
+      const className = "dark";
+      const bodyClass = window.document.body.classList;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (preferences["ui"]) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if (preferences["ui"]["theme"] === "dark") {
+          bodyClass.add(className);
+          setDarkTheme(true);
+        }
+        else {
+          bodyClass.remove(className);
+          setDarkTheme(false);
+        }
+      }
+    });
+    return () => {
+      window.api.off("preferencesUpdated", (_: Electron.IpcRendererEvent, preferences: any) => {
+        const className = "dark";
+        const bodyClass = window.document.body.classList;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if (preferences["ui"]) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          if (preferences["ui"]["theme"] === "dark") {
+            bodyClass.add(className);
+            setDarkTheme(true);
+          }
+          else {
+            bodyClass.remove(className);
+            setDarkTheme(false);
+          }
+        }
+      });
+    };
+  });
+  return [darkTheme];
 };
 
 export default useDarkMode;

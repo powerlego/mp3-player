@@ -44,12 +44,17 @@ const api = {
   off: (channel: string, listener: (...args: any[]) => void) => ipcRenderer.removeListener(channel, listener),
 };
 
+const settings = {
+  getPreferences: (): { [key: string]: any } => ipcRenderer.sendSync("getPreferences") as { [key: string]: any },
+};
+
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
 // just add to the DOM global.
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld("electron", electronAPI);
+    contextBridge.exposeInMainWorld("settings", settings);
     contextBridge.exposeInMainWorld("api", api);
   }
   catch (error) {
@@ -61,4 +66,6 @@ else {
   window.electron = electronAPI;
   // @ts-ignore (define in dts)
   window.api = api;
+  // @ts-ignore (define in dts)
+  window.settings = settings;
 }

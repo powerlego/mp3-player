@@ -5,7 +5,7 @@ import SettingsWindow from "./SettingsWindow";
 
 export default function Settings(): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const [darkTheme, setDarkTheme] = useDarkMode();
+  const [darkTheme] = useDarkMode();
 
   return <SettingsWindow />;
 }
