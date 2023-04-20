@@ -155,6 +155,7 @@ export default class NumberField extends React.Component<NumberFieldProps, Numbe
     this.stop();
     let value = this.value as number;
     value += this.step;
+    value = round(value, this.precision);
     if (value > this.max) {
       value = this.max;
     }
@@ -173,6 +174,7 @@ export default class NumberField extends React.Component<NumberFieldProps, Numbe
     this.stop();
     let value = this.value as number;
     value -= this.step;
+    value = round(value, this.precision);
     if (value < this.min) {
       value = this.min;
     }
