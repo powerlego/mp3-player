@@ -63,6 +63,9 @@ export default class SliderField extends React.Component<SliderFieldProps> {
   }
 
   onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.value.includes(".")) {
+      return this.props.onChange(Number.parseFloat(e.target.value));
+    }
     return this.props.onChange(Number.parseInt(e.target.value, 10));
   }
 }

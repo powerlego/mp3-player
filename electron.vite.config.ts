@@ -11,6 +11,7 @@ export default defineConfig({
         exclude: ["music-metadata"],
       }),
     ],
+    assetsInclude: ["src/assets/**/*"],
     resolve: {
       alias: {
         "@": resolve("src/"),

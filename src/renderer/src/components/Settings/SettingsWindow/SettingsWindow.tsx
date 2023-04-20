@@ -3,6 +3,7 @@ import React from "react";
 import debounce from "@utils/debounce";
 import SettingsMainWindow from "../SettingsMainWindow";
 import SettingsButton from "@renderer/components/Settings/SettingsButton/";
+import SettingsSidebar from "../SettingsSidebar/SettingsSidebar";
 
 const dSavePreferences = debounce((preferences) => {
   window.settings.setPreferences(preferences);
@@ -69,7 +70,8 @@ export default class SettingsWindow extends React.Component<Record<string, never
   render() {
     return (
       <>
-        <div className="absolute top-0 left-0 right-0 bottom-[4.5rem] bg-gray-180 dark:bg-gray-860 text-gray-800 dark:text-white flex flex-col">
+        <div className="absolute top-0 left-0 right-0 bottom-[4.5rem] bg-gray-180 dark:bg-gray-860 text-gray-800 dark:text-white flex flex-row">
+          <SettingsSidebar {...this.state} onSelectSection={this.onSelectSection.bind(this)} />
           <SettingsMainWindow {...this.state} onFieldChange={this.onFieldChange.bind(this)} />
         </div>
         <div className="absolute bottom-8 left-0 right-0 h-10 bg-gray-220 dark:bg-gray-880 text-gray-800 dark:text-white flex flex-row justify-end items-center">
@@ -105,6 +107,12 @@ export default class SettingsWindow extends React.Component<Record<string, never
   }
   get preferences() {
     return this.state.preferences;
+  }
+
+  onSelectSection(sectionId: string) {
+    this.setState({
+      activeSection: sectionId,
+    });
   }
 
   onFieldChange(key: string, value: any) {

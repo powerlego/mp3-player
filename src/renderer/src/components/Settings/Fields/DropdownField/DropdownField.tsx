@@ -38,8 +38,10 @@ export default class DropdownField extends React.Component<DropdownFieldProps, D
     ];
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const currentIndex = options.findIndex((option) => option.props.value === props.value);
-
+    let currentIndex = options.findIndex((option) => option.props.value === props.value);
+    if (currentIndex === -1) {
+      currentIndex = 0;
+    }
     this.outsideClickRef = React.createRef<HTMLDivElement>();
     this.options = options;
     this.optionsRefs = optionsRefs;

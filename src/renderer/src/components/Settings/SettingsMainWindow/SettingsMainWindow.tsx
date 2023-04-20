@@ -37,7 +37,7 @@ export default class SettingsMainWindow extends React.Component<SettingsMainWind
 
     return (
       <div
-        className="settings-window h-full min-h-full w-[600px] min-w-[600px] max-w-[600px] p-3 text-sm cursor-default overflow-x-hidden overflow-y-auto"
+        className="settings-window h-full min-h-full w-4/5 min-w-[500px] p-3 text-sm cursor-default overflow-x-hidden overflow-y-auto"
         ref={this.mainRef}
       >
         {groups}
