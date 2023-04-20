@@ -23,8 +23,6 @@ export default class SettingsSidebar extends Component<SettingsSidebarProps, Set
   }
 
   render() {
-    const { preferences } = this;
-
     const sections = this.sections.map((section) => {
       const isActive = section.id === this.activeSection;
       const style

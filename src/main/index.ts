@@ -7,17 +7,8 @@ import fs from "fs";
 import os from "os";
 import SettingsWindow from "./SettingsWindow";
 import { parseBuffer } from "music-metadata";
-import {
-  CheckboxOption,
-  SettingsAcceleratorField,
-  SettingsColorField,
-  SettingsFileField,
-  SettingsListField,
-  SettingsNumberField,
-  SettingsRadioField,
-} from "@/types";
+import { CheckboxOption, SettingsAcceleratorField, SettingsRadioField } from "@/types";
 import settingsUi from "@/assets/icons/settings_ui.svg?url";
-import { randomUUID } from "crypto";
 
 const readFileAndSend = async (window: BrowserWindow, filePath: string, play: boolean) => {
   const buffer = fs.readFileSync(filePath);

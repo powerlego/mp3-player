@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer, OpenDialogReturnValue, OpenDialogSyncOptions } from "electron";
+import { contextBridge, ipcRenderer, OpenDialogSyncOptions } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
 import { SettingsSection } from "@/types";
 

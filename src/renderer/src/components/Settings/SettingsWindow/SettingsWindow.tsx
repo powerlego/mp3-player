@@ -19,16 +19,17 @@ type SettingsWindowState = {
 export default class SettingsWindow extends React.Component<Record<string, never>, SettingsWindowState> {
   constructor(props: Record<string, never>) {
     super(props);
-    const allSections = window.settings.getSections();
+    const allSections: SettingsSection[] = window.settings.getSections() as SettingsSection[];
     const preferences = window.settings.getPreferences();
     for (const section of allSections) {
       if (!preferences[section.id]) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         preferences[section.id] = {};
       }
     }
 
     this.state = {
-      activeSection: allSections[0].id,
+      activeSection: (allSections[0]).id,
       sections: allSections,
       preferences,
       oldPreferences: structuredClone(preferences) as { [key: string]: any },

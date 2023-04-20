@@ -26,6 +26,11 @@ declare global {
     };
     settings: {
       getPreferences: () => { [key: string]: any };
+      getSections: () => SettingsSection[];
+      getDefaults: () => { [key: string]: any };
+      setPreferences: (preferences: any) => void;
+      showOpenDialog: (dialogOptions: Electron.OpenDialogSyncOptions) => string[] | undefined;
+      sendButtonClick: (channel: string) => void;
     };
   }
 }
