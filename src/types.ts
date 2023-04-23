@@ -197,3 +197,11 @@ export type CheckboxOption = {
   label: string;
   value: boolean | string | number;
 };
+
+export type Track = {
+  album: string;
+  artist: string;
+  id: string;
+  name: string;
+  storage_location: string;
+};
