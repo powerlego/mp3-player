@@ -86,8 +86,12 @@ export default function Shelf({ title, children }: Props) {
   }, [onResize]);
 
   React.useEffect(() => {
-    width.current = ref.current?.offsetWidth || 0;
+    width.current = ref.current?.offsetWidth ?? 0;
   });
+
+  React.useEffect(() => {
+    onResize();
+  }, []);
 
   return (
     <section
