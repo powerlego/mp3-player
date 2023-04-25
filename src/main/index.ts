@@ -367,6 +367,299 @@ const settingsWindow = new SettingsWindow({
         ],
       },
     },
+    {
+      id: "test2",
+      label: "Testing",
+      form: {
+        groups: [
+          {
+            id: "accelerators",
+            label: "Accelerators",
+            fields: [
+              {
+                type: "accelerator",
+                key: "accelerator1",
+                label: "Accelerator (Normal)",
+                description: "Accelerator (Normal)",
+              } as SettingsAcceleratorField,
+              {
+                type: "accelerator",
+                key: "accelerator2",
+                label: "Accelerator (Modifier Required)",
+                description: "Accelerator (Modifier Required)",
+                modifierRequired: true,
+              } as SettingsAcceleratorField,
+              {
+                type: "accelerator",
+                key: "accelerator3",
+                label: "Accelerator (Allow Only Modifier)",
+                description: "Accelerator (Allow Only Modifier)",
+                allowOnlyModifier: true,
+              } as SettingsAcceleratorField,
+            ],
+          },
+          {
+            id: "checkboxes",
+            label: "Checkboxes",
+            fields: [
+              {
+                type: "checkbox",
+                key: "checkbox1",
+                label: "Checkbox (Single)",
+                description: "Checkbox (Single)",
+                options: [
+                  {
+                    label: "Option 1",
+                    value: "option1",
+                  },
+                ] as CheckboxOption[],
+              },
+              {
+                type: "checkbox",
+                key: "checkbox2",
+                label: "Checkbox (Multiple)",
+                description: "Checkbox (Multiple)",
+                options: [
+                  {
+                    label: "Option 1",
+                    value: "option1",
+                  },
+                  {
+                    label: "Option 2",
+                    value: "option2",
+                  },
+                  {
+                    label: "Option 3",
+                    value: "option3",
+                  },
+                ] as CheckboxOption[],
+              },
+            ],
+          },
+          {
+            id: "colors",
+            label: "Colors",
+            fields: [
+              {
+                type: "color",
+                key: "color1",
+                label: "Color (Hex)",
+                description: "Color (Hex)",
+                format: "hex",
+              },
+              {
+                type: "color",
+                key: "color2",
+                label: "Color (RGB)",
+                description: "Color (RGB)",
+                format: "rgb",
+              },
+              {
+                type: "color",
+                key: "color3",
+                label: "Color (HSL)",
+                description: "Color (HSL)",
+                format: "hsl",
+              },
+            ],
+          },
+          {
+            id: "directories",
+            label: "Directories",
+            fields: [
+              {
+                type: "directory",
+                key: "directory1",
+                label: "Directory (Single)",
+                description: "Directory (Single)",
+                dontAddToRecent: true,
+              },
+              {
+                type: "directory",
+                key: "directory2",
+                label: "Directory (Multiple)",
+                description: "Directory (Multiple)",
+                multiSelections: true,
+                dontAddToRecent: true,
+              },
+            ],
+          },
+          {
+            id: "dropdowns",
+            label: "Dropdowns",
+            fields: [
+              {
+                type: "dropdown",
+                key: "dropdown1",
+                label: "Dropdown",
+                description: "Dropdown",
+                options: [
+                  {
+                    label: "Option 1",
+                    value: "option1",
+                  },
+                  {
+                    label: "Option 2",
+                    value: "option2",
+                  },
+                  {
+                    label: "Option 3",
+                    value: "option3",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: "files",
+            label: "Files",
+            fields: [
+              {
+                type: "file",
+                key: "file1",
+                label: "File (Single)",
+                description: "File (Single)",
+                dontAddToRecent: true,
+              },
+              {
+                type: "file",
+                key: "file2",
+                label: "File (Multiple)",
+                description: "File (Multiple)",
+                multiSelections: true,
+                dontAddToRecent: true,
+              },
+              {
+                type: "file",
+                key: "file3",
+                label: "File (Filters)",
+                description: "File (Filters)",
+                filters: [
+                  {
+                    name: "Audio Files",
+                    extensions: ["mp3", "wav", "ogg", "flac"],
+                  },
+                ],
+                dontAddToRecent: true,
+              },
+            ],
+          },
+          {
+            id: "lists",
+            label: "Lists",
+            fields: [
+              {
+                type: "list",
+                key: "list1",
+                label: "List (Non-orderable)",
+                description: "List (Non-orderable)",
+              },
+              {
+                type: "list",
+                key: "list2",
+                label: "List (Orderable)",
+                orderable: true,
+                description: "List (Orderable)",
+              },
+            ],
+          },
+          {
+            id: "numbers",
+            label: "Numbers",
+            fields: [
+              {
+                type: "number",
+                key: "number1",
+                label: "Number (Unbounded)",
+                description: "Number (Unbounded)",
+              },
+              {
+                type: "number",
+                key: "number2",
+                label: "Number (Bounded)",
+                min: 0,
+                max: 10,
+                description: "Number (Bounded)",
+              },
+              {
+                type: "number",
+                key: "number3",
+                label: "Number (Decimal)",
+                precision: 2,
+                step: 0.1,
+                min: 0,
+                max: 10,
+                description: "Number (Decimal)",
+              },
+            ],
+          },
+          {
+            id: "radios",
+            label: "Radios",
+            fields: [
+              {
+                type: "radio",
+                key: "radio1",
+                label: "Radio",
+                description: "Radio",
+                options: [
+                  {
+                    label: "Option 1",
+                    value: "option1",
+                  },
+                  {
+                    label: "Option 2",
+                    value: "option2",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: "sliders",
+            label: "Sliders",
+            fields: [
+              {
+                type: "slider",
+                key: "slider1",
+                label: "Slider (Unbounded)",
+                description: "Slider (Unbounded)",
+              },
+              {
+                type: "slider",
+                key: "slider2",
+                label: "Slider (Bounded)",
+                min: 0,
+                max: 10,
+                description: "Slider (Bounded)",
+              },
+              {
+                type: "slider",
+                key: "slider3",
+                label: "Slider (Decimal)",
+                precision: 2,
+                step: 0.1,
+                min: 0,
+                max: 10,
+                description: "Slider (Decimal)",
+              },
+            ],
+          },
+          {
+            id: "text",
+            label: "Text",
+            fields: [
+              {
+                type: "text",
+                key: "text1",
+                label: "Text",
+                description: "Text",
+              },
+            ],
+          },
+        ],
+      },
+    },
   ],
 });
 
