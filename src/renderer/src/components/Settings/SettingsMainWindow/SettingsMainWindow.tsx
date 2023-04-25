@@ -2,6 +2,7 @@ import { SettingsSection } from "@/types";
 import React from "react";
 import _ from "lodash";
 import SettingsGroup from "../Fields/SettingsGroup";
+import CustomScrollbar from "@renderer/components/CustomScrollbar/CustomScrollbar";
 
 type SettingsMainWindowProps = {
   activeSection?: string;
@@ -36,12 +37,13 @@ export default class SettingsMainWindow extends React.Component<SettingsMainWind
     ));
 
     return (
-      <div
-        className="settings-window h-full min-h-full w-4/5 min-w-[500px] p-3 text-sm cursor-default overflow-x-hidden overflow-y-auto"
+      <CustomScrollbar
+        className="h-full min-h-full w-4/5 min-w-[500px] text-sm cursor-default"
         ref={this.mainRef}
+        scrollHostClassName="overflow-x-hidden overflow-y-auto p-3"
       >
         {groups}
-      </div>
+      </CustomScrollbar>
     );
   }
 
