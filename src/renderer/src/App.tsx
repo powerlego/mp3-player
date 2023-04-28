@@ -35,6 +35,7 @@ function App() {
       if (!aud) {
         return;
       }
+      aud.load();
       const playPromise = aud.play();
       // playPromise is null in IE 11
       playPromise.then(null).catch((err) => {
