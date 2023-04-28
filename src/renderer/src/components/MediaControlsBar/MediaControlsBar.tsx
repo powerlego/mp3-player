@@ -6,6 +6,7 @@ import MediaControls from "./MediaControls";
 import SongDetails from "./SongDetails";
 import TrackProgress from "./TrackProgress";
 import VolumeControls from "./VolumeControls";
+import { Queue } from "@renderer/objects/QueueObject";
 
 type MediaControlsBarProps = {
   audio: React.RefObject<HTMLAudioElement>;
@@ -58,6 +59,59 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
 
   const lastVolume = React.useRef(volume);
   const repeatCount = React.useRef(0);
+  const queue = React.useContext(Queue);
+
+  const handleQueueChange = (): void => {
+    const aud = audio.current;
+    if (!aud) {
+      return;
+    }
+    if (queue.length > 0) {
+      if (repeat === 1 || (repeat === 2 && repeatCount.current === 0)) {
+        const song = queue.dequeue();
+        if (song) {
+          window.api.loadAudioFile(song.storage_location, true).catch((err) => {
+            console.log(err);
+          });
+          queue.enqueue(song);
+        }
+      }
+      else {
+        const song = queue.dequeue();
+        if (song) {
+          window.api.loadAudioFile(song.storage_location, true).catch((err) => {
+            console.log(err);
+          });
+        }
+      }
+    }
+  };
+
+  const handleAudioEnded = (): void => {
+    const aud = audio.current;
+    if (!aud) {
+      return;
+    }
+    if (queue.length > 0) {
+      if (repeat === 1 || (repeat === 2 && repeatCount.current === 0)) {
+        const song = queue.dequeue();
+        if (song) {
+          window.api.loadAudioFile(song.storage_location, true).catch((err) => {
+            console.log(err);
+          });
+          queue.enqueue(song);
+        }
+      }
+      else {
+        const song = queue.dequeue();
+        if (song) {
+          window.api.loadAudioFile(song.storage_location, true).catch((err) => {
+            console.log(err);
+          });
+        }
+      }
+    }
+  };
 
   const togglePlay = (e: React.SyntheticEvent): void => {
     e.stopPropagation();
@@ -96,16 +150,7 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     if (!aud) {
       return;
     }
-
     if (repeatCnt === 0) {
-      aud.currentTime = 0;
-      aud.loop = false;
-      aud
-        .play()
-        .then(null)
-        .catch((err) => {
-          console.log(err);
-        });
       repeatCount.current = 1;
     }
   };
@@ -174,9 +219,11 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     else {
       aud.volume = lastVolume.current;
     }
+    aud.addEventListener("ended", handleAudioEnded);
     window.api.onFileOpen(handleFileOpen);
     return () => {
       window.api.offFileOpen(handleFileOpen);
+      aud.removeEventListener("ended", handleAudioEnded);
     };
   });
 

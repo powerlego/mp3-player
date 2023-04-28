@@ -23,34 +23,28 @@ export default function RepeatButton({ audio, handleClickRepeatButton }: RepeatB
     handleClickRepeatButton && handleClickRepeatButton();
   };
 
-  return isAudioAvailable
-    ? (
-      <div className="h-8 aspect-square flex justify-center items-center" onClick={() => handleRepeat()}>
-        {repeat === 1
+  return (
+    <div className="h-8 aspect-square flex justify-center items-center" onClick={() => handleRepeat()}>
+      {repeat === 1
+        ? (
+          <LoopIcon
+            className="m-0 w-4 h-4 transition-all duration-300 ease-in-out fill-green-700 hover:fill-green-800 dark:fill-green-600 hover:dark:fill-green-700"
+            id="repeat-all"
+          />
+        )
+        : repeat === 2
           ? (
-            <LoopIcon
+            <LoopOnceIcon
               className="m-0 w-4 h-4 transition-all duration-300 ease-in-out fill-green-700 hover:fill-green-800 dark:fill-green-600 hover:dark:fill-green-700"
-              id="repeat-all"
+              id="repeat-one"
             />
           )
-          : repeat === 2
-            ? (
-              <LoopOnceIcon
-                className="m-0 w-4 h-4 transition-all duration-300 ease-in-out fill-green-700 hover:fill-green-800 dark:fill-green-600 hover:dark:fill-green-700"
-                id="repeat-one"
-              />
-            )
-            : (
-              <LoopIcon
-                className="m-0 w-4 h-4 transition-all duration-300 ease-in-out non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
-                id="repeat-none"
-              />
-            )}
-      </div>
-    )
-    : (
-      <div className="h-8 aspect-square flex justify-center items-center">
-        <LoopIcon className="m-0 w-4 h-4 fill-gray-350 dark:fill-gray-750" id="repeat-none" />
-      </div>
-    );
+          : (
+            <LoopIcon
+              className="m-0 w-4 h-4 transition-all duration-300 ease-in-out non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
+              id="repeat-none"
+            />
+          )}
+    </div>
+  );
 }
