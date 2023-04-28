@@ -8,15 +8,66 @@ interface RepeatButtonProps {
 
 export default function RepeatButton({ audio }: RepeatButtonProps): JSX.Element {
   const [repeat, setRepeat] = useState(0);
+  const [loopOnce, setLoopOnce] = useState(false);
   const isAudioAvailable = React.useMemo(() => audio && audio.src !== "", [audio]);
   const handleRepeat = () => {
-    if (repeat === 2) {
+    if (!audio) {
+      return;
+    }
+    if (!isAudioAvailable) {
+      return;
+    }
+    if (repeat === 0) {
+      setLoopOnce(false);
+      audio.loop = true;
+      setRepeat(1);
+    }
+    else if (repeat === 1) {
+      audio.loop = false;
+      setLoopOnce(true);
+      setRepeat(2);
+    }
+    else if (repeat === 2) {
+      setLoopOnce(false);
+      audio.loop = false;
       setRepeat(0);
     }
-    else {
-      setRepeat(repeat + 1);
-    }
   };
+
+  React.useEffect(() => {
+    if (audio) {
+      audio.addEventListener("ended", () => {
+        if (loopOnce) {
+          audio.currentTime = 0;
+          audio
+            .play()
+            .then(null)
+            .catch((err) => {
+              console.log(err);
+            });
+          setLoopOnce(false);
+        }
+      });
+    }
+
+    return () => {
+      if (audio) {
+        audio.removeEventListener("ended", () => {
+          if (loopOnce) {
+            audio.load();
+            audio
+              .play()
+              .then(null)
+              .catch((err) => {
+                console.log(err);
+              });
+            setLoopOnce(false);
+          }
+        });
+      }
+    };
+  }, [audio, loopOnce]);
+
   return isAudioAvailable
     ? (
       <div className="h-8 aspect-square flex justify-center items-center" onClick={() => handleRepeat()}>
