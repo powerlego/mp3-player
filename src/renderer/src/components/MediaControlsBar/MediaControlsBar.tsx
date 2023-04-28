@@ -54,8 +54,10 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
   const [songName, setSongName] = React.useState("");
   const [artistName, setArtistName] = React.useState("");
   const [coverArt, setCoverArt] = React.useState("");
+  const [repeat, setRepeat] = React.useState(0);
 
   const lastVolume = React.useRef(volume);
+  const repeatCount = React.useRef(0);
 
   const togglePlay = (e: React.SyntheticEvent): void => {
     e.stopPropagation();
@@ -79,9 +81,56 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     const playPromise = aud.play();
     // playPromise is null in IE 11
 
+    if (repeat === 2 && repeatCount.current > 0) {
+      repeatCount.current = 0;
+    }
+
     playPromise.then(null).catch((err) => {
       console.log(err);
     });
+  };
+
+  const handleRepeatOnce = (): void => {
+    const aud = audio.current;
+    const repeatCnt = repeatCount.current;
+    if (!aud) {
+      return;
+    }
+
+    if (repeatCnt === 0) {
+      aud.currentTime = 0;
+      aud.loop = false;
+      aud
+        .play()
+        .then(null)
+        .catch((err) => {
+          console.log(err);
+        });
+      repeatCount.current = 1;
+    }
+  };
+
+  const handleClickRepeatButton = (): void => {
+    const aud = audio.current;
+    if (!aud) {
+      return;
+    }
+    if (repeat === 0) {
+      aud.loop = true;
+      repeatCount.current = 0;
+      setRepeat(1);
+    }
+    else if (repeat === 1) {
+      aud.loop = false;
+      aud.addEventListener("ended", handleRepeatOnce);
+      setRepeat(2);
+    }
+    else {
+      aud.loop = false;
+      aud.removeEventListener("ended", handleRepeatOnce);
+      setRepeat(0);
+      repeatCount.current = 0;
+    }
   };
 
   const handleClickVolumeButton = (): void => {
@@ -139,7 +188,12 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
       <div className="flex h-full w-full flex-row justify-between items-center">
         <SongDetails artistName={artistName} coverArt={coverArt} expandFunc={expandFunc} songName={songName} />
         <div className="flex w-1/2 min-w-fit max-w-[45rem] flex-col items-center justify-center">
-          <MediaControls audio={audio.current} i18nAriaLabels={i18nAriaLabels} togglePlay={togglePlay} />
+          <MediaControls
+            audio={audio.current}
+            handleClickRepeatButton={handleClickRepeatButton}
+            i18nAriaLabels={i18nAriaLabels}
+            togglePlay={togglePlay}
+          />
           <TrackProgress
             audio={audio.current}
             defaultCurrentTime={defaultCurrentTime}
