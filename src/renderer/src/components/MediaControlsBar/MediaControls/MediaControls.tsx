@@ -9,10 +9,16 @@ import SkipForwardButton from "./SkipForwardButton";
 interface MediaControlsProps {
   audio: HTMLAudioElement | null;
   togglePlay?: (e: React.SyntheticEvent) => void;
+  handleClickRepeatButton?: () => void;
   i18nAriaLabels?: I18nAriaLabels;
 }
 
-export default function MediaControls({ audio, togglePlay, i18nAriaLabels }: MediaControlsProps) {
+export default function MediaControls({
+  audio,
+  togglePlay,
+  i18nAriaLabels,
+  handleClickRepeatButton,
+}: MediaControlsProps) {
   return (
     <div className="mb-4 flex flex-row items-center justify-evenly gap-4 w-full">
       <div className="flex items-center justify-end w-full flex-1 gap-2">
@@ -22,7 +28,7 @@ export default function MediaControls({ audio, togglePlay, i18nAriaLabels }: Med
       <PlayButton audio={audio} i18nAriaLabels={i18nAriaLabels} togglePlay={togglePlay} />
       <div className="flex items-center justify-start w-full flex-1 gap-2">
         <SkipForwardButton aria-label={i18nAriaLabels?.next} audio={audio} />
-        <RepeatButton audio={audio} />
+        <RepeatButton audio={audio} handleClickRepeatButton={handleClickRepeatButton} />
       </div>
     </div>
   );
