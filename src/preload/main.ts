@@ -29,6 +29,7 @@ const api = {
     ipcRenderer.on("open-file", callback),
   getAudioFile: () => ipcRenderer.invoke("getAudioFile"),
   loadAudioFile: (file: string, play: boolean) => ipcRenderer.invoke("loadAudioFile", file, play),
+  readDir: () => ipcRenderer.invoke("readDir"),
   getStoreKey: (key: string) => ipcRenderer.invoke("getStoreKey", key),
   setStoreKey: (key: string, value: any, subkey: string) => ipcRenderer.invoke("setStoreKey", key, value, subkey),
   getAudioInfo: (file: string) =>

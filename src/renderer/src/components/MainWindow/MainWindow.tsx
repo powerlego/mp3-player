@@ -1,6 +1,8 @@
 import React from "react";
 import SongCover from "./SongCoverCard";
 import Shelf from "@renderer/components/Shelf";
+import { Queue } from "@renderer/objects/QueueObject";
+import shuffleQueue from "@utils/shuffle";
 
 type MainWindowProps = {
   audio: React.RefObject<HTMLAudioElement>;
@@ -8,6 +10,7 @@ type MainWindowProps = {
 };
 
 function MainWindow({ className }: MainWindowProps) {
+  const queue = React.useContext(Queue);
   const arr: string[] = [];
   for (let i = 0; i < 100; i++) {
     arr.push(
@@ -34,6 +37,12 @@ function MainWindow({ className }: MainWindowProps) {
               <SongCover fileLocation="G:\\Music\\0-59.mp3" />
               <SongCover fileLocation="G:\\Music\\0-59.mp3" />
             </Shelf>
+            <button
+              className="w-full h-8 dark:bg-white bg-black"
+              onClick={() => console.log(shuffleQueue(queue.queue))}
+            >
+              Shuffle
+            </button>
           </div>
         </div>
       </section>

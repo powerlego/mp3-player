@@ -5,9 +5,11 @@ import store from "@/store";
 import { setupTitlebar, attachTitlebarToWindow } from "custom-electron-titlebar/main";
 import fs from "fs";
 import os from "os";
+import fetch, { BodyInit, RequestInit, Response } from "node-fetch";
+import { randomUUID } from "crypto";
 import SettingsWindow from "./SettingsWindow";
 import { parseBuffer } from "music-metadata";
-import { CheckboxOption, SettingsAcceleratorField, SettingsRadioField } from "@/types";
+import { CheckboxOption, SettingsAcceleratorField, SettingsRadioField, Track } from "@/types";
 import settingsUi from "@/assets/icons/settings_ui.svg?url";
 
 const readFileAndSend = async (window: BrowserWindow, filePath: string, play: boolean) => {
@@ -884,6 +886,30 @@ ipcMain.handle("getAudioFile", async () => {
     return filePaths[0];
   }
   return null;
+});
+
+ipcMain.handle("readDir", async () => {
+  const { canceled, filePaths } = await dialog.showOpenDialog({
+    properties: ["openDirectory"],
+  });
+  if (!canceled) {
+    const files = fs.readdirSync(filePaths[0]);
+    const tracksPromise = files.map(async (file) => {
+      const buffer = fs.readFileSync(join(filePaths[0], file));
+      const metadata = await parseBuffer(buffer, "audio/mpeg");
+      return {
+        artist: metadata.common.artist ?? "",
+        id: randomUUID(),
+        album: metadata.common.album ?? "",
+        name: metadata.common.title ?? "",
+        // eslint-disable-next-line @typescript-eslint/naming-convention, camelcase
+        storage_location: join(filePaths[0], file),
+      };
+    });
+
+    const tracks = await Promise.all(tracksPromise);
+    console.log(tracks);
+  }
 });
 
 ipcMain.handle("loadAudioFile", async (_, file: string, play: boolean) => {

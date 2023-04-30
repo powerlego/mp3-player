@@ -9,6 +9,7 @@ declare global {
         callback: (_event: IpcRendererEvent, file: FilePayload, play: boolean) => void
       ) => Electron.IpcRenderer;
       getAudioFile: () => Promise<string>;
+      readDir: () => Promise<void>;
       loadAudioFile: (file: string, play: boolean) => Promise<string>;
       getStoreKey: (key: string) => Promise<any>;
       setStoreKey: (key: string, value: any, subkey: string) => Promise<any>;

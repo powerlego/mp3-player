@@ -70,7 +70,7 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
       if (repeat === 1 || (repeat === 2 && repeatCount.current === 0)) {
         const song = queue.dequeue();
         if (song) {
-          window.api.loadAudioFile(song.storage_location, true).catch((err) => {
+          window.api.loadAudioFile(song.storageLocation, true).catch((err) => {
             console.log(err);
           });
           queue.enqueue(song);
@@ -79,7 +79,7 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
       else {
         const song = queue.dequeue();
         if (song) {
-          window.api.loadAudioFile(song.storage_location, true).catch((err) => {
+          window.api.loadAudioFile(song.storageLocation, true).catch((err) => {
             console.log(err);
           });
         }
@@ -96,7 +96,7 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
       if (repeat === 1 || (repeat === 2 && repeatCount.current === 0)) {
         const song = queue.dequeue();
         if (song) {
-          window.api.loadAudioFile(song.storage_location, true).catch((err) => {
+          window.api.loadAudioFile(song.storageLocation, true).catch((err) => {
             console.log(err);
           });
           queue.enqueue(song);
@@ -105,7 +105,7 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
       else {
         const song = queue.dequeue();
         if (song) {
-          window.api.loadAudioFile(song.storage_location, true).catch((err) => {
+          window.api.loadAudioFile(song.storageLocation, true).catch((err) => {
             console.log(err);
           });
         }
