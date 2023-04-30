@@ -8,7 +8,7 @@ export default defineConfig({
   main: {
     plugins: [
       externalizeDepsPlugin({
-        exclude: ["music-metadata"],
+        exclude: ["music-metadata", "node-fetch"],
       }),
     ],
     assetsInclude: ["src/assets/**/*"],
@@ -24,6 +24,9 @@ export default defineConfig({
             if (id.includes("music-metadata")) {
               return "music-metadata";
             }
+            if (id.includes("node-fetch")) {
+              return "node-fetch";
+            }
           },
         },
       },
@@ -32,7 +35,7 @@ export default defineConfig({
   preload: {
     plugins: [
       externalizeDepsPlugin({
-        exclude: ["music-metadata"],
+        exclude: ["music-metadata", "node-fetch"],
       }),
     ],
     resolve: {

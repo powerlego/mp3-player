@@ -203,5 +203,5 @@ export type Track = {
   artist: string;
   id: string;
   name: string;
-  storage_location: string;
+  storageLocation: string;
 };

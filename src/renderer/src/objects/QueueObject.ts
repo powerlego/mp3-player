@@ -2,17 +2,13 @@ import { Track } from "@/types";
 import React from "react";
 
 export class QueueObject {
-  private _shuffle: boolean;
-  private _repeat: boolean;
-  private _queue: Track[];
   private _originalQueue: Track[];
+  private _queue: Track[];
   private _currentTrack: Track | undefined;
 
   constructor() {
-    this._shuffle = false;
-    this._repeat = false;
-    this._queue = [];
     this._originalQueue = [];
+    this._queue = [];
     this._currentTrack = {} as Track;
   }
 
@@ -21,9 +17,9 @@ export class QueueObject {
   }
 
   dequeue() {
-    const trck = this._queue.shift();
-    this._currentTrack = trck;
-    return trck;
+    const track = this._queue.shift();
+    this._currentTrack = track;
+    return track;
   }
 
   get currentTrack() {
@@ -42,7 +38,16 @@ export class QueueObject {
     this._queue = queue;
   }
 
+  set originalQueue(queue: Track[]) {
+    this._originalQueue = queue;
+  }
+
+  get originalQueue() {
+    return this._originalQueue;
+  }
+
   clear() {
+    this._originalQueue = [];
     this._queue = [];
   }
 
