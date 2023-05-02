@@ -6,7 +6,8 @@ import MediaControls from "./MediaControls";
 import SongDetails from "./SongDetails";
 import TrackProgress from "./TrackProgress";
 import VolumeControls from "./VolumeControls";
-import { Queue } from "@renderer/objects/QueueObject";
+import useQueue from "@renderer/hooks/useQueue";
+import useForceUpdate from "@renderer/hooks/useForceUpdate";
 
 type MediaControlsBarProps = {
   audio: React.RefObject<HTMLAudioElement>;
@@ -55,63 +56,11 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
   const [songName, setSongName] = React.useState("");
   const [artistName, setArtistName] = React.useState("");
   const [coverArt, setCoverArt] = React.useState("");
-  const [repeat, setRepeat] = React.useState(0);
+  const forceUpdate = useForceUpdate();
+
+  const [repeat, setRepeat, shuffle, setShuffle, repeatCount, getNextSong] = useQueue();
 
   const lastVolume = React.useRef(volume);
-  const repeatCount = React.useRef(0);
-  const queue = React.useContext(Queue);
-
-  const handleQueueChange = (): void => {
-    const aud = audio.current;
-    if (!aud) {
-      return;
-    }
-    if (queue.length > 0) {
-      if (repeat === 1 || (repeat === 2 && repeatCount.current === 0)) {
-        const song = queue.dequeue();
-        if (song) {
-          window.api.loadAudioFile(song.storageLocation, true).catch((err) => {
-            console.log(err);
-          });
-          queue.enqueue(song);
-        }
-      }
-      else {
-        const song = queue.dequeue();
-        if (song) {
-          window.api.loadAudioFile(song.storageLocation, true).catch((err) => {
-            console.log(err);
-          });
-        }
-      }
-    }
-  };
-
-  const handleAudioEnded = (): void => {
-    const aud = audio.current;
-    if (!aud) {
-      return;
-    }
-    if (queue.length > 0) {
-      if (repeat === 1 || (repeat === 2 && repeatCount.current === 0)) {
-        const song = queue.dequeue();
-        if (song) {
-          window.api.loadAudioFile(song.storageLocation, true).catch((err) => {
-            console.log(err);
-          });
-          queue.enqueue(song);
-        }
-      }
-      else {
-        const song = queue.dequeue();
-        if (song) {
-          window.api.loadAudioFile(song.storageLocation, true).catch((err) => {
-            console.log(err);
-          });
-        }
-      }
-    }
-  };
 
   const togglePlay = (e: React.SyntheticEvent): void => {
     e.stopPropagation();
@@ -192,14 +141,6 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     }
   };
 
-  // const handleClickLoopButton = (): void => {
-  //   if (!audio.current) {
-  //     return;
-  //   }
-  //   audio.current.loop = !audio.current.loop;
-  //   forceUpdate();
-  // };
-
   const handleFileOpen = (_event: Electron.IpcRendererEvent, file: FilePayload) => {
     setSongName(file.metadata.common.title ?? "");
     setArtistName(file.metadata.common.artist ?? "");
@@ -209,6 +150,7 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
   };
 
   React.useEffect(() => {
+    forceUpdate();
     const aud = audio.current;
     if (!aud) {
       return;
@@ -219,13 +161,13 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     else {
       aud.volume = lastVolume.current;
     }
-    aud.addEventListener("ended", handleAudioEnded);
+    aud.addEventListener("ended", getNextSong);
     window.api.onFileOpen(handleFileOpen);
     return () => {
       window.api.offFileOpen(handleFileOpen);
-      aud.removeEventListener("ended", handleAudioEnded);
+      aud.removeEventListener("ended", getNextSong);
     };
-  });
+  }, []);
 
   if (!timeFormat) {
     return <></>;
@@ -239,6 +181,9 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
             audio={audio.current}
             handleClickRepeatButton={handleClickRepeatButton}
             i18nAriaLabels={i18nAriaLabels}
+            repeat={repeat}
+            setShuffle={setShuffle}
+            shuffle={shuffle}
             togglePlay={togglePlay}
           />
           <TrackProgress

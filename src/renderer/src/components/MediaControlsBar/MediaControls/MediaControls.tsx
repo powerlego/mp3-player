@@ -10,6 +10,10 @@ interface MediaControlsProps {
   audio: HTMLAudioElement | null;
   togglePlay?: (e: React.SyntheticEvent) => void;
   handleClickRepeatButton?: () => void;
+  shuffle?: boolean;
+  setShuffle?: React.Dispatch<React.SetStateAction<boolean>>;
+  repeat?: number;
+  setRepeat?: React.Dispatch<React.SetStateAction<number>>;
   i18nAriaLabels?: I18nAriaLabels;
 }
 
@@ -18,17 +22,20 @@ export default function MediaControls({
   togglePlay,
   i18nAriaLabels,
   handleClickRepeatButton,
+  shuffle,
+  setShuffle,
+  repeat,
 }: MediaControlsProps) {
   return (
-    <div className="mb-4 flex flex-row items-center justify-evenly gap-4 w-full">
+    <div className="mb-1 flex flex-row items-center justify-evenly gap-3 w-full">
       <div className="flex items-center justify-end w-full flex-1 gap-2">
-        <ShuffleButton audio={audio} />
+        <ShuffleButton setShuffle={setShuffle} shuffle={shuffle} />
         <SkipBackButton aria-label={i18nAriaLabels?.previous} audio={audio} />
       </div>
       <PlayButton audio={audio} i18nAriaLabels={i18nAriaLabels} togglePlay={togglePlay} />
       <div className="flex items-center justify-start w-full flex-1 gap-2">
         <SkipForwardButton aria-label={i18nAriaLabels?.next} audio={audio} />
-        <RepeatButton audio={audio} handleClickRepeatButton={handleClickRepeatButton} />
+        <RepeatButton handleClickRepeatButton={handleClickRepeatButton} repeat={repeat} />
       </div>
     </div>
   );
