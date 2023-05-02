@@ -1,5 +1,6 @@
 import React from "react";
 import { ImVolumeMute2, ImVolumeMute, ImVolumeLow, ImVolumeMedium, ImVolumeHigh } from "react-icons/im";
+import { SpeakerMute20Filled, Speaker020Filled, Speaker120Filled, Speaker220Filled } from "@fluentui/react-icons";
 import { I18nAriaLabels } from "@/types";
 
 type VolumeButtonProps = {
@@ -84,23 +85,31 @@ export default function VolumeButton(props: VolumeButtonProps) {
       >
         {isMuted
           ? (
-            <ImVolumeMute2 className="m-0 w-4 h-4 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150" />
+            <SpeakerMute20Filled
+              className="m-0 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
+              primaryFill=""
+            />
           )
-          : volume < 0.25
+          : volume < 1 / 3
             ? (
-              <ImVolumeMute className="m-0 w-4 h-4 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150" />
+              <Speaker020Filled
+                className="m-0 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
+                primaryFill=""
+              />
             )
-            : volume < 0.5
+            : volume < 2 / 3
               ? (
-                <ImVolumeLow className="m-0 w-4 h-4 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150" />
+                <Speaker120Filled
+                  className="m-0 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
+                  primaryFill=""
+                />
               )
-              : volume < 0.75
-                ? (
-                  <ImVolumeMedium className="m-0 w-4 h-4 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150" />
-                )
-                : (
-                  <ImVolumeHigh className="m-0 w-4 h-4 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150" />
-                )}
+              : (
+                <Speaker220Filled
+                  className="m-0 cursor-pointer transition-all duration-300 ease-in-out non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
+                  primaryFill=""
+                />
+              )}
       </div>
     );
   }

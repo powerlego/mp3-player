@@ -2,6 +2,7 @@ import React from "react";
 import { ReactComponent as PlayIcon } from "@/assets/icons/play.svg";
 import { ReactComponent as PauseIcon } from "@/assets/icons/pause.svg";
 import { I18nAriaLabels } from "@/types";
+import { PlayCircle48Filled, PauseCircle24Filled } from "@fluentui/react-icons";
 
 interface PlayButtonProps {
   audio?: HTMLAudioElement | null;
@@ -57,16 +58,21 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
 
   return isAudioAvailable
     ? (
-      <div
-        className="h-8 aspect-square flex justify-center items-center rounded-full bg-gray-850 dark:bg-gray-150 hover:bg-gray-800 dark:hover:bg-gray-200 transition-all ease-in-out duration-200 hover:scale-[1.1]"
-        onClick={togglePlay}
-      >
+      <div className="h-12 aspect-square flex justify-center items-center " onClick={togglePlay}>
         {isPlaying
           ? (
-            <PauseIcon aria-label={i18nAriaLabels?.play} className="fill-gray-220 dark:fill-gray-880 m-0 w-4 h-4 " />
+            <PauseCircle24Filled
+              aria-label={i18nAriaLabels?.play}
+              className="m-0 transition-all ease-in-out duration-200 hover:scale-[1.1] fill-gray-850 dark:fill-gray-150 hover:fill-gray-800 dark:hover:fill-gray-200 w-12 h-12 "
+              primaryFill=""
+            />
           )
           : (
-            <PlayIcon aria-label={i18nAriaLabels?.pause} className="fill-gray-220 dark:fill-gray-880 m-0 w-4 h-4 " />
+            <PlayCircle48Filled
+              aria-label={i18nAriaLabels?.pause}
+              className="m-0 transition-all ease-in-out duration-200 hover:scale-[1.1] fill-gray-850 dark:fill-gray-150 hover:fill-gray-800 dark:hover:fill-gray-200"
+              primaryFill=""
+            />
           )}
       </div>
     )
