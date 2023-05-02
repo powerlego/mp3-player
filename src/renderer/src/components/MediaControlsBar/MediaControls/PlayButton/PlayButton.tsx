@@ -1,6 +1,4 @@
 import React from "react";
-import { ReactComponent as PlayIcon } from "@/assets/icons/play.svg";
-import { ReactComponent as PauseIcon } from "@/assets/icons/pause.svg";
 import { I18nAriaLabels } from "@/types";
 import { PlayCircle48Filled, PauseCircle24Filled } from "@fluentui/react-icons";
 
@@ -63,7 +61,7 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
           ? (
             <PauseCircle24Filled
               aria-label={i18nAriaLabels?.play}
-              className="m-0 transition-all ease-in-out duration-200 hover:scale-[1.1] fill-gray-850 dark:fill-gray-150 hover:fill-gray-800 dark:hover:fill-gray-200 w-12 h-12 "
+              className="m-0 transition-all ease-in-out duration-200 hover:scale-[1.1] fill-gray-850 dark:fill-gray-150 hover:fill-gray-800 dark:hover:fill-gray-200"
               primaryFill=""
             />
           )
@@ -78,7 +76,7 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
     )
     : (
       <div className="h-8 aspect-square flex justify-center items-center bg-gray-350 dark:bg-gray-750 rounded-full ">
-        <PauseIcon className="fill-gray-220 dark:fill-gray-880 m-0 w-4 h-4" />
+        <PauseCircle24Filled className="fill-gray-220 dark:fill-gray-880 m-0" primaryFill="" />
       </div>
     );
 }

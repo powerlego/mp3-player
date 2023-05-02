@@ -5,11 +5,11 @@ import store from "@/store";
 import { setupTitlebar, attachTitlebarToWindow } from "custom-electron-titlebar/main";
 import fs from "fs";
 import os from "os";
-import fetch, { BodyInit, RequestInit, Response } from "node-fetch";
+// import fetch, { BodyInit, RequestInit, Response } from "node-fetch";
 import { randomUUID } from "crypto";
 import SettingsWindow from "./SettingsWindow";
 import { parseBuffer } from "music-metadata";
-import { CheckboxOption, SettingsAcceleratorField, SettingsRadioField, Track } from "@/types";
+import { CheckboxOption, SettingsAcceleratorField, SettingsRadioField } from "@/types";
 import settingsUi from "@/assets/icons/settings_ui.svg?url";
 
 const readFileAndSend = async (window: BrowserWindow, filePath: string, play: boolean) => {

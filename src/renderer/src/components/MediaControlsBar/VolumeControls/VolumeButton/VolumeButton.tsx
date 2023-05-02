@@ -1,5 +1,4 @@
 import React from "react";
-import { ImVolumeMute2, ImVolumeMute, ImVolumeLow, ImVolumeMedium, ImVolumeHigh } from "react-icons/im";
 import { SpeakerMute20Filled, Speaker020Filled, Speaker120Filled, Speaker220Filled } from "@fluentui/react-icons";
 import { I18nAriaLabels } from "@/types";
 
@@ -72,7 +71,7 @@ export default function VolumeButton(props: VolumeButtonProps) {
   if (!isAudioAvailable) {
     return (
       <div className="aspect-square h-8 flex items-center justify-center  ">
-        <ImVolumeMute2 className="fill-gray-350 dark:fill-gray-750 m-0 w-4 h-4" />
+        <SpeakerMute20Filled className="fill-gray-350 dark:fill-gray-750 m-0" primaryFill="" />
       </div>
     );
   }
