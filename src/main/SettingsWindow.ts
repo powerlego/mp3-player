@@ -32,16 +32,11 @@ export default class SettingsWindow extends EventEmitter2 {
       sections: [],
     });
     if (options.sections) {
-      for (const [sectionId, section] of options.sections.entries()) {
+      for (const [__, section] of options.sections.entries()) {
         _.defaultsDeep(section, {
           form: {
             groups: [],
           },
-        });
-
-        section.form.groups = section.form.groups.map((group, groupIdx) => {
-          group.id = `group${sectionId}${groupIdx}`;
-          return group;
         });
       }
     }
@@ -58,14 +53,27 @@ export default class SettingsWindow extends EventEmitter2 {
     }
 
     if (this.preferences) {
-      for (const prefDefault of _.keys(this.defaults)) {
-        if (prefDefault in this.preferences) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          this.preferences[prefDefault] = { ...this.defaults[prefDefault], ...this.preferences[prefDefault] };
+      for (const prefDefaultGroups of _.keys(this.defaults)) {
+        if (prefDefaultGroups in this.preferences) {
+          for (const prefDefault of _.keys(this.defaults[prefDefaultGroups])) {
+            if (prefDefault in this.preferences[prefDefaultGroups]) {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+              this.preferences[prefDefaultGroups][prefDefault] = {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                ...this.defaults[prefDefaultGroups][prefDefault],
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                ...this.preferences[prefDefaultGroups][prefDefault],
+              };
+            }
+            else {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+              this.preferences[prefDefaultGroups][prefDefault] = this.defaults[prefDefaultGroups][prefDefault];
+            }
+          }
         }
         else {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          this.preferences[prefDefault] = this.defaults[prefDefault];
+          this.preferences[prefDefaultGroups] = this.defaults[prefDefaultGroups];
         }
       }
     }

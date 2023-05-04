@@ -13,13 +13,16 @@ const useDarkMode = () => {
     const bodyClass = window.document.body.classList;
     if (preferences["ui"]) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      if (preferences["ui"]["theme"] === "dark") {
-        bodyClass.add(className);
-        setDarkTheme(true);
-      }
-      else {
-        bodyClass.remove(className);
-        setDarkTheme(false);
+      if (preferences["ui"]["themes"]) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if (preferences["ui"]["themes"]["theme"] === "dark") {
+          bodyClass.add(className);
+          setDarkTheme(true);
+        }
+        else {
+          bodyClass.remove(className);
+          setDarkTheme(false);
+        }
       }
     }
   }, []);
@@ -31,13 +34,16 @@ const useDarkMode = () => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (preferences["ui"]) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        if (preferences["ui"]["theme"] === "dark") {
-          bodyClass.add(className);
-          setDarkTheme(true);
-        }
-        else {
-          bodyClass.remove(className);
-          setDarkTheme(false);
+        if (preferences["ui"]["themes"]) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          if (preferences["ui"]["themes"]["theme"] === "dark") {
+            bodyClass.add(className);
+            setDarkTheme(true);
+          }
+          else {
+            bodyClass.remove(className);
+            setDarkTheme(false);
+          }
         }
       }
     });
@@ -48,13 +54,16 @@ const useDarkMode = () => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         if (preferences["ui"]) {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          if (preferences["ui"]["theme"] === "dark") {
-            bodyClass.add(className);
-            setDarkTheme(true);
-          }
-          else {
-            bodyClass.remove(className);
-            setDarkTheme(false);
+          if (preferences["ui"]["themes"]) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            if (preferences["ui"]["themes"]["theme"] === "dark") {
+              bodyClass.add(className);
+              setDarkTheme(true);
+            }
+            else {
+              bodyClass.remove(className);
+              setDarkTheme(false);
+            }
           }
         }
       });

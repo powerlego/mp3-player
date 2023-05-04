@@ -5,24 +5,30 @@ import CurrentTime from "./CurrentTime";
 import Duration from "./Duration";
 import ProgressBar from "./ProgressBar";
 
-interface TrackProgressProps {
+interface TrackProgressForwardRefProps {
   audio: HTMLAudioElement | null;
   progressUpdateInterval?: number;
+  curTime?: number;
   defaultCurrentTime?: ReactNode;
   defaultDuration?: ReactNode;
   timeFormat?: TIME_FORMAT;
   i18nAriaLabels?: I18nAriaLabels;
 }
 
+interface TrackProgressProps extends TrackProgressForwardRefProps {
+  progressRef: React.RefObject<HTMLDivElement>;
+}
+
 function TrackProgress({
   audio,
   progressUpdateInterval,
+  curTime,
   timeFormat,
   defaultCurrentTime,
   defaultDuration,
   i18nAriaLabels,
+  progressRef,
 }: TrackProgressProps) {
-  const progressRef = React.useRef<HTMLDivElement>(null);
   if (!timeFormat) {
     return null;
   }
@@ -36,6 +42,7 @@ function TrackProgress({
       />
       <ProgressBar
         audio={audio}
+        currTime={curTime}
         i18nProgressBar={i18nAriaLabels?.progressControl}
         progressUpdateInterval={progressUpdateInterval}
         ref={progressRef}
@@ -50,4 +57,12 @@ function TrackProgress({
   );
 }
 
-export default TrackProgress;
+function TrackProgressForwardRef(
+  props: TrackProgressForwardRefProps,
+  ref: React.Ref<HTMLDivElement>
+): React.ReactElement {
+  return <TrackProgress {...props} progressRef={ref as React.RefObject<HTMLDivElement>} />;
+}
+
+export default React.forwardRef(TrackProgressForwardRef);
+export { TrackProgress, TrackProgressForwardRef };

@@ -41,7 +41,21 @@ const storeInstance = store.getInstance();
 const settingsWindow = new SettingsWindow({
   defaults: {
     ui: {
-      theme: "light",
+      themes: {
+        theme: "light",
+      },
+    },
+    keyBindings: {
+      mediaControl: {
+        playPause: "Space",
+        jumpBackward: "Left",
+        jumpForward: "Right",
+        volumeUp: "Up",
+        volumeDown: "Down",
+        mute: "M",
+        repeat: "R",
+        shuffle: "S",
+      },
     },
   },
   sections: [
@@ -52,8 +66,8 @@ const settingsWindow = new SettingsWindow({
       form: {
         groups: [
           {
-            id: "ui",
-            label: "UI",
+            id: "themes",
+            label: "Themes",
             fields: [
               {
                 type: "radio",
@@ -71,6 +85,68 @@ const settingsWindow = new SettingsWindow({
                   },
                 ],
               } as SettingsRadioField,
+            ],
+          },
+        ],
+      },
+    },
+    {
+      id: "keyBindings",
+      label: "Key Bindings",
+      form: {
+        groups: [
+          {
+            id: "mediaControl",
+            label: "Media Control",
+            fields: [
+              {
+                type: "accelerator",
+                key: "playPause",
+                label: "Play/Pause",
+                description: "Key binding for Play/Pause action",
+              } as SettingsAcceleratorField,
+              {
+                type: "accelerator",
+                key: "jumpBackward",
+                label: "Jump Backward",
+                description: "Key binding for Jump Backward action",
+              } as SettingsAcceleratorField,
+              {
+                type: "accelerator",
+                key: "jumpForward",
+                label: "Jump Forward",
+                description: "Key binding for Jump Forward action",
+              } as SettingsAcceleratorField,
+              {
+                type: "accelerator",
+                key: "volumeUp",
+                label: "Volume Up",
+                description: "Key binding for Volume Up action",
+              } as SettingsAcceleratorField,
+              {
+                type: "accelerator",
+                key: "volumeDown",
+                label: "Volume Down",
+                description: "Key binding for Volume Down action",
+              } as SettingsAcceleratorField,
+              {
+                type: "accelerator",
+                key: "mute",
+                label: "Mute",
+                description: "Key binding for Mute action",
+              } as SettingsAcceleratorField,
+              {
+                type: "accelerator",
+                key: "repeat",
+                label: "Repeat",
+                description: "Key binding for Repeat action",
+              } as SettingsAcceleratorField,
+              {
+                type: "accelerator",
+                key: "shuffle",
+                label: "Shuffle",
+                description: "Key binding for Shuffle action",
+              } as SettingsAcceleratorField,
             ],
           },
         ],

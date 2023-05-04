@@ -26,10 +26,19 @@ export default class SettingsWindow extends React.Component<Record<string, never
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         preferences[section.id] = {};
       }
+      else {
+        for (const group of section.form.groups) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          if (!preferences[section.id][group.id]) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            preferences[section.id][group.id] = {};
+          }
+        }
+      }
     }
 
     this.state = {
-      activeSection: (allSections[0]).id,
+      activeSection: allSections[0].id,
       sections: allSections,
       preferences,
       oldPreferences: structuredClone(preferences) as { [key: string]: any },
@@ -116,9 +125,9 @@ export default class SettingsWindow extends React.Component<Record<string, never
     });
   }
 
-  onFieldChange(key: string, value: any) {
+  onFieldChange(groupKey: string, fieldKey: string, value: any) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    this.preferences[this.state.activeSection][key] = value;
+    this.preferences[this.state.activeSection][groupKey][fieldKey] = value;
 
     this.setState({
       preferences: this.preferences,

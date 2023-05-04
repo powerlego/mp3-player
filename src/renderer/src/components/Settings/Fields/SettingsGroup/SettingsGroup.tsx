@@ -76,8 +76,8 @@ export default class SettingsGroup extends React.Component<SettingsGroupProps> {
               className={"mb-5 pl-2 last:mb-0"}
               field={field}
               key={idx}
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-              value={this.preferences[field.key]}
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+              value={this.preferences[this.group.id][field.key]}
               onChange={this.onFieldChange.bind(this, field.key)}
             />
           );
