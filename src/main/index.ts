@@ -5,6 +5,7 @@ import store from "@/store";
 import { setupTitlebar, attachTitlebarToWindow } from "custom-electron-titlebar/main";
 import fs from "fs";
 import os from "os";
+import sizeOf from "image-size";
 // import fetch, { BodyInit, RequestInit, Response } from "node-fetch";
 import { randomUUID } from "crypto";
 import SettingsWindow from "./SettingsWindow";
@@ -16,22 +17,29 @@ const readFileAndSend = async (window: BrowserWindow, filePath: string, play: bo
   const buffer = fs.readFileSync(filePath);
   const uint8Array = new Uint8Array(buffer);
   const metadata = await parseBuffer(buffer, "audio/mpeg");
-  let pictureBase64 = "";
-  let pictureFormat = "";
+  const pictures: {
+    base64: string;
+    format: string;
+    dimensions: string;
+  }[] = [];
   if (metadata.common.picture && metadata.common.picture.length > 0) {
-    const picture = metadata.common.picture[0];
-    pictureBase64 = picture.data.toString("base64");
-    pictureFormat = picture.format;
+    for (const picture of metadata.common.picture) {
+      const dimensions = sizeOf(picture.data);
+      console.log("dimensions", dimensions);
+      pictures.push({
+        base64: picture.data.toString("base64"),
+        format: picture.format,
+        dimensions: `${dimensions.width ?? 0}x${dimensions.height ?? 0}`,
+      });
+    }
   }
   window.webContents.send(
     "open-file",
     {
       metadata,
       uint8Array,
-      picture: {
-        base64: pictureBase64,
-        format: pictureFormat,
-      },
+      picture: pictures[0],
+      pictures,
     },
     play
   );

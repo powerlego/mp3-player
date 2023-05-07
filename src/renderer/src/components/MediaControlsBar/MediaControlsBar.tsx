@@ -77,9 +77,15 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     }
     if ((aud.paused || aud.ended) && aud.src) {
       playAudioPromise();
+      if ("mediaSession" in navigator) {
+        navigator.mediaSession.playbackState = "playing";
+      }
     }
     else if (!aud.paused) {
       aud.pause();
+      if ("mediaSession" in navigator) {
+        navigator.mediaSession.playbackState = "paused";
+      }
     }
   };
 
@@ -154,6 +160,32 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     if (file.picture.base64 !== "") {
       setCoverArt(`data:${file.picture.format};base64,${file.picture.base64}`);
     }
+    if ("mediaSession" in navigator) {
+      const artwork = file.pictures.map((picture) => {
+        return {
+          src: `data:${file.picture.format};base64,${file.picture.base64}`,
+          sizes: picture.dimensions,
+          type: picture.format,
+        };
+      });
+      const artist = (() => {
+        if (file.metadata.common.artist) {
+          const artists = file.metadata.common.artist.split(",");
+          if (artists.length > 1) {
+            return artists.join(", ");
+          }
+          return artists[0];
+        }
+        return "";
+      })();
+
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: file.metadata.common.title ?? "",
+        artist,
+        album: file.metadata.common.album ?? "",
+        artwork,
+      });
+    }
   };
   const setJumpVolume = (jumpVolume: number): void => {
     const aud = audio.current;
@@ -185,19 +217,6 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     }
     else {
       aud.currentTime = 0;
-    }
-  };
-
-  const handleGlobalKeyDown = (e: KeyboardEvent): void => {
-    const keys = combineKeyCodes(e);
-    switch (keys) {
-    case "MediaTrackPrevious":
-      e.preventDefault();
-      handleSkipBackward();
-      break;
-    case "MediaTrackNext":
-    default:
-      break;
     }
   };
 
@@ -241,6 +260,38 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     }
   };
 
+  const addMediaSessionActions = (): void => {
+    if (!("mediaSession" in navigator)) {
+      return;
+    }
+    navigator.mediaSession.setActionHandler("play", () => {
+      const aud = audio.current;
+      if (!aud) {
+        return;
+      }
+      if ((aud.paused || aud.ended) && aud.src) {
+        playAudioPromise();
+        navigator.mediaSession.playbackState = "playing";
+      }
+    });
+    navigator.mediaSession.setActionHandler("pause", () => {
+      const aud = audio.current;
+      if (!aud) {
+        return;
+      }
+      if (!aud.paused) {
+        aud.pause();
+        navigator.mediaSession.playbackState = "paused";
+      }
+    });
+    navigator.mediaSession.setActionHandler("previoustrack", () => {
+      handleSkipBackward();
+    });
+    navigator.mediaSession.setActionHandler("nexttrack", () => {
+      getNextSong();
+    });
+  };
+
   React.useEffect(() => {
     forceUpdate();
     const aud = audio.current;
@@ -255,9 +306,8 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     }
     aud.addEventListener("ended", getNextSong);
     window.api.onFileOpen(handleFileOpen);
-    window.addEventListener("keydown", handleGlobalKeyDown);
+    addMediaSessionActions();
     return () => {
-      window.removeEventListener("keydown", handleGlobalKeyDown);
       window.api.offFileOpen(handleFileOpen);
       aud.removeEventListener("ended", getNextSong);
     };

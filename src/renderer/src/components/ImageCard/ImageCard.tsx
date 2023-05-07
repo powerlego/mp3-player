@@ -133,7 +133,7 @@ export default function ImageCard({ src, line1, line2, loading, onClickButton, i
             </div>
           </a>
           <div
-            className="text-[0.8125rem] md:text-sm box-border font-normal text-gray-700 dark:text-gray-300 overflow-hidden mt-1 text-ellipsis "
+            className="text-[0.8125rem] md:text-sm box-border font-normal text-gray-700 dark:text-gray-300 overflow-hidden mt-1 text-ellipsis whitespace-nowrap"
             style={{
               marginBlock: "0px",
             }}

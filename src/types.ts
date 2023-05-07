@@ -37,7 +37,13 @@ export interface FilePayload {
   picture: {
     base64: string;
     format: string;
+    dimensions: string;
   };
+  pictures: {
+    base64: string;
+    format: string;
+    dimensions: string;
+  }[];
 }
 
 export interface CoverArt {
