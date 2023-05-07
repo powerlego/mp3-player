@@ -10,31 +10,33 @@ const useQueue = () => {
   const repeatCount = useRef(0);
 
   const getNextSong = (): void => {
-    if (queue.length > 0) {
-      if (repeat === 1 || (repeat === 2 && repeatCount.current === 0)) {
-        const song = queue.dequeue();
-        if (song) {
-          window.api.loadAudioFile(song.storageLocation, true).catch((err) => {
-            console.log(err);
-          });
-          queue.enqueue(song);
-        }
+    if (queue.length <= 0) {
+      return;
+    }
+    const song = queue.dequeue();
+    if (song) {
+      window.api.loadAudioFile(song.storageLocation, true).catch(console.error);
+      if ((repeat === 1 || (repeat === 2 && repeatCount.current === 0)) && queue.currentIndex > queue.length - 1) {
+        queue.currentIndex = 0;
       }
-      else {
-        const song = queue.dequeue();
-        if (song) {
-          window.api.loadAudioFile(song.storageLocation, true).catch((err) => {
-            console.log(err);
-          });
-        }
-      }
+    }
+  };
+
+  const getPreviousSong = (): void => {
+    if (queue.length <= 0) {
+      return;
+    }
+    const song = queue.queue[queue.currentIndex - 1];
+    queue.currentIndex--;
+    if (song) {
+      window.api.loadAudioFile(song.storageLocation, true).catch(console.error);
     }
   };
 
   useEffect(() => {
     const originalQueue = queue.originalQueue;
     const currentQueue = queue.queue;
-    const currentTrack = queue.currentTrack;
+    const currentTrack = queue.peek();
     if (!originalQueue || !currentQueue || !currentTrack) {
       return;
     }
@@ -47,23 +49,18 @@ const useQueue = () => {
     }
     else {
       const currentTrackIndex = originalQueue.findIndex((track: Track) => track.id === currentTrack.id);
-      const newQueue = originalQueue.slice(currentTrackIndex);
-      if (repeat === 0) {
-        newQueue.push(...originalQueue.slice(0, currentTrackIndex));
-      }
-      else if (repeat === 1 && repeatCount.current === 0) {
-        newQueue.push(...originalQueue.slice(0, currentTrackIndex + 1));
-      }
-      queue.queue = newQueue;
+      queue.currentIndex = currentTrackIndex;
+      queue.queue = originalQueue;
     }
   }, [shuffle, repeat, queue]);
 
-  return [repeat, setRepeat, shuffle, setShuffle, repeatCount, getNextSong] as [
+  return [repeat, setRepeat, shuffle, setShuffle, repeatCount, getNextSong, getPreviousSong] as [
     number,
     React.Dispatch<React.SetStateAction<number>>,
     boolean,
     React.Dispatch<React.SetStateAction<boolean>>,
     React.MutableRefObject<number>,
+    () => void,
     () => void
   ];
 };

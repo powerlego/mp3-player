@@ -4,26 +4,38 @@ import React from "react";
 export class QueueObject {
   private _originalQueue: Track[];
   private _queue: Track[];
-  private _currentTrack: Track | undefined;
+  private _currentIndex: number;
 
   constructor() {
     this._originalQueue = [];
     this._queue = [];
-    this._currentTrack = {} as Track;
+    this._currentIndex = 0;
   }
 
-  enqueue(item: Track) {
-    this._queue.push(item);
+  enqueue(track: Track | Track[]) {
+    if (Array.isArray(track)) {
+      this._queue = this._queue.concat(track);
+    }
+    else {
+      this._queue.push(track);
+    }
   }
 
   dequeue() {
-    const track = this._queue.shift();
-    this._currentTrack = track;
+    if (this._currentIndex >= this._queue.length) {
+      return null;
+    }
+    const track = this._queue[this._currentIndex];
+    this._currentIndex++;
     return track;
   }
 
-  get currentTrack() {
-    return this._currentTrack;
+  get currentIndex() {
+    return this._currentIndex;
+  }
+
+  set currentIndex(index: number) {
+    this._currentIndex = index;
   }
 
   get length() {
@@ -49,18 +61,25 @@ export class QueueObject {
   clear() {
     this._originalQueue = [];
     this._queue = [];
+    this._currentIndex = 0;
   }
 
-  get isEmpty() {
+  isEmpty() {
     return this._queue.length === 0;
   }
 
-  get peek() {
-    return this._queue[0];
+  peek() {
+    if (this._queue.length === 0) {
+      return null;
+    }
+    return this._queue[this._currentIndex];
   }
 
   nextN(count: number) {
-    return this._queue.slice(1, count + 1);
+    if (this._currentIndex + count > this._queue.length) {
+      return this._queue.slice(this._currentIndex, this._queue.length);
+    }
+    return this._queue.slice(this._currentIndex, count + 1);
   }
 }
 
