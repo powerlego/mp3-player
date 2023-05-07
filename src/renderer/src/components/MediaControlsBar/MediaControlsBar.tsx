@@ -191,9 +191,6 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
   const handleGlobalKeyDown = (e: KeyboardEvent): void => {
     const keys = combineKeyCodes(e);
     switch (keys) {
-    case "MediaPlayPause":
-      togglePlay(e);
-      break;
     case "MediaTrackPrevious":
       e.preventDefault();
       handleSkipBackward();
@@ -206,7 +203,6 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
     const keys = combineKeyCodes(e);
-    console.log(keys);
     switch (keys) {
     case mediaKeyBindings.playPause:
       if (!progressRef.current) {

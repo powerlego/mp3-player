@@ -5,24 +5,23 @@ import { PlayCircle48Filled, PauseCircle24Filled } from "@fluentui/react-icons";
 interface PlayButtonProps {
   audio?: HTMLAudioElement | null;
   togglePlay?: (e: React.SyntheticEvent) => void;
-  isPlaying?: boolean;
   i18nAriaLabels?: I18nAriaLabels;
 }
-export default function PlayButton({ audio, togglePlay, i18nAriaLabels, isPlaying }: PlayButtonProps): JSX.Element {
-  const [isPlayingL, setIsPlayingL] = React.useState(false);
+export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayButtonProps): JSX.Element {
+  const [isPlaying, setIsPlaying] = React.useState(false);
   const addedEventListeners = React.useRef(false);
   const isAudioAvailable = React.useMemo(() => audio && audio.src !== "", [audio]);
 
   const handlePlayPause = (e: Event) => {
     e.preventDefault();
     if (e.type === "play") {
-      setIsPlayingL(true);
+      setIsPlaying(true);
     }
     else if (e.type === "pause") {
-      setIsPlayingL(false);
+      setIsPlaying(false);
     }
     else if (e.type === "ended") {
-      setIsPlayingL(false);
+      setIsPlaying(false);
     }
   };
 
@@ -47,25 +46,18 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels, isPlayin
   }, [audio]);
 
   React.useEffect(() => {
-    if (typeof isPlaying === "undefined") {
-      if (!addedEventListeners.current) {
-        addEventListeners();
-      }
-      return () => {
-        removeEventListeners();
-      };
+    if (!addedEventListeners.current) {
+      addEventListeners();
     }
-    else if (addedEventListeners.current) {
-      return () => {
-        removeEventListeners();
-      };
-    }
+    return () => {
+      removeEventListeners();
+    };
   });
 
   return isAudioAvailable
     ? (
       <div className="h-12 aspect-square flex justify-center items-center " onClick={togglePlay}>
-        {isPlaying ?? isPlayingL
+        {isPlaying
           ? (
             <PauseCircle24Filled
               aria-label={i18nAriaLabels?.play}
