@@ -8,7 +8,6 @@ import { FilePayload } from "@/types";
 function App() {
   const [expanded, setExpanded] = React.useState(false);
   const [src, setSrc] = React.useState("");
-  const [isPlaying, setIsPlaying] = React.useState(false);
   const audio = React.useRef<HTMLAudioElement>(null);
   const requestedPlay = React.useRef(false);
 
@@ -39,11 +38,9 @@ function App() {
       aud.load();
       const playPromise = aud.play();
       // playPromise is null in IE 11
-      playPromise
-        .then(() => setIsPlaying(true))
-        .catch((err) => {
-          console.log(err);
-        });
+      playPromise.then(null).catch((err) => {
+        console.log(err);
+      });
     };
     if (audio.current && requestedPlay.current) {
       playAudioPromise();
@@ -66,8 +63,6 @@ function App() {
           audio={audio}
           className="grid-in-now-playing z-30 h-[90px] w-full bg-gray-220 dark:bg-gray-880 px-4 outline-nothing"
           expandFunc={expandSongDetails}
-          isPlaying={isPlaying}
-          setIsPlaying={setIsPlaying}
         />
         <MainWindow
           audio={audio}
