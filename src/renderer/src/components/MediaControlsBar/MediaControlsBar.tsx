@@ -280,6 +280,8 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
           <MediaControls
             audio={audio.current}
             handleClickRepeatButton={handleClickRepeatButton}
+            handleSkipBack={handleSkipBackward}
+            handleSkipForward={getNextSong}
             i18nAriaLabels={i18nAriaLabels}
             repeat={repeat}
             setShuffle={setShuffle}
