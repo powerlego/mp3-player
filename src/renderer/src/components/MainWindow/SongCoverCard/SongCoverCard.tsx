@@ -44,12 +44,18 @@ function SongCoverAsync(props: SongCoverAsyncProps) {
   const { fileLocation, resource } = props;
 
   const data = React.useMemo(() => resource.read(), [resource]);
-
+  const artist = React.useMemo(() => {
+    const artists = data.artist.split(",");
+    if (artists.length > 1) {
+      return artists.join(", ");
+    }
+    return artists[0];
+  }, [data.artist]);
   return (
     <ImageCard
       icon={<SongCoverButton />}
       line1={data.title}
-      line2={data.artist}
+      line2={artist}
       loading="lazy"
       src={`data:image/${data.pictureFormat};base64,${data.pictureBase64}`}
       onClickButton={() => {

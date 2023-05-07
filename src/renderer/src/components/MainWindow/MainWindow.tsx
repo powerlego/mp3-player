@@ -31,7 +31,7 @@ function MainWindow({ className }: MainWindowProps) {
           >
             <Shelf title="Recently Played">
               <SongCover fileLocation="G:\\Music\\0-59.mp3" />
-              <SongCover fileLocation="G:\\Music\\0-59.mp3" />
+              <SongCover fileLocation="G:\\Music\\Asteroid 2467 - single version.mp3" />
               <SongCover fileLocation="G:\\Music\\0-59.mp3" />
               <SongCover fileLocation="G:\\Music\\0-59.mp3" />
               <SongCover fileLocation="G:\\Music\\0-59.mp3" />
