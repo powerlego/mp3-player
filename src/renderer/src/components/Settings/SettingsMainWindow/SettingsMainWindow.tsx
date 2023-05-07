@@ -8,7 +8,7 @@ type SettingsMainWindowProps = {
   activeSection?: string;
   sections: SettingsSection[];
   preferences: { [key: string]: any };
-  onFieldChange: (key: string, value: any) => void;
+  onFieldChange: (groupKey: string, fieldKey: string, value: any) => void;
 };
 
 export default class SettingsMainWindow extends React.Component<SettingsMainWindowProps> {
@@ -32,7 +32,7 @@ export default class SettingsMainWindow extends React.Component<SettingsMainWind
         label={group.label}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-non-null-assertion
         preferences={this.preferences[this.section!.id]}
-        onFieldChange={this.onFieldChange.bind(this)}
+        onFieldChange={this.onFieldChange.bind(this, group.id)}
       />
     ));
 

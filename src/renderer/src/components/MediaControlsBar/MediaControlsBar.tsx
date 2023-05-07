@@ -8,6 +8,9 @@ import TrackProgress from "./TrackProgress";
 import VolumeControls from "./VolumeControls";
 import useQueue from "@renderer/hooks/useQueue";
 import useForceUpdate from "@renderer/hooks/useForceUpdate";
+import useMediaKeyBindings from "@renderer/hooks/useMediaKeyBindings";
+import combineKeyCodes from "@utils/combineKeyCodes";
+import throttle from "@utils/throttle";
 
 type MediaControlsBarProps = {
   audio: React.RefObject<HTMLAudioElement>;
@@ -18,8 +21,16 @@ type MediaControlsBarProps = {
   timeFormat?: TIME_FORMAT;
   volume?: number;
   muted?: boolean;
+  isPlaying?: boolean;
+  setIsPlaying?: React.Dispatch<React.SetStateAction<boolean>>;
   expandFunc?: () => void;
   className?: string;
+  progressJumpStep?: number;
+  progressJumpSteps?: {
+    backward?: number;
+    forward?: number;
+  };
+  volumeJumpStep?: number;
 };
 
 function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
@@ -50,17 +61,41 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     muted = false,
     expandFunc,
     className,
+    progressJumpStep = 5000,
+    progressJumpSteps = {},
+    volumeJumpStep = 0.05,
+    isPlaying: isPlayingProp,
+    setIsPlaying: setIsPlayingProp,
   } = props;
 
   // const forceUpdate = useForceUpdate();
   const [songName, setSongName] = React.useState("");
   const [artistName, setArtistName] = React.useState("");
   const [coverArt, setCoverArt] = React.useState("");
+  const [mediaKeyBindings] = useMediaKeyBindings();
+  const [currTime, setCurrTime] = React.useState(0);
+  const [isPlayingL, setIsPlayingL] = React.useState(false);
+  const isPlaying = isPlayingProp ?? isPlayingL;
+  const setIsPlaying = setIsPlayingProp ?? setIsPlayingL;
   const forceUpdate = useForceUpdate();
+
+  const seekingTimer: React.MutableRefObject<ReturnType<typeof setTimeout> | null> = React.useRef(null);
+  const seekingDelay = 200;
+  const seekingSpeed = 100;
+  const curTime = React.useRef(-1);
 
   const [repeat, setRepeat, shuffle, setShuffle, repeatCount, getNextSong] = useQueue();
 
   const lastVolume = React.useRef(volume);
+  const container = React.useRef<HTMLDivElement>(null);
+  const progressRef = React.useRef<HTMLDivElement>(null);
+
+  const stopSeekingTimer = (): void => {
+    if (seekingTimer.current) {
+      clearTimeout(seekingTimer.current);
+      seekingTimer.current = null;
+    }
+  };
 
   const togglePlay = (e: React.SyntheticEvent): void => {
     e.stopPropagation();
@@ -70,9 +105,11 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     }
     if ((aud.paused || aud.ended) && aud.src) {
       playAudioPromise();
+      setIsPlaying(true);
     }
     else if (!aud.paused) {
       aud.pause();
+      setIsPlaying(false);
     }
   };
 
@@ -90,6 +127,7 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
 
     playPromise.then(null).catch((err) => {
       console.log(err);
+      setIsPlaying(false);
     });
   };
 
@@ -149,6 +187,154 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     }
   };
 
+  const handleJumpBackward = (recurse = false): void => {
+    stopSeekingTimer();
+    const jumpStep = progressJumpSteps.backward ?? progressJumpStep;
+    const aud = audio.current;
+    if (!aud) {
+      return;
+    }
+    if (!aud.paused) {
+      aud.pause();
+    }
+    const { duration } = aud;
+
+    const prevTime = curTime.current === -1 ? aud.currentTime : curTime.current;
+    if (
+      aud.readyState !== aud.HAVE_NOTHING
+      && aud.readyState !== aud.HAVE_METADATA
+      && isFinite(duration)
+      && isFinite(prevTime)
+    ) {
+      let currentTime = prevTime - jumpStep / 1000;
+      if (currentTime < 0) {
+        currentTime = 0;
+      }
+      curTime.current = currentTime;
+      setCurrTime(currentTime);
+      if (currentTime > 0) {
+        seekingTimer.current = setTimeout(() => handleJumpBackward(true), recurse ? seekingSpeed : seekingDelay);
+      }
+    }
+  };
+
+  const handleJumpForward = (recurse = false): void => {
+    stopSeekingTimer();
+    const jumpStep = progressJumpSteps.forward ?? progressJumpStep;
+    const aud = audio.current;
+    if (!aud) {
+      return;
+    }
+    if (!aud.paused) {
+      aud.pause();
+    }
+    const { duration } = aud;
+
+    const prevTime = curTime.current === -1 ? aud.currentTime : curTime.current;
+    if (
+      aud.readyState !== aud.HAVE_NOTHING
+      && aud.readyState !== aud.HAVE_METADATA
+      && isFinite(duration)
+      && isFinite(prevTime)
+    ) {
+      let currentTime = prevTime + jumpStep / 1000;
+      if (currentTime > duration) {
+        currentTime = duration;
+      }
+      curTime.current = currentTime;
+      setCurrTime(currentTime);
+      if (currentTime < duration) {
+        seekingTimer.current = setTimeout(() => handleJumpForward(true), recurse ? seekingSpeed : seekingDelay);
+      }
+    }
+  };
+  const setJumpVolume = (jumpVolume: number): void => {
+    const aud = audio.current;
+    if (!aud) {
+      return;
+    }
+    const { volume: prevVolume } = aud;
+    if (isFinite(prevVolume)) {
+      let volume = prevVolume + jumpVolume;
+      volume = Math.round(volume * 100) / 100;
+      if (volume < 0) {
+        volume = 0;
+      }
+      else if (volume > 1) {
+        volume = 1;
+      }
+      aud.volume = volume;
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
+    const keys = combineKeyCodes(e);
+    switch (keys) {
+    case mediaKeyBindings.playPause:
+      if (!progressRef.current) {
+        return;
+      }
+      if (!container.current) {
+        return;
+      }
+      if (e.target === container.current || e.target === progressRef.current) {
+        e.preventDefault();
+        togglePlay(e);
+      }
+      break;
+    case mediaKeyBindings.jumpBackward:
+      e.preventDefault();
+      handleJumpBackward();
+      break;
+    case mediaKeyBindings.jumpForward:
+      e.preventDefault();
+      handleJumpForward();
+      break;
+    case mediaKeyBindings.volumeUp:
+      e.preventDefault();
+      setJumpVolume(volumeJumpStep);
+      break;
+    case mediaKeyBindings.volumeDown:
+      e.preventDefault();
+      setJumpVolume(-volumeJumpStep);
+      break;
+    case mediaKeyBindings.repeat:
+      e.preventDefault();
+      handleClickRepeatButton();
+      break;
+    case mediaKeyBindings.mute:
+      e.preventDefault();
+      handleClickVolumeButton();
+      break;
+    case mediaKeyBindings.shuffle:
+      e.preventDefault();
+      setShuffle(!shuffle);
+      break;
+    default:
+      break;
+    }
+  };
+
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLDivElement>): void => {
+    const keys = combineKeyCodes(e);
+    const aud = audio.current;
+    switch (keys) {
+    case mediaKeyBindings.jumpBackward:
+    case mediaKeyBindings.jumpForward:
+      e.preventDefault();
+      stopSeekingTimer();
+      if (!aud) {
+        break;
+      }
+      aud.currentTime = curTime.current;
+      curTime.current = -1;
+      if (isPlaying) {
+        playAudioPromise();
+      }
+      break;
+    }
+  };
+
   React.useEffect(() => {
     forceUpdate();
     const aud = audio.current;
@@ -162,10 +348,30 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
       aud.volume = lastVolume.current;
     }
     aud.addEventListener("ended", getNextSong);
+    aud.addEventListener("ended", () => {
+      setIsPlaying(false);
+    });
+    aud.addEventListener(
+      "timeupdate",
+      throttle(() => {
+        const { currentTime } = aud;
+        setCurrTime(currentTime);
+      }, progressUpdateInterval ?? 0)
+    );
     window.api.onFileOpen(handleFileOpen);
     return () => {
       window.api.offFileOpen(handleFileOpen);
       aud.removeEventListener("ended", getNextSong);
+      aud.removeEventListener(
+        "timeupdate",
+        throttle(() => {
+          const { currentTime } = aud;
+          setCurrTime(currentTime);
+        }, progressUpdateInterval ?? 0)
+      );
+      aud.removeEventListener("ended", () => {
+        setIsPlaying(false);
+      });
     };
   }, []);
 
@@ -173,7 +379,14 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
     return <></>;
   }
   return (
-    <div aria-label={i18nAriaLabels?.player} className={className}>
+    <div
+      aria-label={i18nAriaLabels?.player}
+      className={className}
+      ref={container}
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      onKeyUp={handleKeyUp}
+    >
       <div className="flex h-full w-full flex-row justify-between items-center">
         <SongDetails artistName={artistName} coverArt={coverArt} expandFunc={expandFunc} songName={songName} />
         <div className="flex w-1/2 min-w-fit max-w-[45rem] flex-col items-center justify-center">
@@ -181,6 +394,7 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
             audio={audio.current}
             handleClickRepeatButton={handleClickRepeatButton}
             i18nAriaLabels={i18nAriaLabels}
+            isPlaying={isPlaying}
             repeat={repeat}
             setShuffle={setShuffle}
             shuffle={shuffle}
@@ -188,10 +402,12 @@ function MediaControlsBar(props: MediaControlsBarProps): JSX.Element {
           />
           <TrackProgress
             audio={audio.current}
+            curTime={currTime}
             defaultCurrentTime={defaultCurrentTime}
             defaultDuration={defaultDuration}
             i18nAriaLabels={i18nAriaLabels}
             progressUpdateInterval={progressUpdateInterval}
+            ref={progressRef}
             timeFormat={timeFormat}
           />
         </div>

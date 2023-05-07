@@ -126,18 +126,30 @@ function VolumeBar({ audio, initVolume, i18nVolumeControl }: VolumeBarProps): JS
       setCurrentVolumePos(`${((volume / 1) * 100 || 0).toFixed(2)}%`);
     };
   }, [isDraggingVolume]);
+
+  const handleVolumeChange = React.useCallback((): void => {
+    if (!audio) {
+      return;
+    }
+    const { volume } = audio;
+    lastVolume.current = volume;
+    setCurrentVolumePos(`${((volume / 1) * 100 || 0).toFixed(2)}%`);
+  }, [audio]);
+
   React.useEffect(() => {
     if (audio && !hasAddedAudioEventListener.current) {
       audio.addEventListener("volumechange", handleAudioVolumeChange);
+      audio.addEventListener("volumechange", handleVolumeChange);
       hasAddedAudioEventListener.current = true;
     }
     return () => {
       if (audio && hasAddedAudioEventListener.current) {
         audio.removeEventListener("volumechange", handleAudioVolumeChange);
+        audio.removeEventListener("volumechange", handleVolumeChange);
         hasAddedAudioEventListener.current = false;
       }
     };
-  }, [audio, handleAudioVolumeChange]);
+  }, [audio, handleAudioVolumeChange, handleVolumeChange]);
 
   if (typeof audio?.volume === "undefined") {
     return (

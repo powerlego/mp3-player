@@ -69,7 +69,7 @@ export type SettingsSection = {
 };
 
 export type Group = {
-  id?: string;
+  id: string;
   label?: string;
   fields:
     | SettingsTextField[]
@@ -204,4 +204,16 @@ export type Track = {
   id: string;
   name: string;
   storageLocation: string;
+};
+
+export type MediaControlKeyBindings = {
+  playPause: string;
+  jumpBackward: string;
+  jumpForward: string;
+  volumeUp: string;
+  volumeDown: string;
+  mute: string;
+  repeat: string;
+  repeatOne: string;
+  shuffle: string;
 };

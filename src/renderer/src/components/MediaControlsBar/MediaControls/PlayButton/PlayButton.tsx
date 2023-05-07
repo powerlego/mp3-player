@@ -5,23 +5,24 @@ import { PlayCircle48Filled, PauseCircle24Filled } from "@fluentui/react-icons";
 interface PlayButtonProps {
   audio?: HTMLAudioElement | null;
   togglePlay?: (e: React.SyntheticEvent) => void;
+  isPlaying?: boolean;
   i18nAriaLabels?: I18nAriaLabels;
 }
-export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayButtonProps): JSX.Element {
-  const [isPlaying, setIsPlaying] = React.useState(false);
+export default function PlayButton({ audio, togglePlay, i18nAriaLabels, isPlaying }: PlayButtonProps): JSX.Element {
+  const [isPlayingL, setIsPlayingL] = React.useState(false);
   const addedEventListeners = React.useRef(false);
   const isAudioAvailable = React.useMemo(() => audio && audio.src !== "", [audio]);
 
   const handlePlayPause = (e: Event) => {
     e.preventDefault();
     if (e.type === "play") {
-      setIsPlaying(true);
+      setIsPlayingL(true);
     }
     else if (e.type === "pause") {
-      setIsPlaying(false);
+      setIsPlayingL(false);
     }
     else if (e.type === "ended") {
-      setIsPlaying(false);
+      setIsPlayingL(false);
     }
   };
 
@@ -33,7 +34,7 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
     audio.addEventListener("pause", handlePlayPause);
     audio.addEventListener("ended", handlePlayPause);
     addedEventListeners.current = true;
-  }, [audio, handlePlayPause]);
+  }, [audio]);
 
   const removeEventListeners = React.useCallback(() => {
     if (!audio) {
@@ -43,25 +44,32 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
     audio.removeEventListener("pause", handlePlayPause);
     audio.removeEventListener("ended", handlePlayPause);
     addedEventListeners.current = false;
-  }, [audio, handlePlayPause]);
+  }, [audio]);
 
   React.useEffect(() => {
-    if (!addedEventListeners.current) {
-      addEventListeners();
+    if (typeof isPlaying === "undefined") {
+      if (!addedEventListeners.current) {
+        addEventListeners();
+      }
+      return () => {
+        removeEventListeners();
+      };
     }
-    return () => {
-      removeEventListeners();
-    };
+    else if (addedEventListeners.current) {
+      return () => {
+        removeEventListeners();
+      };
+    }
   });
 
   return isAudioAvailable
     ? (
       <div className="h-12 aspect-square flex justify-center items-center " onClick={togglePlay}>
-        {isPlaying
+        {isPlaying ?? isPlayingL
           ? (
             <PauseCircle24Filled
               aria-label={i18nAriaLabels?.play}
-              className="m-0 transition-all ease-in-out duration-200 hover:scale-[1.1] fill-gray-850 dark:fill-gray-150 hover:fill-gray-800 dark:hover:fill-gray-200"
+              className="m-0 w-12 h-12 transition-all ease-in-out duration-200 hover:scale-[1.1] fill-gray-850 dark:fill-gray-150 hover:fill-gray-800 dark:hover:fill-gray-200"
               primaryFill=""
             />
           )
@@ -76,7 +84,7 @@ export default function PlayButton({ audio, togglePlay, i18nAriaLabels }: PlayBu
     )
     : (
       <div className="h-8 aspect-square flex justify-center items-center bg-gray-350 dark:bg-gray-750 rounded-full ">
-        <PauseCircle24Filled className="fill-gray-220 dark:fill-gray-880 m-0" primaryFill="" />
+        <PauseCircle24Filled className="fill-gray-220 dark:fill-gray-880 m-0 w-12 h-12" primaryFill="" />
       </div>
     );
 }
