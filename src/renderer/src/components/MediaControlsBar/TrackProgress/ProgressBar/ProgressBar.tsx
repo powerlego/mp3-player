@@ -4,7 +4,7 @@ import throttle from "@utils/throttle";
 
 interface ProgressBarForwardRefProps {
   audio: HTMLAudioElement | null;
-  currTime?: number;
+  currentTime?: number;
   progressUpdateInterval?: number;
   srcDuration?: number;
   i18nProgressBar?: string;
@@ -23,7 +23,6 @@ interface TimePosInfo {
 function ProgressBar({
   audio,
   progressUpdateInterval = 0,
-  currTime,
   srcDuration,
   i18nProgressBar,
   style,
@@ -139,17 +138,9 @@ function ProgressBar({
   }, progressUpdateInterval);
 
   React.useEffect(() => {
-    if (typeof currTime === "undefined") {
-      if (audio && !hasAddedAudioEventListener.current) {
-        audio.addEventListener("timeupdate", handleAudioTimeUpdate);
-        hasAddedAudioEventListener.current = true;
-      }
-      return () => {
-        if (audio && hasAddedAudioEventListener.current) {
-          audio.removeEventListener("timeupdate", handleAudioTimeUpdate);
-          hasAddedAudioEventListener.current = false;
-        }
-      };
+    if (audio && !hasAddedAudioEventListener.current) {
+      audio.addEventListener("timeupdate", handleAudioTimeUpdate);
+      hasAddedAudioEventListener.current = true;
     }
     return () => {
       if (audio && hasAddedAudioEventListener.current) {
@@ -157,15 +148,7 @@ function ProgressBar({
         hasAddedAudioEventListener.current = false;
       }
     };
-  }, [audio, handleAudioTimeUpdate, currTime]);
-
-  React.useEffect(() => {
-    if (typeof currTime !== "undefined") {
-      const duration = getDuration();
-      const currentTimePos = `${((currTime / duration) * 100).toFixed(2)}%`;
-      setCurrentTimePos(currentTimePos);
-    }
-  }, [currTime, getDuration]);
+  }, [audio, handleAudioTimeUpdate]);
 
   if (!currentTimePos) {
     return <></>;

@@ -8,7 +8,6 @@ import ProgressBar from "./ProgressBar";
 interface TrackProgressForwardRefProps {
   audio: HTMLAudioElement | null;
   progressUpdateInterval?: number;
-  curTime?: number;
   defaultCurrentTime?: ReactNode;
   defaultDuration?: ReactNode;
   timeFormat?: TIME_FORMAT;
@@ -22,7 +21,6 @@ interface TrackProgressProps extends TrackProgressForwardRefProps {
 function TrackProgress({
   audio,
   progressUpdateInterval,
-  curTime,
   timeFormat,
   defaultCurrentTime,
   defaultDuration,
@@ -42,7 +40,6 @@ function TrackProgress({
       />
       <ProgressBar
         audio={audio}
-        currTime={curTime}
         i18nProgressBar={i18nAriaLabels?.progressControl}
         progressUpdateInterval={progressUpdateInterval}
         ref={progressRef}

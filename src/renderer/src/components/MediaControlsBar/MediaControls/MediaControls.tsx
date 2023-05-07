@@ -14,7 +14,6 @@ interface MediaControlsProps {
   setShuffle?: React.Dispatch<React.SetStateAction<boolean>>;
   repeat?: number;
   setRepeat?: React.Dispatch<React.SetStateAction<number>>;
-  isPlaying?: boolean;
   i18nAriaLabels?: I18nAriaLabels;
 }
 
@@ -26,7 +25,6 @@ export default function MediaControls({
   shuffle,
   setShuffle,
   repeat,
-  isPlaying,
 }: MediaControlsProps) {
   return (
     <div className="mb-1 flex flex-row items-center justify-evenly gap-3 w-full">
@@ -34,7 +32,7 @@ export default function MediaControls({
         <ShuffleButton setShuffle={setShuffle} shuffle={shuffle} />
         <SkipBackButton aria-label={i18nAriaLabels?.previous} audio={audio} />
       </div>
-      <PlayButton audio={audio} i18nAriaLabels={i18nAriaLabels} isPlaying={isPlaying} togglePlay={togglePlay} />
+      <PlayButton audio={audio} i18nAriaLabels={i18nAriaLabels} togglePlay={togglePlay} />
       <div className="flex items-center justify-start w-full flex-1 gap-2">
         <SkipForwardButton aria-label={i18nAriaLabels?.next} audio={audio} />
         <RepeatButton handleClickRepeatButton={handleClickRepeatButton} repeat={repeat} />
