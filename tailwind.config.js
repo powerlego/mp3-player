@@ -83,6 +83,9 @@ module.exports = {
         2.5: "0.625rem",
         "1/2": "50%",
       },
+      boxShadow: {
+        "cover-art": "0 8px 24px rgb(0 0 0 / 50%)",
+      },
       dropShadow: {
         dark: ["0 1px 2px rgb(255 255 255 / 0.1)", "0 1px 1px rgb(255 255 255 / 0.06)"],
         "dark-lg": ["0 10px 8px rgb(255 255 255 / 0.04)", "0 4px 3px rgb(255 255 255 / 0.1)"],
