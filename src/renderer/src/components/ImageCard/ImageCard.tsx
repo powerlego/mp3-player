@@ -100,13 +100,13 @@ export default function ImageCard({ src, line1, line2, loading, onClickButton, i
           {onClickButton
             ? (
               <div
-                className="bottom-2 right-2 rounded-full z-[2] opacity-0 pointer-events-none absolute transition-all duration-300 ease-[ease] translate-y-2 group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0"
+                className="bottom-2 right-2 rounded-full z-[2] opacity-0 pointer-events-none absolute transition-all duration-300 ease-[ease] translate-y-2 group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0 outline-nothing"
                 style={{
                   boxShadow: "0 8px 8px rgb(0 0 0 / 30%)",
                 }}
               >
                 <button
-                  className="relative z-[1] transition-[background-color, border-color, color, box-shadow, filter, transform] select-none touch-manipulation inline-block duration-[33ms] group/button cursor-default"
+                  className="relative z-[1] transition-[background-color, border-color, color, box-shadow, filter, transform] select-none touch-manipulation inline-block duration-[33ms] group/button cursor-default outline-nothing"
                   onClick={onClickButton}
                 >
                   {icon}

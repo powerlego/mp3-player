@@ -25,7 +25,6 @@ const readFileAndSend = async (window: BrowserWindow, filePath: string, play: bo
   if (metadata.common.picture && metadata.common.picture.length > 0) {
     for (const picture of metadata.common.picture) {
       const dimensions = sizeOf(picture.data);
-      console.log("dimensions", dimensions);
       pictures.push({
         base64: picture.data.toString("base64"),
         format: picture.format,
