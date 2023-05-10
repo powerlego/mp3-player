@@ -41,7 +41,13 @@ function SongDetails(props: SongDetailsProps) {
                 <BsChevronUp className="fill-gray-800 dark:fill-gray-200 h-[90%] w-[90%] m-0 opacity-100 stroke-gray-800 dark:stroke-gray-200 hover:stroke-1" />
               </div>
             </div>
-            <img alt="Cover Art" className={`h-full w-full ${expanded ? "scale-0" : ""}`} src={coverArt} />
+            <img
+              alt="Cover Art"
+              src={coverArt}
+              className={`h-full w-full shadow-cover-art shadow-black/50 dark:shadow-gray-800/50 rounded ${
+                expanded ? "scale-0" : ""
+              }`}
+            />
           </div>
         )}
       <div
