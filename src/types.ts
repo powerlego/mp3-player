@@ -1,10 +1,14 @@
+// Import necessary types from the music-metadata and electron packages.
 import { IAudioMetadata } from "music-metadata/lib/type";
 import { FileFilter } from "electron";
 
+// Defines an interface for internationalized aria labels for various elements of a media player.
 export interface I18nAriaLabels {
-  player?: string;
-  progressControl?: string;
-  volumeControl?: string;
+  player?: string;         // Aria label for the player.
+  progressControl?: string; // Aria label for the progress control.
+  volumeControl?: string;   // Aria label for the volume control.
+  // Aria labels for different player controls such as play, pause, previous, next, etc.
+  // Each one represents a different player action.
   play?: string;
   pause?: string;
   previous?: string;
@@ -19,6 +23,7 @@ export interface I18nAriaLabels {
   volumeMute?: string;
 }
 
+// Interface for metadata payload. It contains the status, message, and data (name and cover details) of a song.
 export interface MetaDataPayload {
   status: boolean;
   message: string;
@@ -31,6 +36,7 @@ export interface MetaDataPayload {
   };
 }
 
+// Interface for file payload. It includes metadata, Uint8Array data, a picture, and an array of pictures.
 export interface FilePayload {
   metadata: IAudioMetadata;
   uint8Array: Uint8Array;
@@ -46,25 +52,30 @@ export interface FilePayload {
   }[];
 }
 
+// Defines an interface for the cover art of a track, including source and format.
 export interface CoverArt {
   src?: string;
   format?: string;
 }
 
+// Enum for iteration type.
 export enum IterationType {
-  single = "single",
-  infinite = "infinite",
+  single = "single",       // Single iteration.
+  infinite = "infinite",   // Infinite iteration.
 }
 
+// Interface for scrolling animation properties. 
 export interface ScrollingAnimationProps {
-  speed: number;
-  pauseAtEndEdgeDurationMs: number;
-  initialMouseIntDelayMs: number;
-  iterationType: IterationType;
+  speed: number;                               // Speed of scrolling.
+  pauseAtEndEdgeDurationMs: number;            // Pause duration at the end edge in milliseconds.
+  initialMouseIntDelayMs: number;              // Initial mouse interaction delay in milliseconds.
+  iterationType: IterationType;                // Type of iteration, can be single or infinite.
 }
 
+// Type definition for communication channels.
 export type Channels = "minimizeApp" | "maximizeApp" | "closeApp";
 
+// Type for a settings section, which has an id, optional label and icon, and a form consisting of groups.
 export type SettingsSection = {
   id: string;
   label?: string;
@@ -74,6 +85,7 @@ export type SettingsSection = {
   };
 };
 
+// Type for a group within a settings section, which has an id, optional label, and a list of fields.
 export type Group = {
   id: string;
   label?: string;
@@ -91,6 +103,7 @@ export type Group = {
     | SettingsAcceleratorField[];
 };
 
+// Base type for a settings item, including type, label, key, and an optional description.
 type SettingsItem = {
   type:
     | "text"
@@ -109,6 +122,7 @@ type SettingsItem = {
   description?: string;
 };
 
+// Defines a type for each kind of settings field, where each type extends from the base `SettingsItem` type and adds its own unique properties.
 export type SettingsTextField = SettingsItem;
 
 export type SettingsNumberField = SettingsItem & {
@@ -175,6 +189,7 @@ export type SettingsAcceleratorField = SettingsItem & {
   allowOnlyModifier?: boolean;
 };
 
+// Define types for different color models.
 export type HexColor = string;
 export type RgbColor = {
   r: number;
@@ -189,6 +204,7 @@ export type HslColor = {
   a?: number;
 };
 
+// Define types for options in radio, dropdown and checkbox fields.
 export type RadioOption = {
   label: string;
   value: string | number | boolean;
@@ -204,6 +220,7 @@ export type CheckboxOption = {
   value: boolean | string | number;
 };
 
+// Define a type for a track, which includes album, artist, id, name, and storageLocation.
 export type Track = {
   album: string;
   artist: string;
@@ -212,6 +229,7 @@ export type Track = {
   storageLocation: string;
 };
 
+// Define a type for key bindings for media controls.
 export type MediaControlKeyBindings = {
   playPause: string;
   jumpBackward: string;
