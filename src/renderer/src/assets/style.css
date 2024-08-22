@@ -85,6 +85,18 @@ body {
   @apply !fill-black dark:!fill-white;
 }
 
+.cet-control-icon svg {
+  @apply !fill-black dark:!fill-white;
+}
+
+.cet-control-icon:not(.inactive):hover {
+  @apply !fill-black dark:!fill-white !bg-opacity-10 dark:!bg-opacity-10;
+}
+
+mnemonic {
+  @apply underline;
+}
+
 @layer components {
   .tooltip-tip {
     @apply absolute rounded left-1/2 -translate-x-1/2 p-2
@@ -132,7 +144,7 @@ body {
   }
 
   .slider-field::-webkit-slider-thumb {
-    @apply -mt-3 w-4 h-8 rounded-xl cursor-pointer bg-blue-500 border-all-0 webkit-appear-none;
+    @apply w-4 h-8 -mt-3 bg-blue-500 cursor-pointer rounded-xl border-all-0 webkit-appear-none;
   }
 
   .slider-field:focus::-webkit-slider-thumb {
@@ -169,10 +181,22 @@ body {
   }
 }
 
+* {
+  scrollbar-color: unset;
+}
+
+*:hover {
+  scrollbar-color: unset;
+}
+
 ::-webkit-scrollbar {
   background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-500 dark:bg-green-400;
+  @apply bg-gray-500 rounded-full dark:bg-green-400;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
 }
