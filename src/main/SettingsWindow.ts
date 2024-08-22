@@ -1,4 +1,5 @@
-import { app, BrowserWindow, ipcMain, IpcMainEvent, webContents, dialog, OpenDialogSyncOptions } from "electron";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { app, BrowserWindow, dialog, ipcMain, IpcMainEvent, OpenDialogSyncOptions, webContents } from "electron";
 import { EventEmitter2 } from "eventemitter2";
 import _ from "lodash";
 import fs from "fs";
@@ -15,7 +16,7 @@ type SettingsWindowConfig = {
 export default class SettingsWindow extends EventEmitter2 {
   options = {} as SettingsWindowConfig;
   _preferences = {} as { [key: string]: any };
-  dataStore = app.getPath("userData") + "/settings.json";
+  dataStore = `${app.getPath("userData")}/settings.json`;
 
   get preferences() {
     return this._preferences;
@@ -88,7 +89,7 @@ export default class SettingsWindow extends EventEmitter2 {
     });
 
     ipcMain.on("getSections", (event) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+
       event.returnValue = jsonSerializer(this.options.sections);
     });
 
@@ -200,7 +201,7 @@ export default class SettingsWindow extends EventEmitter2 {
     prefsWindow.removeMenu();
 
     if (is.dev && process.env["ELECTRON_RENDERER_URL"]) {
-      await prefsWindow.loadURL(process.env["ELECTRON_RENDERER_URL"] + "/settings.html");
+      await prefsWindow.loadURL(`${process.env["ELECTRON_RENDERER_URL"]}/settings.html`);
       prefsWindow.webContents.openDevTools();
     }
     else {
