@@ -1,14 +1,13 @@
 import { resolve } from "path";
 import { defineConfig, externalizeDepsPlugin } from "electron-vite";
-import react from "@vitejs/plugin-react";
-import tsconfigPaths from "vite-tsconfig-paths";
-import svgrPlugin from "vite-plugin-svgr";
+import svgLoader from "vite-svg-loader";
+import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
   main: {
     plugins: [
       externalizeDepsPlugin({
-        exclude: ["music-metadata", "node-fetch"],
+        exclude: ["music-metadata"],
       }),
     ],
     assetsInclude: ["src/assets/**/*"],
@@ -24,9 +23,6 @@ export default defineConfig({
             if (id.includes("music-metadata")) {
               return "music-metadata";
             }
-            if (id.includes("node-fetch")) {
-              return "node-fetch";
-            }
           },
         },
       },
@@ -35,11 +31,12 @@ export default defineConfig({
   preload: {
     plugins: [
       externalizeDepsPlugin({
-        exclude: ["music-metadata", "node-fetch"],
+        exclude: ["music-metadata"],
       }),
     ],
     resolve: {
       alias: {
+        "@icons": resolve("src/renderer/src/assets/icons"),
         "@": resolve("src/"),
       },
     },
@@ -60,13 +57,15 @@ export default defineConfig({
     },
   },
   renderer: {
-    envPrefix: "REACT_APP_",
     assetsInclude: ["src/assets/**/*"],
     resolve: {
       alias: {
         "@": resolve("src/"),
         "@renderer": resolve("src/renderer/src"),
         "@utils": resolve("src/renderer/src/utils"),
+        "@components": resolve("src/renderer/src/components"),
+        "@icons": resolve("src/renderer/src/assets/icons"),
+        "@composables": resolve("src/renderer/src/composables"),
       },
     },
     build: {
@@ -78,27 +77,23 @@ export default defineConfig({
       },
     },
     plugins: [
-      react(),
-      tsconfigPaths(),
-      svgrPlugin({
-        svgrOptions: {
-          icon: true,
-          svgoConfig: {
-            multipass: true,
-            plugins: [
-              {
-                name: "preset-default",
-                params: {
-                  overrides: {
-                    removeTitle: false,
-                  },
+      vue(),
+      svgLoader({
+        svgoConfig: {
+          multipass: true,
+          plugins: [
+            {
+              name: "preset-default",
+              params: {
+                overrides: {
+                  removeTitle: false,
                 },
               },
-              {
-                name: "convertStyleToAttrs",
-              },
-            ],
-          },
+            },
+            {
+              name: "convertStyleToAttrs",
+            },
+          ],
         },
       }),
     ],
