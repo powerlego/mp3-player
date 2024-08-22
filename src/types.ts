@@ -1,12 +1,12 @@
 // Import necessary types from the music-metadata and electron packages.
-import { IAudioMetadata } from "music-metadata/lib/type";
 import { FileFilter } from "electron";
+import { IAudioMetadata } from "music-metadata/lib/type";
 
 // Defines an interface for internationalized aria labels for various elements of a media player.
 export interface I18nAriaLabels {
-  player?: string;         // Aria label for the player.
+  player?: string; // Aria label for the player.
   progressControl?: string; // Aria label for the progress control.
-  volumeControl?: string;   // Aria label for the volume control.
+  volumeControl?: string; // Aria label for the volume control.
   // Aria labels for different player controls such as play, pause, previous, next, etc.
   // Each one represents a different player action.
   play?: string;
@@ -60,16 +60,16 @@ export interface CoverArt {
 
 // Enum for iteration type.
 export enum IterationType {
-  single = "single",       // Single iteration.
-  infinite = "infinite",   // Infinite iteration.
+  single = "single", // Single iteration.
+  infinite = "infinite", // Infinite iteration.
 }
 
-// Interface for scrolling animation properties. 
+// Interface for scrolling animation properties.
 export interface ScrollingAnimationProps {
-  speed: number;                               // Speed of scrolling.
-  pauseAtEndEdgeDurationMs: number;            // Pause duration at the end edge in milliseconds.
-  initialMouseIntDelayMs: number;              // Initial mouse interaction delay in milliseconds.
-  iterationType: IterationType;                // Type of iteration, can be single or infinite.
+  speed: number; // Speed of scrolling.
+  pauseAtEndEdgeDurationMs: number; // Pause duration at the end edge in milliseconds.
+  initialMouseIntDelayMs: number; // Initial mouse interaction delay in milliseconds.
+  iterationType: IterationType; // Type of iteration, can be single or infinite.
 }
 
 // Type definition for communication channels.
@@ -240,4 +240,15 @@ export type MediaControlKeyBindings = {
   repeat: string;
   repeatOne: string;
   shuffle: string;
+};
+
+export type Settings = {
+  ui: {
+    themes: {
+      theme: string;
+    };
+  };
+  keyBindings: {
+    mediaControls: MediaControlKeyBindings;
+  };
 };

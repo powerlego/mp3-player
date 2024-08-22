@@ -1,4 +1,4 @@
-import { SettingsSection } from "@/types";
+import { Settings, SettingsSection } from "@/types";
 
 declare global {
   interface Window {
@@ -11,9 +11,9 @@ declare global {
     };
     settings: {
       getSections: () => SettingsSection[];
-      getPreferences: () => { [key: string]: any };
+      getPreferences: () => Settings;
       getDefaults: () => { [key: string]: any };
-      setPreferences: (preferences: any) => void;
+      setPreferences: (preferences: Settings) => void;
       showOpenDialog: (dialogOptions: Electron.OpenDialogSyncOptions) => string[] | undefined;
       sendButtonClick: (channel: string) => void;
     };

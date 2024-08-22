@@ -1,5 +1,5 @@
+import { FilePayload, Settings } from "@/types";
 import { ElectronAPI } from "@electron-toolkit/preload";
-import { FilePayload } from "@/types";
 import { IpcRendererEvent } from "electron";
 declare global {
   interface Window {
@@ -26,10 +26,10 @@ declare global {
       off: (channel: string, listener: (...args: any[]) => void) => Electron.IpcRenderer;
     };
     settings: {
-      getPreferences: () => { [key: string]: any };
+      getPreferences: () => Settings;
       getSections: () => SettingsSection[];
       getDefaults: () => { [key: string]: any };
-      setPreferences: (preferences: any) => void;
+      setPreferences: (preferences: Settings) => void;
       showOpenDialog: (dialogOptions: Electron.OpenDialogSyncOptions) => string[] | undefined;
       sendButtonClick: (channel: string) => void;
     };
