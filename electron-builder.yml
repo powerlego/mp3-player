@@ -1,23 +1,28 @@
-appId: com.electron.app
-productName: app
+appId: com.nc.mp3-player
+productName: MP3 Player
 directories:
   buildResources: build
 files:
   - "!**/.vscode/*"
   - "!src/*"
   - "!electron.vite.config.{js,ts,mjs,cjs}"
-  - "!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}"
+  - "!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md,tailwind.config.cjs,svelte.config.js,prettier.config.cjs,postcss.config.js,eslint.config.mjs,Cargo.toml,Cargo.lock,.gitignore,.editorconfig,svelte.config.mjs,postcss.config.cjs}"
+  - "!eslint.config.{js,cjs,ts,mjs}"
+  - "!{.git,.gitignore}"
+  - "!assets/*"
+  - "!dist/*"
   - "!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}"
 asarUnpack:
   - "resources/*"
 afterSign: build/notarize.js
 win:
-  executableName: app
+  executableName: mp3-player
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
   createDesktopShortcut: always
+  deleteAppDataOnUninstall: true
 mac:
   entitlementsInherit: build/entitlements.mac.plist
   extendInfo:

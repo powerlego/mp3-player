@@ -2,7 +2,7 @@
 const plugin = require("tailwindcss/plugin");
 module.exports = {
   darkMode: "class",
-  content: ["./src/**/*.{js,jsx,ts,tsx,html}", "./public/index.html"],
+  content: ["./src/**/*.{js,jsx,ts,tsx,vue,html}"],
   theme: {
     extend: {
       gridTemplateAreas: {
