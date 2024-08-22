@@ -3,7 +3,7 @@ import { electronAPI } from "@electron-toolkit/preload";
 import { Titlebar } from "custom-electron-titlebar";
 import { FilePayload } from "@/types";
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
+
 window.addEventListener("DOMContentLoaded", () => {
   const titleBar = new Titlebar({
     // menu,
@@ -55,8 +55,8 @@ const settings = {
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld("electron", electronAPI);
-    contextBridge.exposeInMainWorld("settings", settings);
     contextBridge.exposeInMainWorld("api", api);
+    contextBridge.exposeInMainWorld("settings", settings);
   }
   catch (error) {
     console.error(error);

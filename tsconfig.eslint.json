@@ -1,5 +1,5 @@
 {
-  "files": ["src/renderer/src/env.d.ts", "src/preload/index.d.ts", "src/preload/settings.d.ts"],
+  "files": ["src/renderer/src/env.d.ts", "src/preload/index.d.ts"],
   "include": [
     "electron.vite.config.*",
     "src/main/**/*",
