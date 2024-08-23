@@ -11,14 +11,14 @@
     "composite": true,
     "baseUrl": ".",
     "paths": {
-      "@renderer/*": ["src/renderer/src/*"],
-      "@settings/*": ["src/settings/src/*"],
-      "@/*": ["src/*"],
       "@utils/*": ["src/renderer/src/utils/*"],
       "@icons/*": ["src/renderer/src/assets/icons/*"],
       "@components/*": ["src/renderer/src/components/*"],
       "@composables/*": ["src/renderer/src/composables/*"],
-      "@stores/*": ["src/renderer/src/stores/*"]
+      "@stores/*": ["src/renderer/src/stores/*"],
+      "@renderer/*": ["src/renderer/src/*"],
+      "@settings/*": ["src/settings/src/*"],
+      "@/*": ["src/*"]
     }
   }
 }
