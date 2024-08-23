@@ -17,6 +17,7 @@ const audioSrc = ref("");
 function playAudio() {
   if (audio.value) {
     if (audioSrc.value !== "") {
+      audio.value.load();
       audio.value.play().catch((error) => {
         log.error("Failed to play audio", error);
       });
@@ -46,15 +47,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <audio
-    ref="audioElement"
-    :src="audioSrc"
-    preload="none"
-    :controls="false"
-  />
+  <audio ref="audioElement" :src="audioSrc" preload="none" :controls="false" />
   <div
-    class="relative grid w-full h-full min-h-full overflow-y-hidden grid-areas-layout grid-rows-layout grid-cols-layout"
-  >
+    class="relative grid w-full h-full min-h-full overflow-y-hidden grid-areas-layout grid-rows-layout grid-cols-layout">
     <Topbar class="z-10 flex flex-row items-center w-full h-16 m-0 grid-in-main-view justify-evenly" />
     <Sidebar class="z-20 w-56 m-0 text-gray-800 grid-in-nav-bar bg-gray-150 dark:bg-gray-900 dark:text-white" />
     <MainWindow class="flex flex-col w-full overflow-hidden grid-in-main-view bg-gray-180 dark:bg-gray-860" />
