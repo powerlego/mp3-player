@@ -37,6 +37,9 @@ export default defineConfig({
     resolve: {
       alias: {
         "@icons": resolve("src/renderer/src/assets/icons"),
+        "@components": resolve("src/renderer/src/components"),
+        "@composables": resolve("src/renderer/src/composables"),
+        "@stores": resolve("src/renderer/src/stores"),
         "@": resolve("src/"),
       },
     },

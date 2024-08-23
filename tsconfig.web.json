@@ -17,7 +17,8 @@
       "@utils/*": ["src/renderer/src/utils/*"],
       "@icons/*": ["src/renderer/src/assets/icons/*"],
       "@components/*": ["src/renderer/src/components/*"],
-      "@composables/*": ["src/renderer/src/composables/*"]
+      "@composables/*": ["src/renderer/src/composables/*"],
+      "@stores/*": ["src/renderer/src/stores/*"]
     }
   }
 }
