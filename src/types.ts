@@ -255,6 +255,6 @@ export type Settings = {
 
 export enum RepeatMode {
   NONE,
-  ONCE,
   ALL,
+  ONCE,
 }
