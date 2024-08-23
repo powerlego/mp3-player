@@ -83,8 +83,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section ref="container" class="min-w-[var(--min-container-width)] "
-    style="--shelf-min-height: 300px; contain-intrinsic-size: var(--shelf-min-height); content-visibility: auto;">
+  <section
+    ref="container"
+    class="min-w-[var(--min-container-width)] "
+    style="--shelf-min-height: 300px; contain-intrinsic-size: var(--shelf-min-height); content-visibility: auto;"
+  >
     <div class="mb-4">
       <h2 class="text-2xl font-bold text-gray-850 dark:text-gray-100">
         {{ props.title }}
@@ -92,7 +95,8 @@ onUnmounted(() => {
     </div>
     <div
       class="auto-rows-[0] overflow-y-hidden grid-container grid gap-[var(--column-gap)] grid-cols-[repeat(var(--columns-count),minmax(0,1fr))] min-w-[var(--min-container-width)]"
-      :style="{ '--columns-count': columns.count, '--column-width': columns.width + 'px', '--min-container-width': columns.minContainerWidth + 'px', '--column-gap': columns.gap + 'px', 'grid-template-rows': '1fr' }">
+      :style="{ '--columns-count': columns.count, '--column-width': columns.width + 'px', '--min-container-width': columns.minContainerWidth + 'px', '--column-gap': columns.gap + 'px', 'grid-template-rows': '1fr' }"
+    >
       <slot />
     </div>
   </section>
