@@ -252,3 +252,9 @@ export type Settings = {
     mediaControls: MediaControlKeyBindings;
   };
 };
+
+export enum RepeatMode {
+  NONE,
+  ONCE,
+  ALL,
+}
