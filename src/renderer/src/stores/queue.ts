@@ -26,9 +26,6 @@ export const useQueue = defineStore("queue", () => {
     return track;
   }
 
-  const length = computed(() => queue.value.length);
-  const isEmpty = computed(() => queue.value.length === 0);
-
   const peek = computed(() => {
     if (queue.value.length === 0 || currentIndex.value >= queue.value.length) {
       return null;
@@ -164,8 +161,6 @@ export const useQueue = defineStore("queue", () => {
     currentIndex,
     enqueue,
     dequeue,
-    length,
-    isEmpty,
     peek,
     setCurrentIndex,
     setQueue,
