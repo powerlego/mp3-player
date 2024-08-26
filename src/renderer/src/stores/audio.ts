@@ -93,6 +93,10 @@ export const useAudio = defineStore("audio", () => {
     shuffle.value = !shuffle.value;
   }
 
+  function setShuffle(value: boolean) {
+    shuffle.value = value;
+  }
+
   watch(shuffle, (newValue) => {
     if (!originalQueue.value || !queue.value || !peek.value) {
       return;
@@ -268,6 +272,7 @@ export const useAudio = defineStore("audio", () => {
     setRepeatCount,
     shuffle,
     toggleShuffle,
+    setShuffle,
     isAudioAvailable,
     isPlaying,
     loadAndPlay,
