@@ -117,5 +117,5 @@ export function useScrollingAnimation(
     resetTransform();
   });
 
-  return [handleMouseOver, handleMouseOut];
+  return { handleMouseOver, handleMouseOut };
 }
