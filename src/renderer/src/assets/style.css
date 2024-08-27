@@ -19,7 +19,7 @@ body {
   --tooltip-arrow-size: 8px;
 }
 
-#root {
+#app {
   position: relative;
   isolation: isolate;
   z-index: 0;
