@@ -44,8 +44,7 @@ const artists = computed(() => {
 
 <template>
   <div
-    class="w-full min-w-0"
-    style="grid-area: subtitle; grid-column-start: badges;"
+    class="w-full min-w-0 grid-in-subtitle col-start-badges"
     @blur="handleMouseOut"
     @focus="handleMouseOver"
     @mouseover="handleMouseOver"
