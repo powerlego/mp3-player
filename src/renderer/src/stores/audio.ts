@@ -17,7 +17,7 @@ export const useAudio = defineStore("audio", () => {
 
   // Time related reactive properties and methods.
   const currentTime = computed({
-    get: () => audio.value?.currentTime ?? 0,
+    get: () => audio.value?.currentTime ?? -1,
     set: (value: number) => {
       if (audio.value) {
         audio.value.currentTime = value;
@@ -29,7 +29,10 @@ export const useAudio = defineStore("audio", () => {
 
   function getTimeDisplay(time: number) {
     if (!isFinite(time)) {
-      return "";
+      return "--:--";
+    }
+    if (time < 0) {
+      return "--:--";
     }
     const addHeadingZero = (num: number): string => {
       return num > 9 ? num.toString() : `0${num}`;
