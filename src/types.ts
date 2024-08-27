@@ -60,8 +60,8 @@ export interface CoverArt {
 
 // Enum for iteration type.
 export enum IterationType {
-  single = "single", // Single iteration.
-  infinite = "infinite", // Infinite iteration.
+  SINGLE, // Single iteration.
+  INFINITE, // Infinite iteration.
 }
 
 // Interface for scrolling animation properties.
