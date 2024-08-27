@@ -7,12 +7,15 @@ module.exports = {
     extend: {
       gridTemplateAreas: {
         layout: ["top-bar top-bar", "nav-bar main-view", "now-playing now-playing"],
+        songDetails: ["title tile", "badges subtitle"]
       },
       gridTemplateColumns: {
         layout: "auto 1fr",
+        songDetails: "auto 1fr",
       },
       gridTemplateRows: {
         layout: "auto 1fr auto",
+        songDetails: "auto auto",
       },
       minWidth: {
         56: "14rem",
