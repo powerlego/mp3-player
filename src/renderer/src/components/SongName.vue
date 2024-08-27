@@ -1,0 +1,59 @@
+<script setup lang="ts">
+import { IterationType } from "@/types";
+import { ref } from "vue";
+import { useScrollingAnimation } from "@composables/scrollingAnimation";
+
+const props = withDefaults(defineProps<{
+  songName: string;
+  speed?: number;
+  pauseAtEndEdgeDurationMs?: number;
+  initialMouseIntDelayMs?: number;
+  iterationType?: IterationType;
+}>(), {
+  speed: 0.2,
+  pauseAtEndEdgeDurationMs: 1200,
+  initialMouseIntDelayMs: 200,
+  iterationType: IterationType.SINGLE,
+});
+
+const containerRef = ref<HTMLDivElement | null>(null);
+const offsetRef = ref<HTMLDivElement | null>(null);
+const { handleMouseOver, handleMouseOut } = useScrollingAnimation(
+  containerRef,
+  offsetRef,
+  {
+    speed: props.speed,
+    pauseAtEndEdgeDurationMs: props.pauseAtEndEdgeDurationMs,
+    initialMouseIntDelayMs: props.initialMouseIntDelayMs,
+    iterationType: props.iterationType,
+  },
+);
+
+</script>
+
+<template>
+  <div
+    class="w-full justify-self-start grid-in-title"
+    @blur="handleMouseOut"
+    @focus="handleMouseOver"
+    @mouseover="handleMouseOver"
+    @mouseout="handleMouseOut"
+  >
+    <div
+      ref="containerRef"
+      class="relative overflow-hidden -mx-1.5"
+      style="mask-image: linear-gradient(90deg, transparent 0, black 6px, black calc(100% - 12px), transparent ); -webkit-mask-image: linear-gradient(90deg, transparent 0, black 6px, black calc(100% - 12px), transparent );"
+    >
+      <div class="overflow-hidden">
+        <div
+          ref="offsetRef"
+          class="flex w-fit whitespace-nowrap translate-x-[var(--trans-x)] ps-1.5 pe-3"
+        >
+          <span class="text-base font-semibold text-gray-900 cursor-default dark:text-gray-100">
+            {{ props.songName }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
