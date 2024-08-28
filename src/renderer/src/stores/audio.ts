@@ -195,6 +195,33 @@ export const useAudio = defineStore("audio", () => {
     }
   }
 
+  function play() {
+    if (audio.value) {
+      if ((audio.value.paused || audio.value.ended) && audio.value.src) {
+        if (repeatMode.value === RepeatMode.NONE && repeatCount.value > 0) {
+          repeatCount.value = 0;
+        }
+        audio.value.play().catch((err) => {
+          log.error(err);
+        });
+        if ("mediaSession" in navigator) {
+          navigator.mediaSession.playbackState = "playing";
+        }
+      }
+    }
+  }
+
+  function pause() {
+    if (audio.value) {
+      if (isPlaying.value) {
+        audio.value.pause();
+        if ("mediaSession" in navigator) {
+          navigator.mediaSession.playbackState = "paused";
+        }
+      }
+    }
+  }
+
   function togglePlay() {
     if (audio.value) {
       if ((audio.value.paused || audio.value.ended) && audio.value.src) {
@@ -313,6 +340,8 @@ export const useAudio = defineStore("audio", () => {
     isAudioAvailable,
     isPlaying,
     loadAndPlay,
+    play,
+    pause,
     togglePlay,
     volume,
     isMuted,
