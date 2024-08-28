@@ -48,7 +48,7 @@ export const useAudio = defineStore("audio", () => {
     },
   });
   const currentTimeMs = computed(() => currentTime.value * 1000);
-  const duration = computed(() => audio.value?.duration ?? 0);
+  const duration = computed(() => audio.value?.duration ?? -1);
 
   function getTimeDisplay(time: number) {
     if (!isFinite(time)) {
