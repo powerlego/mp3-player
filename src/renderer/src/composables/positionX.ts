@@ -1,5 +1,5 @@
-export const usePosX = () => {
-  function getPosX(event: TouchEvent | MouseEvent) {
+export const usePositionX = () => {
+  function getPositionX(event: TouchEvent | MouseEvent) {
     if (event instanceof MouseEvent) {
       return event.clientX;
     }
@@ -7,5 +7,5 @@ export const usePosX = () => {
       return event.touches[0].clientX;
     }
   }
-  return { getPosX };
+  return { getPosX: getPositionX };
 };
