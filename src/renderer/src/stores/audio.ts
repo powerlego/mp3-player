@@ -2,7 +2,7 @@ import { computed, ref, watch } from "vue";
 import { defineStore, storeToRefs } from "pinia";
 import _ from "lodash";
 import log from "electron-log/renderer";
-import { RepeatMode } from "@/types";
+import { MediaReadyState, RepeatMode } from "@/types";
 import { useQueue } from "@stores/queue";
 
 export const useAudio = defineStore("audio", () => {
@@ -14,6 +14,29 @@ export const useAudio = defineStore("audio", () => {
   function setAudio(audioElement: HTMLAudioElement) {
     audio.value = audioElement;
   }
+
+  // Audio metadata related reactive properties and methods.
+  const readyState = computed(() => {
+    if (audio.value) {
+      switch (audio.value.readyState) {
+      case 0:
+        return MediaReadyState.HAVE_NOTHING;
+      case 1:
+        return MediaReadyState.HAVE_METADATA;
+      case 2:
+        return MediaReadyState.HAVE_CURRENT_DATA;
+      case 3:
+        return MediaReadyState.HAVE_FUTURE_DATA;
+      case 4:
+        return MediaReadyState.HAVE_ENOUGH_DATA;
+      default:
+        return MediaReadyState.HAVE_NOTHING;
+      }
+    }
+    else {
+      return MediaReadyState.HAVE_NOTHING;
+    }
+  });
 
   // Time related reactive properties and methods.
   const currentTime = computed({
@@ -271,6 +294,7 @@ export const useAudio = defineStore("audio", () => {
   return {
     audio,
     setAudio,
+    readyState,
     currentTime,
     currentTimeMs,
     duration,
