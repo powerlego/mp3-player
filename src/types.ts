@@ -238,7 +238,6 @@ export type MediaControlKeyBindings = {
   volumeDown: string;
   mute: string;
   repeat: string;
-  repeatOne: string;
   shuffle: string;
 };
 
