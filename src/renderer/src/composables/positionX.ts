@@ -7,5 +7,5 @@ export const usePositionX = () => {
       return event.touches[0].clientX;
     }
   }
-  return { getPosX: getPositionX };
+  return { getPositionX };
 };
