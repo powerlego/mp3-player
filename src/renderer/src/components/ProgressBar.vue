@@ -7,7 +7,7 @@ import { usePositionX } from "@composables/positionX";
 import { useThrottle } from "@composables/throttle";
 
 const props = withDefaults(defineProps<{
-  progressUpdateInterval: number;
+  progressUpdateInterval?: number;
 }>(), {
   progressUpdateInterval: 0,
 });
