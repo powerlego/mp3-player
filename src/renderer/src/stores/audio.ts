@@ -1,8 +1,8 @@
 import { computed, ref, watch } from "vue";
 import { defineStore, storeToRefs } from "pinia";
+import { MediaReadyState, RepeatMode } from "@/types";
 import _ from "lodash";
 import log from "electron-log/renderer";
-import { MediaReadyState, RepeatMode } from "@/types";
 import { useQueue } from "@stores/queue";
 
 export const useAudio = defineStore("audio", () => {
