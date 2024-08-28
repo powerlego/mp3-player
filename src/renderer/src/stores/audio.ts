@@ -40,8 +40,16 @@ export const useAudio = defineStore("audio", () => {
 
     return `${addHeadingZero(Math.floor(time / 60))}:${addHeadingZero(Math.floor(time % 60))}`;
   }
-  const currentTimeDisplay = computed(() => getTimeDisplay(currentTime.value));
-  const durationDisplay = computed(() => getTimeDisplay(duration.value));
+  const currentTimeDisplay = ref("--:--");
+  const durationDisplay = ref("--:--");
+
+  function updateCurrentTimeDisplay() {
+    currentTimeDisplay.value = getTimeDisplay(currentTime.value);
+  }
+
+  function updateDurationDisplay() {
+    durationDisplay.value = getTimeDisplay(duration.value);
+  }
 
   const looping = computed({
     get: () => audio.value?.loop ?? false,
@@ -268,6 +276,8 @@ export const useAudio = defineStore("audio", () => {
     duration,
     currentTimeDisplay,
     durationDisplay,
+    updateCurrentTimeDisplay,
+    updateDurationDisplay,
     looping,
     repeatMode,
     repeatCount,
