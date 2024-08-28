@@ -24,7 +24,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="min-w-[2.5rem] text-xs text-gray-800 dark:text-gray-250 text-right">
+  <div class="min-w-[2.5rem] text-xs text-gray-800 dark:text-gray-250">
     {{ currentTime }}
   </div>
 </template>
