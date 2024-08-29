@@ -260,11 +260,24 @@ export const useAudio = defineStore("audio", () => {
     if (volume.value > 0) {
       lastVolume.value = volume.value;
       volume.value = 0;
+      audio.value!.muted = true;
     }
     else {
       volume.value = lastVolume.value;
+      audio.value!.muted = false;
     }
   }
+
+  watch(volume, (newValue) => {
+    if (audio.value) {
+      if (newValue === 0) {
+        audio.value.muted = true;
+      }
+      else {
+        audio.value.muted = false;
+      }
+    }
+  });
 
   function jumpVolume(amount: number) {
     if (isFinite(volume.value)) {
