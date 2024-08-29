@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { ComponentPublicInstance, onMounted, onUnmounted, ref } from "vue";
-import CurrentTime from "@components/CurrentTime.vue";
-import Duration from "@components/Duration.vue";
 import { FilePayload } from "@/types";
 import PlayButton from "@components/PlayButton.vue";
 import ProgressBar from "@components/ProgressBar.vue";
@@ -27,9 +25,10 @@ const props = withDefaults(defineProps<{
 const audioStore = useAudio();
 const mediaKeyBindingsStore = useMediaKeyBindings();
 
-const { audio } = storeToRefs(audioStore);
+const { audio, currentTimeDisplay, durationDisplay } = storeToRefs(audioStore);
 const { getNextSong, play, pause, skipPrevious,
-  togglePlay, jumpVolume, incrementRepeatMode, toggleMute, toggleShuffle } = audioStore;
+  togglePlay, jumpVolume, incrementRepeatMode, toggleMute, toggleShuffle,
+  updateCurrentTimeDisplay, updateDurationDisplay } = audioStore;
 const { keyBindings } = storeToRefs(mediaKeyBindingsStore);
 const { combineKeyCodes } = mediaKeyBindingsStore;
 
@@ -121,6 +120,10 @@ onMounted(() => {
     return;
   }
   audio.value.addEventListener("ended", getNextSong);
+  audio.value.addEventListener("timeupdate", updateCurrentTimeDisplay);
+  audio.value.addEventListener("loadedmetadata", updateCurrentTimeDisplay);
+  audio.value.addEventListener("durationchange", updateDurationDisplay);
+  audio.value.addEventListener("abort", updateDurationDisplay);
   window.api.on("open-file", handleFileOpen);
   if ("mediaSession" in navigator) {
     navigator.mediaSession.setActionHandler("play", play);
@@ -135,6 +138,10 @@ onUnmounted(() => {
     return;
   }
   audio.value.removeEventListener("ended", getNextSong);
+  audio.value.removeEventListener("timeupdate", updateCurrentTimeDisplay);
+  audio.value.removeEventListener("loadedmetadata", updateCurrentTimeDisplay);
+  audio.value.removeEventListener("durationchange", updateDurationDisplay);
+  audio.value.removeEventListener("abort", updateDurationDisplay);
   window.api.off("open-file", handleFileOpen);
 });
 
@@ -168,12 +175,16 @@ onUnmounted(() => {
           </div>
         </div>
         <div class="flex flex-row items-center w-full gap-2 justify-evenly">
-          <CurrentTime class="text-right" />
+          <div class="min-w-[2.5rem] text-xs text-gray-800 dark:text-gray-250 text-right">
+            {{ currentTimeDisplay }}
+          </div>
           <ProgressBar
             ref="progressBarRef"
             :progress-update-interval="props.progressUpdateInterval"
           />
-          <Duration class="text-left" />
+          <div class="min-w-[2.5rem] text-xs text-gray-800 dark:text-gray-250 text-left">
+            {{ durationDisplay }}
+          </div>
         </div>
       </div>
       <div class="w-[20%] min-w-[11.25rem] flex flex-row justify-end items-center">
