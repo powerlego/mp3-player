@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { defineStore } from "pinia";
 import { reactive } from "vue";
 
-export function useMediaKeyBindings() {
+export const useMediaKeyBindings = defineStore("mediaKeyBindings", () => {
   const keyBindings = reactive({
     playPause: "Space",
     jumpBackward: "Left",
@@ -160,4 +161,4 @@ export function useMediaKeyBindings() {
   }
 
   return { keyBindings, combineKeyCodes };
-}
+});
