@@ -13,6 +13,8 @@ import SongName from "@components/SongName.vue";
 import { storeToRefs } from "pinia";
 import { useAudio } from "@stores/audio";
 import { useMediaKeyBindings } from "@stores/mediaKeyBindings";
+import VolumeBar from "@components/VolumeBar.vue";
+import VolumeButton from "@components/VolumeButton.vue";
 
 const props = withDefaults(defineProps<{
   progressUpdateInterval?: number;
@@ -193,8 +195,8 @@ onUnmounted(() => {
             class="flex items-center"
             style="flex: 0 1 7.75rem;"
           >
-            <!-- VolumeButton -->
-            <!-- VolumeBar -->
+            <VolumeButton />
+            <VolumeBar />
           </div>
         </div>
       </div>
