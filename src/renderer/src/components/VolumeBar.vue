@@ -137,7 +137,7 @@ onUnmounted(() => {
     @touchstart="handleMouseDownOrTouchStart"
     @contextmenu="($event) => $event.preventDefault()"
   >
-    <div className="relative box-border h-1 w-full rounded-full bg-gray-350 dark:bg-gray-750">
+    <div class="box-border relative w-full h-1 rounded-full bg-gray-350 dark:bg-gray-750">
       <div
         class="box-border absolute z-20 rounded-full h-13/4 aspect-square group-hover:scale-100"
         :class="{ 'scale-100': isDragging, 'scale-0': !isDragging }"
