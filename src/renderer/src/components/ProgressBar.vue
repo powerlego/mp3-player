@@ -39,6 +39,9 @@ function handleMouseOrTouchMove(event: MouseEvent | TouchEvent) {
     event.preventDefault();
   }
   event.stopPropagation();
+  if (!audio.value) {
+    return;
+  }
 
   const windowSelection = window.getSelection();
   if (windowSelection && windowSelection.type === "Range") {
@@ -77,6 +80,9 @@ function handleMouseOrTouchUp(event: MouseEvent | TouchEvent) {
 
 function handleMouseDownOrTouchStart(event: MouseEvent | TouchEvent) {
   event.stopPropagation();
+  if (!audio.value) {
+    return;
+  }
   isDragging.value = true;
   const { currentTimeValue, currentTimePositionValue } = getCurrentProgress(event);
   if (isFinite(currentTimeValue)) {
