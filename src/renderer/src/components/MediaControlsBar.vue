@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
+import { ComponentPublicInstance, onMounted, onUnmounted, ref } from "vue";
 import CurrentTime from "@components/CurrentTime.vue";
 import Duration from "@components/Duration.vue";
 import { FilePayload } from "@/types";
@@ -39,6 +39,7 @@ const songArtists = ref("");
 const coverArt = ref("");
 
 const container = ref<HTMLDivElement | null>(null);
+const progressBarRef = ref<ComponentPublicInstance | null>(null);
 
 function handleKeyDown(event: KeyboardEvent) {
   const keys = combineKeyCodes(event);
@@ -48,7 +49,10 @@ function handleKeyDown(event: KeyboardEvent) {
     if (!container.value) {
       return;
     }
-    if (event.target === container.value) {
+    if (!progressBarRef.value) {
+      return;
+    }
+    if (event.target === container.value || event.target === progressBarRef.value.$el) {
       togglePlay();
     }
     break;
@@ -165,7 +169,10 @@ onUnmounted(() => {
         </div>
         <div class="flex flex-row items-center w-full gap-2 justify-evenly">
           <CurrentTime class="text-right" />
-          <ProgressBar :progress-update-interval="props.progressUpdateInterval" />
+          <ProgressBar
+            ref="progressBarRef"
+            :progress-update-interval="props.progressUpdateInterval"
+          />
           <Duration class="text-left" />
         </div>
       </div>
