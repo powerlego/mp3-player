@@ -255,7 +255,7 @@ export const useAudio = defineStore("audio", () => {
     },
   });
 
-  const isMuted = computed(() => volume.value === 0);
+  const isMuted = computed(() => volume.value === 0 || (audio.value && audio.value.muted));
   function toggleMute() {
     if (volume.value > 0) {
       lastVolume.value = volume.value;
