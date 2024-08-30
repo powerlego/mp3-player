@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { ComponentPublicInstance, onMounted, onUnmounted, ref } from "vue";
 import { FilePayload } from "@/types";
-import PlayButton from "@components/PlayButton.vue";
+import PlayButton from "@components/media-controls/PlayButton.vue";
 import ProgressBar from "@components/ProgressBar.vue";
-import RepeatButton from "@components/RepeatButton.vue";
-import ShuffleButton from "@components/ShuffleButton.vue";
-import SkipBackButton from "@components/SkipBackButton.vue";
-import SkipForwardButton from "@components/SkipForwardButton.vue";
-import SongArtists from "@components/SongArtists.vue";
-import SongDetails from "@components/SongDetails.vue";
-import SongName from "@components/SongName.vue";
+import RepeatButton from "@components/media-controls/RepeatButton.vue";
+import ShuffleButton from "@components/media-controls/ShuffleButton.vue";
+import SkipBackButton from "@components/media-controls/SkipBackButton.vue";
+import SkipForwardButton from "@components/media-controls/SkipForwardButton.vue";
+import SongArtists from "@components/song-details/SongArtists.vue";
+import SongDetails from "@components/song-details/SongDetails.vue";
+import SongName from "@components/song-details/SongName.vue";
 import { storeToRefs } from "pinia";
 import { useAudio } from "@stores/audio";
 import { useMediaKeyBindings } from "@stores/mediaKeyBindings";
-import VolumeBar from "@components/VolumeBar.vue";
-import VolumeButton from "@components/VolumeButton.vue";
+import VolumeBar from "@components/volume-controls/VolumeBar.vue";
+import VolumeButton from "@components/volume-controls/VolumeButton.vue";
 
 const props = withDefaults(defineProps<{
   progressUpdateInterval?: number;

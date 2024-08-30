@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import Shelf from "./Shelf.vue";
-import SongCoverCard from "./SongCoverCard.vue";
+import SongCoverCard from "@components/cards/SongCoverCard.vue";
 import { storeToRefs } from "pinia";
 import { useQueue } from "@stores/queue";
 
