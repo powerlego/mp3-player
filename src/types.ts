@@ -85,22 +85,24 @@ export type SettingsSection = {
   };
 };
 
+type Field =
+  | SettingsTextField
+  | SettingsNumberField
+  | SettingsSliderField
+  | SettingsRadioField
+  | SettingsDropdownField
+  | SettingsListField
+  | SettingsFileField
+  | SettingsDirectoryField
+  | SettingsColorField
+  | SettingsCheckboxField
+  | SettingsAcceleratorField;
+
 // Type for a group within a settings section, which has an id, optional label, and a list of fields.
 export type Group = {
   id: string;
   label?: string;
-  fields:
-    | SettingsTextField[]
-    | SettingsNumberField[]
-    | SettingsSliderField[]
-    | SettingsRadioField[]
-    | SettingsDropdownField[]
-    | SettingsListField[]
-    | SettingsFileField[]
-    | SettingsDirectoryField[]
-    | SettingsColorField[]
-    | SettingsCheckboxField[]
-    | SettingsAcceleratorField[];
+  fields: Field[];
 };
 
 // Base type for a settings item, including type, label, key, and an optional description.
