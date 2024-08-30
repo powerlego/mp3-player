@@ -27,7 +27,7 @@ const columns = {
   },
 };
 
-export function getColumns(columnsType: string): {
+function getColumns(columnsType: string): {
   MINIMUM_COLUMN_WIDTH: number;
   TWO_COLUMNS_MAX_WIDTH: number;
   THREE_COLUMNS_MAX_WIDTH: number;
@@ -37,7 +37,7 @@ export function getColumns(columnsType: string): {
   return columns[columnsType];
 }
 
-export const codeToChar = {
+const codeToChar = {
   Backspace: "Backspace",
   Tab: "Tab",
   Enter: "Enter",
@@ -147,3 +147,28 @@ export const codeToChar = {
   BracketRight: "]",
   Quote: "'",
 } as { [key: string]: string };
+
+const specialKeyCodes = new Set([
+  "ShiftLeft",
+  "ShiftRight",
+  "ControlLeft",
+  "ControlRight",
+  "AltLeft",
+  "AltRight",
+  "Escape",
+  "MetaLeft",
+  "MetaRight",
+  "ContextMenu",
+]);
+const modifierKeyCodes = new Set([
+  "ShiftLeft",
+  "ShiftRight",
+  "ControlLeft",
+  "ControlRight",
+  "AltLeft",
+  "AltRight",
+  "MetaLeft",
+  "MetaRight",
+  "ContextMenu",
+]);
+export { getColumns, codeToChar, specialKeyCodes, modifierKeyCodes };
