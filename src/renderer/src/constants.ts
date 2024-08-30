@@ -171,4 +171,13 @@ const modifierKeyCodes = new Set([
   "MetaRight",
   "ContextMenu",
 ]);
-export { getColumns, codeToChar, specialKeyCodes, modifierKeyCodes };
+
+const altKeyName = navigator.userAgent.indexOf("Mac") !== -1 ? "Option" : "Alt";
+const metaKeyName
+  = navigator.userAgent.indexOf("Mac") !== -1
+    ? "Command"
+    : navigator.userAgent.indexOf("Win") !== -1
+      ? "Windows"
+      : "Meta";
+
+export { getColumns, codeToChar, specialKeyCodes, modifierKeyCodes, altKeyName, metaKeyName };
