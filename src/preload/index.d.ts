@@ -1,13 +1,10 @@
-import { FilePayload, Settings } from "@/types";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ElectronAPI } from "@electron-toolkit/preload";
-import { IpcRendererEvent } from "electron";
+import { Settings } from "@/types";
 declare global {
   interface Window {
     electron: ElectronAPI;
     api: {
-      onFileOpen: (
-        callback: (_event: IpcRendererEvent, file: FilePayload, play: boolean) => void
-      ) => Electron.IpcRenderer;
       getAudioFile: () => Promise<string>;
       readDir: () => Promise<void>;
       loadAudioFile: (file: string, play: boolean) => Promise<string>;
@@ -19,9 +16,6 @@ declare global {
         pictureBase64: string;
         pictureFormat: string;
       }>;
-      offFileOpen: (
-        callback: (_event: IpcRendererEvent, file: FilePayload, play: boolean) => void
-      ) => Electron.IpcRenderer;
       on: (channel: string, listener: (...args: any[]) => void) => Electron.IpcRenderer;
       off: (channel: string, listener: (...args: any[]) => void) => Electron.IpcRenderer;
     };
