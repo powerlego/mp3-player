@@ -6,6 +6,7 @@
   "dependencies": {
     "@apollo/client": "^3.7.12",
     "@ckpack/vue-color": "^1.6.0",
+    "@ctrl/tinycolor": "^4.1.0",
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
     "custom-electron-titlebar": "^4.2.6",
