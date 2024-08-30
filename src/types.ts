@@ -179,7 +179,7 @@ export type SettingsDirectoryField = SettingsItem & {
 };
 
 export type SettingsColorField = SettingsItem & {
-  format?: "hex" | "rgb" | "hsl";
+  format?: "rgb" | "hsl" | "hex" | "hsv";
 };
 
 export type SettingsCheckboxField = SettingsItem & {
