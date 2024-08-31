@@ -154,7 +154,6 @@ export type SettingsListField = SettingsItem & {
   size?: number;
   addItemValidator?: string;
   addItemLabel?: string;
-  modalCloseTimeoutMS?: number;
   min?: number;
   max?: number;
 };
