@@ -18,7 +18,7 @@ const { newGuid } = useGuid();
 const fieldId = ref(`radio_${newGuid()}`);
 function handleChange(event: Event) {
   const target = event.target as HTMLInputElement;
-  emit("change", props.field.options[Number.parseInt(target.id.split("_")[2])].value);
+  emit("change", props.field.options[parseInt(target.id.split("_")[2])].value);
 }
 
 </script>
