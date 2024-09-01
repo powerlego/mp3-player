@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { OpenDialogSyncOptions } from "electron";
 import { SettingsFileField } from "@/types";
-import Tooltip from "@renderer/components/Tooltip";
+import Tooltip from "@components/Tooltip";
 
 const props = defineProps<{
   field: SettingsFileField;
