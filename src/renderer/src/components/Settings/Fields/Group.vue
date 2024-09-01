@@ -1,53 +1,58 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import {
-  Group,
-  SettingsAcceleratorField,
-  SettingsCheckboxField,
-  SettingsColorField,
-  SettingsDirectoryField,
-  SettingsDropdownField,
-  SettingsFileField,
-  SettingsListField,
-  SettingsNumberField,
-  SettingsRadioField,
-  SettingsSliderField,
-  SettingsTextField,
-} from "@/types";
-import AcceleratorField from "./AcceleratorField.vue";
-import CheckboxField from "./CheckboxField.vue";
+import Accelerator from "./Accelerator.vue";
+import Checkbox from "./Checkbox.vue";
+import Color from "./Color.vue";
+import { computed } from "vue";
+import Directory from "./Directory.vue";
+import Dropdown from "./Dropdown.vue";
+import File from "./File.vue";
+import { Group } from "@/types";
+import List from "./List.vue";
+import log from "electron-log/renderer";
+import Number from "./Number.vue";
+import Radio from "./Radio.vue";
+import Slider from "./Slider.vue";
+import Text from "./Text.vue";
 
 const fieldMap = {
-  accelerator: AcceleratorField,
-  checkbox: CheckboxField,
-  color: ColorField,
-  directory: DirectoryField,
-  dropdown: DropdownField,
-  file: FileField,
-  group: Group,
-  list: ListField,
-  number: NumberField,
-  radio: RadioField,
-  slider: SliderField,
-  text: TextField,
+  accelerator: Accelerator,
+  checkbox: Checkbox,
+  color: Color,
+  directory: Directory,
+  dropdown: Dropdown,
+  file: File,
+  list: List,
+  number: Number,
+  radio: Radio,
+  slider: Slider,
+  text: Text,
 };
-}
 
 const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   preferences: { [key: string]: any };
   group: Group;
-  value?: string;
 }>();
 
-const emit = defineEmits<{
+defineEmits<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fieldChange: [key: string, value: any];
 }>();
 
 const fields = computed(() => {
-  return props.group.fields.map((value, idx) => {
-
+  return props.group.fields.map((field) => {
+    const fieldComponent = fieldMap[field.type];
+    if (!fieldComponent) {
+      log.error(`Field type "${field.type}" is not supported`);
+      return {
+        component: null,
+        field,
+      };
+    }
+    return {
+      component: fieldComponent,
+      field,
+    };
   });
 });
 
@@ -55,8 +60,23 @@ const fields = computed(() => {
 
 <template>
   <div :id="'group-' + props.group.id">
-    <div v-if="props.group.label" class="mb-3 text-xl font-bold text-black dark:text-white">
+    <div
+      v-if="props.group.label"
+      class="mb-3 text-xl font-bold text-black dark:text-white"
+    >
       {{ props.group.label }}
     </div>
+    <template
+      v-for="field in fields"
+      :key="field.field.key"
+    >
+      <component
+        :is="field.component"
+        v-if="field.component"
+        :field="field.field"
+        :value="props.preferences[props.group.id][field.field.key]"
+        @change="(value: any) => $emit('fieldChange', field.field.key, value)"
+      />
+    </template>
   </div>
 </template>
