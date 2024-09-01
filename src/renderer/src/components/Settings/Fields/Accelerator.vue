@@ -18,6 +18,7 @@ const emit = defineEmits<{
 
 const accelerator = ref("");
 const pressing = ref(false);
+const value = ref(props.value);
 
 function handleKeyDown(event: KeyboardEvent) {
   event.preventDefault();
@@ -50,6 +51,7 @@ function handleKeyDown(event: KeyboardEvent) {
 function handleKeyUp(event: KeyboardEvent) {
   event.preventDefault();
   pressing.value = false;
+  value.value = accelerator.value;
 }
 
 </script>
@@ -67,7 +69,7 @@ function handleKeyUp(event: KeyboardEvent) {
         :aria-label="props.field.label"
         class="w-full rounded-lg text-sm m-0.5 p-2 bg-gray-100 dark:bg-gray-800 border border-solid border-gray-350 dark:border-gray-700 transition-[border-color] duration-300 ease-out focus:m-0 focus:border-blue-500 dark:focus:border-blue-400 focus:border-2 text-black dark:text-white outline-nothing"
         type="text"
-        :value="(pressing && accelerator) || props.value"
+        :value="(pressing && accelerator) || value"
         @keydown="handleKeyDown"
         @keyup="handleKeyUp"
       >

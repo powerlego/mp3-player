@@ -19,7 +19,7 @@ const options = ref(
   [
     {
       label: "-- Select One --",
-      value: "hide",
+      value: "",
     },
     ...props.field.options,
   ],
@@ -46,7 +46,7 @@ function handleOptionClick(event: MouseEvent) {
   if (!event.currentTarget) {
     return;
   }
-  const val = (event.currentTarget as HTMLElement).getAttribute("data-value") ?? "hide";
+  const val = (event.currentTarget as HTMLElement).getAttribute("data-value") ?? "";
   const index = options.value.findIndex((option) => option.value === val);
   value.value = val;
   currentIndex.value = index;
@@ -101,7 +101,7 @@ onUnmounted(() => {
             :key="props.field.key + '-' + idx"
           >
             <li
-              v-if="opt.value === 'hide'"
+              v-if="opt.value === ''"
               class="m-0 py-2 indent-4 transition-all duration-150 ease-in bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 hidden border-t border-solid border-gray-350 dark:border-gray-700 outline-nothing [&:nth-child(2)]:rounded-t-lg last:rounded-b-lg last:mb-1"
               tabindex="0"
               :data-value="opt.value"

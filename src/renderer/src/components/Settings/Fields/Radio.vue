@@ -6,7 +6,7 @@ import { useGuid } from "@composables/guid";
 
 const props = defineProps<{
   field: SettingsRadioField;
-  value: number;
+  value: number | string | boolean;
 }>();
 
 const emit = defineEmits<{
@@ -16,8 +16,11 @@ const emit = defineEmits<{
 
 const { newGuid } = useGuid();
 const fieldId = ref(`radio_${newGuid()}`);
+const value = ref(props.value);
+
 function handleChange(event: Event) {
   const target = event.target as HTMLInputElement;
+  value.value = props.field.options[parseInt(target.id.split("_")[2])].value;
   emit("change", props.field.options[parseInt(target.id.split("_")[2])].value);
 }
 
@@ -45,7 +48,7 @@ function handleChange(event: Event) {
         <input
           :id="`${fieldId}_${idx}`"
           :aria-label="option.label"
-          :checked="props.value === option.value"
+          :checked="value === option.value"
           class="absolute opacity-0 cursor-pointer peer"
           :name="fieldId"
           type="radio"

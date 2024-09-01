@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { OpenDialogSyncOptions } from "electron";
 import { SettingsDirectoryField } from "@/types";
 import Tooltip from "@components/Tooltip";
@@ -14,11 +14,13 @@ const emit = defineEmits<{
   change: [value: any];
 }>();
 
+const value = ref(props.value ?? []);
+
 const btnLabel = computed(() => {
   if (props.field.buttonLabel) {
     return props.field.buttonLabel;
   }
-  else if (props.value && props.value.length > 0) {
+  else if (value.value.length > 0) {
     if (props.field.multiSelections) {
       return "Choose Other Folders";
     }
@@ -57,7 +59,8 @@ function choose() {
     properties,
   });
   if (result && result.length > 0) {
-    emit("change", props.field.multiSelections ? result : result[0]);
+    value.value = props.field.multiSelections ? result : [result[0]];
+    emit("change", props.field.multiSelections ? result : [result[0]]);
   }
 }
 
@@ -81,9 +84,9 @@ function choose() {
         >
           {{ props.field.multiSelections ? "Folders" : "Folder" }}:&nbsp;
         </div>
-        <ul v-if="props.value && (props.field.multiSelections || props.value.length > 1)">
+        <ul v-if="props.field.multiSelections || value.length > 1">
           <li
-            v-for="(val, idx) in props.value"
+            v-for="(val, idx) in value"
             :key="props.field.key + '-' + idx"
             class="w-full px-2 py-1 bg-gray-100 border-t border-solid border-x-2 last:border-b-2 dark:bg-gray-800 border-gray-350 dark:border-gray-700 last:mb-1 last:rounded-b-lg"
           >
@@ -91,10 +94,10 @@ function choose() {
           </li>
         </ul>
         <div
-          v-else-if="props.value && (!props.field.multiSelections && props.value.length <= 1)"
+          v-else-if="!props.field.multiSelections && value.length <= 1"
           class="w-full px-2 py-1 mb-1 bg-gray-100 border border-b-2 border-solid rounded-b-lg border-x-2 dark:bg-gray-800 border-gray-350 dark:border-gray-700"
         >
-          {{ props.value[0] }}
+          {{ value[0] }}
         </div>
         <div
           v-else
