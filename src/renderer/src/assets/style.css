@@ -97,31 +97,6 @@ mnemonic {
   @apply underline;
 }
 
-@layer components {
-  .slider-field {
-    @apply w-11/12 my-3 mx-0 bg-transparent transition-opacity ease-[ease] duration-200 opacity-[0.85]
-      dark:opacity-100 hover:opacity-100 dark:hover:opacity-[0.85]
-      outline-nothing webkit-appear-none webkit-animation-0-2s;
-  }
-
-  .slider-field::-webkit-slider-runnable-track {
-    @apply rounded-md w-full h-3 cursor-pointer bg-black bg-opacity-10 focus:bg-opacity-[0.15]
-      dark:bg-white dark:bg-opacity-5 border-all-0;
-  }
-
-  .slider-field:focus::-webkit-slider-runnable-track {
-    @apply bg-opacity-[0.15] dark:bg-opacity-10;
-  }
-
-  .slider-field::-webkit-slider-thumb {
-    @apply w-4 h-8 -mt-3 bg-blue-500 cursor-pointer rounded-xl border-all-0 webkit-appear-none;
-  }
-
-  .slider-field:focus::-webkit-slider-thumb {
-    @apply bg-blue-300;
-  }
-}
-
 @layer utilities {
   .non-scale-stroke {
     vector-effect: non-scaling-stroke;
