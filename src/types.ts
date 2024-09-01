@@ -12,7 +12,6 @@ export interface I18nAriaLabels {
   play?: string;
   pause?: string;
   previous?: string;
-  rewind?: string;
   shuffle?: string;
   shuffleOn?: string;
   next?: string;
