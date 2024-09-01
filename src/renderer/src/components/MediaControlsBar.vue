@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ComponentPublicInstance, onMounted, onUnmounted, ref } from "vue";
-import { FilePayload } from "@/types";
+import { ComponentPublicInstance, computed, onMounted, onUnmounted, ref } from "vue";
+import { FilePayload, I18nAriaLabels, RepeatMode } from "@/types";
 import PlayButton from "@components/media-controls/PlayButton.vue";
 import ProgressBar from "@components/ProgressBar.vue";
 import RepeatButton from "@components/media-controls/RepeatButton.vue";
@@ -19,15 +19,32 @@ import VolumeButton from "@components/volume-controls/VolumeButton.vue";
 const props = withDefaults(defineProps<{
   progressUpdateInterval?: number;
   volumeJumpStep?: number;
+  i18nAriaLabels?: I18nAriaLabels;
 }>(), {
   progressUpdateInterval: 0,
   volumeJumpStep: 0.05,
+  i18nAriaLabels: () => ({
+    player: "Audio player",
+    progressControl: "Audio progress control",
+    volumeControl: "Volume control",
+    play: "Play",
+    pause: "Pause",
+    shuffle: "Enable shuffle",
+    shuffleOn: "Disable shuffle",
+    previous: "Previous",
+    next: "Skip",
+    loop: "Enable loop once",
+    loopOnce: "Disable loop",
+    loopOff: "Enable loop",
+    volume: "Mute",
+    volumeMute: "Unmute",
+  }),
 });
 
 const audioStore = useAudio();
 const mediaKeyBindingsStore = useMediaKeyBindings();
 
-const { audio, currentTimeDisplay, durationDisplay } = storeToRefs(audioStore);
+const { audio, currentTimeDisplay, durationDisplay, isPlaying, shuffle, isMuted, repeatMode } = storeToRefs(audioStore);
 const { getNextSong, play, pause, skipPrevious,
   togglePlay, jumpVolume, incrementRepeatMode, toggleMute, toggleShuffle,
   updateCurrentTimeDisplay, updateDurationDisplay } = audioStore;
@@ -41,6 +58,31 @@ const coverArt = ref("");
 
 const container = ref<HTMLDivElement | null>(null);
 const progressBarRef = ref<ComponentPublicInstance | null>(null);
+
+const volumeI18n = computed(() => {
+  return isMuted ? props.i18nAriaLabels.volumeMute : props.i18nAriaLabels.volume;
+});
+
+const playPauseI18n = computed(() => {
+  return isPlaying ? props.i18nAriaLabels.pause : props.i18nAriaLabels.play;
+});
+
+const shuffleI18n = computed(() => {
+  return shuffle ? props.i18nAriaLabels.shuffleOn : props.i18nAriaLabels.shuffle;
+});
+
+const repeatI18n = computed(() => {
+  switch (repeatMode.value) {
+  case RepeatMode.ALL:
+    return props.i18nAriaLabels.loop;
+  case RepeatMode.ONCE:
+    return props.i18nAriaLabels.loopOnce;
+  case RepeatMode.NONE:
+    return props.i18nAriaLabels.loopOff;
+  default:
+    return "";
+  }
+});
 
 function handleKeyDown(event: KeyboardEvent) {
   const keys = combineKeyCodes(event);
@@ -153,6 +195,7 @@ onUnmounted(() => {
   <div
     ref="container"
     tabindex="0"
+    :aria-label="props.i18nAriaLabels.player"
     @keydown="handleKeyDown"
   >
     <div class="flex flex-row items-center justify-between w-full h-full">
@@ -167,13 +210,13 @@ onUnmounted(() => {
       <div class="flex w-1/2 min-w-fit max-w-[45rem] flex-col items-center justify-center">
         <div class="flex flex-row items-center w-full gap-3 mb-1 justify-evenly">
           <div class="flex items-center justify-end flex-1 w-full gap-2">
-            <ShuffleButton />
-            <SkipBackButton />
+            <ShuffleButton :aria-label="shuffleI18n" />
+            <SkipBackButton :aria-label="props.i18nAriaLabels.previous" />
           </div>
-          <PlayButton />
+          <PlayButton :aria-label="playPauseI18n" />
           <div class="flex items-center justify-start flex-1 w-full gap-2">
-            <SkipForwardButton />
-            <RepeatButton />
+            <SkipForwardButton :aria-label="props.i18nAriaLabels.next" />
+            <RepeatButton :aria-label="repeatI18n" />
           </div>
         </div>
         <div class="flex flex-row items-center w-full gap-2 justify-evenly">
@@ -182,6 +225,7 @@ onUnmounted(() => {
           </div>
           <ProgressBar
             ref="progressBarRef"
+            :aria-label="props.i18nAriaLabels.progressControl"
             :progress-update-interval="props.progressUpdateInterval"
           />
           <div class="min-w-[2.5rem] text-xs text-gray-800 dark:text-gray-250 text-left">
@@ -195,8 +239,8 @@ onUnmounted(() => {
             class="flex items-center"
             style="flex: 0 1 7.75rem;"
           >
-            <VolumeButton />
-            <VolumeBar />
+            <VolumeButton :aria-label="volumeI18n" />
+            <VolumeBar :aria-label="props.i18nAriaLabels.volumeControl" />
           </div>
         </div>
       </div>
