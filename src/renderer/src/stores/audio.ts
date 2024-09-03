@@ -47,6 +47,9 @@ export const useAudio = defineStore("audio", () => {
       }
     },
   });
+  function setCurrentTime(value: number) {
+    currentTime.value = value;
+  }
   const currentTimeMs = computed(() => currentTime.value * 1000);
   const duration = computed(() => audio.value?.duration ?? -1);
 
@@ -82,6 +85,9 @@ export const useAudio = defineStore("audio", () => {
       }
     },
   });
+  function setLooping(value: boolean) {
+    looping.value = value;
+  }
 
   // Repeat related reactive properties and methods.
   const repeatMode = ref(RepeatMode.NONE);
@@ -254,6 +260,9 @@ export const useAudio = defineStore("audio", () => {
       }
     },
   });
+  function setVolume(value: number) {
+    volume.value = value;
+  }
 
   const isMuted = computed(() => volume.value === 0 || (audio.value && audio.value.muted));
   function toggleMute() {
@@ -334,6 +343,7 @@ export const useAudio = defineStore("audio", () => {
     setAudio,
     readyState,
     currentTime,
+    setCurrentTime,
     currentTimeMs,
     duration,
     currentTimeDisplay,
@@ -341,6 +351,7 @@ export const useAudio = defineStore("audio", () => {
     updateCurrentTimeDisplay,
     updateDurationDisplay,
     looping,
+    setLooping,
     repeatMode,
     repeatCount,
     incrementRepeatMode,
@@ -355,6 +366,7 @@ export const useAudio = defineStore("audio", () => {
     pause,
     togglePlay,
     volume,
+    setVolume,
     isMuted,
     toggleMute,
     jumpVolume,
