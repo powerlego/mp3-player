@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ElectronAPI } from "@electron-toolkit/preload";
-import { Settings } from "@/types";
+import { SettingsSection } from "@/types";
 declare global {
   interface Window {
     electron: ElectronAPI;

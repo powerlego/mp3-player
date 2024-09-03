@@ -241,17 +241,6 @@ export type MediaControlKeyBindings = {
   shuffle: string;
 };
 
-export type Settings = {
-  ui: {
-    themes: {
-      theme: string;
-    };
-  };
-  keyBindings: {
-    mediaControls: MediaControlKeyBindings;
-  };
-};
-
 export enum RepeatMode {
   NONE,
   ALL,
