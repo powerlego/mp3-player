@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { SettingsListField } from "@/types";
-import Tooltip from "@components/Tooltip";
+import Tooltip from "@components/Tooltip.vue";
 
 const props = defineProps<{
   field: SettingsListField;

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { evaluate, round } from "mathjs";
 import { computed, ref } from "vue";
+import { evaluate, round } from "mathjs";
 import { SettingsNumberField } from "@/types";
-import Tooltip from "@components/Tooltip";
+import Tooltip from "@components/Tooltip.vue";
 
 const props = defineProps<{
   field: SettingsNumberField;
