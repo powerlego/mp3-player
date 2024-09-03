@@ -13,7 +13,7 @@ declare global {
       getSections: () => SettingsSection[];
       getPreferences: () => Settings;
       getDefaults: () => { [key: string]: any };
-      setPreferences: (preferences: Settings) => void;
+      setPreferences: (preferences: { [key: string]: any }) => void;
       showOpenDialog: (dialogOptions: Electron.OpenDialogSyncOptions) => string[] | undefined;
       sendButtonClick: (channel: string) => void;
     };

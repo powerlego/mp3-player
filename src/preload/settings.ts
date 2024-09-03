@@ -14,7 +14,7 @@ const settings = {
   getSections: (): SettingsSection[] => JSON.parse(ipcRenderer.sendSync("getSections") as string) as SettingsSection[],
   getPreferences: (): { [key: string]: any } => ipcRenderer.sendSync("getPreferences") as { [key: string]: any },
   getDefaults: (): { [key: string]: any } => ipcRenderer.sendSync("getDefaults") as { [key: string]: any },
-  setPreferences: (preferences: any) => ipcRenderer.send("setPreferences", preferences),
+  setPreferences: (preferences: { [key: string]: any }) => ipcRenderer.send("setPreferences", preferences),
   showOpenDialog: (dialogOptions: OpenDialogSyncOptions): string[] | undefined =>
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     ipcRenderer.sendSync("showOpenDialog", dialogOptions),
