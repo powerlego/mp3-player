@@ -20,7 +20,7 @@ declare global {
       off: (channel: string, listener: (...args: any[]) => void) => Electron.IpcRenderer;
     };
     settings: {
-      getPreferences: () => Settings;
+      getPreferences: () => { [key: string]: any };
       getSections: () => SettingsSection[];
       getDefaults: () => { [key: string]: any };
       setPreferences: (preferences: { [key: string]: any }) => void;
