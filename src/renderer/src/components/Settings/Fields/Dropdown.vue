@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from "vue";
 import { SettingsDropdownField } from "@/types";
-import Tooltip from "@components/Tooltip";
+import Tooltip from "@components/Tooltip.vue";
 
 const props = defineProps<{
   field: SettingsDropdownField;
