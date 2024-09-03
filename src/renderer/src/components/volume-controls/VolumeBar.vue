@@ -11,7 +11,9 @@ const props = withDefaults(defineProps<{
 });
 
 const { getPositionX } = usePositionX();
-const { audio, volume, isAudioAvailable } = storeToRefs(useAudio());
+const audioStore = useAudio();
+const { audio, volume, isAudioAvailable } = storeToRefs(audioStore);
+const { setVolume } = audioStore;
 
 const volumeBar = useTemplateRef<HTMLDivElement>("volumeBar");
 const isDragging = ref(false);
@@ -46,7 +48,7 @@ function handleMouseOrTouchMove(event: MouseEvent | TouchEvent) {
   }
   if (isDragging.value) {
     const { currentVolumeValue, currentVolumePositionValue } = getCurrentVolume(event);
-    volume.value = currentVolumeValue;
+    setVolume(currentVolumeValue);
     currentVolumePosition.value = currentVolumePositionValue;
   }
 }
@@ -70,7 +72,7 @@ function handleMouseDownOrTouchStart(event: MouseEvent | TouchEvent) {
     return;
   }
   const { currentVolumeValue, currentVolumePositionValue } = getCurrentVolume(event);
-  volume.value = currentVolumeValue;
+  setVolume(currentVolumeValue);
   currentVolumePosition.value = currentVolumePositionValue;
   isDragging.value = true;
   if (event instanceof MouseEvent) {

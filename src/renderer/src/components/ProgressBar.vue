@@ -15,7 +15,9 @@ const props = withDefaults(defineProps<{
 const { getPositionX } = usePositionX();
 const { throttle } = useThrottle();
 
-const { audio, readyState, duration, currentTime, isAudioAvailable } = storeToRefs(useAudio());
+const aduioStore = useAudio();
+const { audio, readyState, duration, currentTime, isAudioAvailable } = storeToRefs(aduioStore);
+const { setCurrentTime } = aduioStore;
 
 const progress = useTemplateRef<HTMLDivElement>("progress");
 const isDragging = ref(false);
@@ -66,7 +68,7 @@ function handleMouseOrTouchUp(event: MouseEvent | TouchEvent) {
     currentTimePosition.value = "0.00%";
   }
   else {
-    currentTime.value = timeOnMouseMove.value;
+    setCurrentTime(timeOnMouseMove.value);
   }
   if (event instanceof MouseEvent) {
     window.removeEventListener("mousemove", handleMouseOrTouchMove);
