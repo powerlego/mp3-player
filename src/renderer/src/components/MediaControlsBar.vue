@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ComponentPublicInstance, computed, onMounted, onUnmounted, ref } from "vue";
+import { ComponentPublicInstance, computed, onMounted, onUnmounted, ref, useTemplateRef } from "vue";
 import { FilePayload, I18nAriaLabels, RepeatMode } from "@/types";
 import PlayButton from "@components/media-controls/PlayButton.vue";
 import ProgressBar from "@components/ProgressBar.vue";
@@ -56,8 +56,8 @@ const songName = ref("");
 const songArtists = ref("");
 const coverArt = ref("");
 
-const container = ref<HTMLDivElement | null>(null);
-const progressBarRef = ref<ComponentPublicInstance | null>(null);
+const container = useTemplateRef<HTMLDivElement>("container");
+const progressBar = useTemplateRef<ComponentPublicInstance | null>("progressBar");
 
 const volumeI18n = computed(() => {
   return isMuted ? props.i18nAriaLabels.volumeMute : props.i18nAriaLabels.volume;
@@ -92,10 +92,10 @@ function handleKeyDown(event: KeyboardEvent) {
     if (!container.value) {
       return;
     }
-    if (!progressBarRef.value) {
+    if (!progressBar.value) {
       return;
     }
-    if (event.target === container.value || event.target === progressBarRef.value.$el) {
+    if (event.target === container.value || event.target === progressBar.value.$el) {
       togglePlay();
     }
     break;
@@ -224,7 +224,7 @@ onUnmounted(() => {
             {{ currentTimeDisplay }}
           </div>
           <ProgressBar
-            ref="progressBarRef"
+            ref="progressBar"
             :aria-label="props.i18nAriaLabels.progressControl"
             :progress-update-interval="props.progressUpdateInterval"
           />

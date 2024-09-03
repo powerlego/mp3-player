@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, reactive, ref, watchEffect } from "vue";
+import { onMounted, onUnmounted, reactive, ref, useTemplateRef, watchEffect } from "vue";
 import { getColumns } from "@renderer/constants";
 
 
@@ -15,7 +15,7 @@ const columns = reactive({
   gap: defaultColGap,
 });
 const columnConfig = ref(getColumns("default"));
-const container = ref<HTMLElement | null>(null);
+const container = useTemplateRef<HTMLElement>("container");
 const width = ref(0);
 
 defineExpose({ columns });

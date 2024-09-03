@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ColorInput, TinyColor } from "@ctrl/tinycolor";
-import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from "vue";
 import { Chrome } from "@ckpack/vue-color";
 import { SettingsColorField } from "@/types";
 import Tooltip from "@components/Tooltip.vue";
@@ -37,7 +37,7 @@ watch(color, (value) => {
   }
 });
 
-const wrapper = ref<HTMLDivElement | null>(null);
+const wrapper = useTemplateRef<HTMLDivElement>("wrapper");
 const show = ref(false);
 const colorDisplayStyle = computed(() => {
   switch (props.field.format) {

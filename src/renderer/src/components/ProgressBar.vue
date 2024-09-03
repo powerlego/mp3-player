@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref, useTemplateRef } from "vue";
 import { MediaReadyState } from "@/types";
 import { storeToRefs } from "pinia";
 import { useAudio } from "@stores/audio";
@@ -17,7 +17,7 @@ const { throttle } = useThrottle();
 
 const { audio, readyState, duration, currentTime, isAudioAvailable } = storeToRefs(useAudio());
 
-const progress = ref<HTMLDivElement | null>(null);
+const progress = useTemplateRef<HTMLDivElement>("progress");
 const isDragging = ref(false);
 const timeOnMouseMove = ref(0);
 const currentTimePosition = ref("0.00%");

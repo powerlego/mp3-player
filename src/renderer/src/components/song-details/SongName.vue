@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { IterationType } from "@/types";
-import { ref } from "vue";
 import { useScrollingAnimation } from "@composables/scrollingAnimation";
+import { useTemplateRef } from "vue";
 
 const props = withDefaults(defineProps<{
   songName: string;
@@ -16,11 +16,11 @@ const props = withDefaults(defineProps<{
   iterationType: IterationType.SINGLE,
 });
 
-const containerRef = ref<HTMLDivElement | null>(null);
-const offsetRef = ref<HTMLDivElement | null>(null);
+const container = useTemplateRef<HTMLDivElement>("container");
+const offset = useTemplateRef<HTMLDivElement>("offset");
 const { handleMouseOver, handleMouseOut } = useScrollingAnimation(
-  containerRef,
-  offsetRef,
+  container,
+  offset,
   {
     speed: props.speed,
     pauseAtEndEdgeDurationMs: props.pauseAtEndEdgeDurationMs,
@@ -40,13 +40,13 @@ const { handleMouseOver, handleMouseOut } = useScrollingAnimation(
     @mouseout="handleMouseOut"
   >
     <div
-      ref="containerRef"
+      ref="container"
       class="relative overflow-hidden -mx-1.5"
       style="mask-image: linear-gradient(90deg, transparent 0, black 6px, black calc(100% - 12px), transparent ); -webkit-mask-image: linear-gradient(90deg, transparent 0, black 6px, black calc(100% - 12px), transparent );"
     >
       <div class="overflow-hidden">
         <div
-          ref="offsetRef"
+          ref="offset"
           class="flex w-fit whitespace-nowrap translate-x-[var(--trans-x)] ps-1.5 pe-3"
         >
           <span class="text-base font-semibold text-gray-900 cursor-default dark:text-gray-100">

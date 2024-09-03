@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref, useTemplateRef } from "vue";
 import { SettingsDropdownField } from "@/types";
 import Tooltip from "@components/Tooltip.vue";
 
@@ -29,7 +29,7 @@ const currentIndex = ref(
     ? 0
     : options.value.findIndex((option) => option.value === props.value),
 );
-const outsideClickRef = ref<HTMLDivElement | null>(null);
+const outsideClickRef = useTemplateRef<HTMLDivElement>("outsideClickRef");
 
 function handleChange(event: Event) {
   emit("change", (event.target as HTMLSelectElement).value);

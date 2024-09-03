@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref, useTemplateRef } from "vue";
 import { storeToRefs } from "pinia";
 import { useAudio } from "@stores/audio";
 import { usePositionX } from "@composables/positionX";
@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<{
 const { getPositionX } = usePositionX();
 const { audio, volume, isAudioAvailable } = storeToRefs(useAudio());
 
-const volumeBar = ref<HTMLDivElement | null>(null);
+const volumeBar = useTemplateRef<HTMLDivElement>("volumeBar");
 const isDragging = ref(false);
 const lastVolume = ref(props.initialVolume);
 const currentVolumePosition = ref(`${((lastVolume.value / 1) * 100).toFixed(2)}%`);

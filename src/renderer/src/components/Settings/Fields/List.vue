@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, useTemplateRef } from "vue";
 import { SettingsListField } from "@/types";
 import Tooltip from "@components/Tooltip.vue";
 
@@ -16,7 +16,7 @@ const emit = defineEmits<{
 const items = ref(props.value || []);
 const itemToAdd = ref("");
 const selected = ref("");
-const modal = ref<HTMLDialogElement | null>(null);
+const modal = useTemplateRef<HTMLDialogElement>("modal");
 const addItemValidator = computed(() => {
   if (props.field.addItemLabel) {
     const lastSlash = props.field.addItemLabel.lastIndexOf("/");
@@ -27,9 +27,6 @@ const addItemValidator = computed(() => {
 
 const min = computed(() => Math.max(props.field.min ?? 0, 0));
 const max = computed(() => Math.max(props.field.max ?? 0, 0));
-
-// const selectedIndex = ref(0);
-// const selectedValue = ref("");
 
 function saveItem() {
   if (itemToAdd.value) {
