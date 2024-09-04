@@ -45,7 +45,7 @@ const artist = computed(() => {
         style="-webkit-tap-highlight-color: transparent; min-block-size: 48px; inline-size: 48px; block-size: 48px;"
       >
         <span class="absolute flex top-3 left-3 ">
-          <CoverPlay class="fill-black" />
+          <CoverPlay class="w-6 h-6 fill-black" />
         </span>
       </span>
     </template>

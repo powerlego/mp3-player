@@ -35,7 +35,7 @@ const props = defineProps<{
             style="box-shadow: 0 8px 8px rgb(0 0 0 / 30%);"
           >
             <button
-              class="relative z-[1] transition-[background-color, border-color, color, box-shadow, filter, transform] select-none touch-manipulation inline-block duration-[33ms] group/button cursor-default outline-nothing"
+              class="relative z-[1] transition-[background-color, border-color, color, box-shadow, filter, transform] select-none touch-manipulation block duration-[33ms] group/button cursor-default outline-nothing"
               @click="props.onClickButton"
             >
               <slot name="icon" />
