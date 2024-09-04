@@ -333,13 +333,12 @@ export const useAudio = defineStore("audio", () => {
   }
 
   function skipPrevious() {
-    if (audio.value) {
-      if (currentTimeMs.value < 500) {
-        getPreviousSong();
-      }
-      else {
-        currentTime.value = 0;
-      }
+    if (currentTimeMs.value < 500) {
+      getPreviousSong();
+    }
+    else {
+      currentTime.value = 0;
+      audio.value!.currentTime = 0;
     }
   }
 

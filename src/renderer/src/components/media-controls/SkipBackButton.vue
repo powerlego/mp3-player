@@ -3,8 +3,9 @@ import SkipBackIcon from "@icons/previous.svg";
 import { storeToRefs } from "pinia";
 import { useAudio } from "@stores/audio";
 
-const { isAudioAvailable } = storeToRefs(useAudio());
-const { skipPrevious } = useAudio();
+const audioStore = useAudio();
+const { isAudioAvailable } = storeToRefs(audioStore);
+const { skipPrevious } = audioStore;
 </script>
 
 <template>
