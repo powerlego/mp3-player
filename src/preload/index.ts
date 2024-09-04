@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { contextBridge, ipcRenderer } from "electron";
-import { Titlebar, TitlebarColor } from "custom-electron-titlebar";
 import { electronAPI } from "@electron-toolkit/preload";
+import electronTitlebar from "custom-electron-titlebar";
+
+const { Titlebar, TitlebarColor } = electronTitlebar;
 
 window.addEventListener("DOMContentLoaded", () => {
   new Titlebar({
