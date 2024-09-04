@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed, ref, useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import Shelf from "./Shelf.vue";
 import SongCoverCard from "@components/cards/SongCoverCard.vue";
-import { storeToRefs } from "pinia";
+// import { storeToRefs } from "pinia";
 import { useQueue } from "@stores/queue";
 
 const queueStore = useQueue();
-const { queue } = storeToRefs(queueStore);
+// const { queue } = storeToRefs(queueStore);
 const { shuffleQueue } = queueStore;
 
 const recentlyPlayedList = [

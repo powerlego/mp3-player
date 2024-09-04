@@ -19,10 +19,8 @@ export default defineConfig({
     build: {
       rollupOptions: {
         output: {
-          manualChunks(id) {
-            if (id.includes("music-metadata")) {
-              return "music-metadata";
-            }
+          manualChunks: {
+            "music-metadata": ["music-metadata"],
           },
         },
       },
@@ -50,10 +48,8 @@ export default defineConfig({
           settings: resolve(__dirname, "src/preload/settings.ts"),
         },
         output: {
-          manualChunks(id) {
-            if (id.includes("music-metadata")) {
-              return "music-metadata";
-            }
+          manualChunks: {
+            "music-metadata": ["music-metadata"],
           },
         },
       },

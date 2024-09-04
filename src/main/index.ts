@@ -1,8 +1,8 @@
 import { app, BrowserWindow, dialog, ipcMain, Menu, shell } from "electron";
 import { attachTitlebarToWindow, setupTitlebar } from "custom-electron-titlebar/main";
-import { CheckboxOption, SettingsAcceleratorField, SettingsRadioField } from "@/types";
+import { CheckboxOption, SettingsAcceleratorField, SettingsRadioField } from "@/types.js";
 import { electronApp, is, optimizer, platform } from "@electron-toolkit/utils";
-import installExtension, { VUEJS3_DEVTOOLS } from "electron-devtools-installer";
+import { default as installExtension, VUEJS3_DEVTOOLS } from "electron-devtools-installer";
 import fs from "fs";
 import { join } from "path";
 import log from "electron-log";
@@ -10,9 +10,9 @@ import os from "os";
 import { parseBuffer } from "music-metadata";
 import { randomUUID } from "crypto";
 import settingsUi from "./assets/icons/settings_ui.svg?url";
-import SettingsWindow from "./settings";
-import sizeOf from "image-size";
-import store from "@/store";
+import SettingsWindow from "./settings.js";
+import { imageSize as sizeOf } from "image-size";
+import store from "@/store.js";
 // import fetch, { BodyInit, RequestInit, Response } from "node-fetch";
 
 const date = new Date();

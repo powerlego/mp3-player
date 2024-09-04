@@ -1,11 +1,11 @@
 import { app, BrowserWindow, dialog, ipcMain, IpcMainEvent, OpenDialogSyncOptions, webContents } from "electron";
-import EventEmitter from "eventemitter3";
+import { EventEmitter } from "eventemitter3";
 import fs from "fs";
 import { is } from "@electron-toolkit/utils";
 import lodash from "lodash";
 import log from "electron-log";
 import path from "path";
-import { SettingsSection } from "@/types";
+import { SettingsSection } from "@/types.js";
 type SettingsWindowConfig = {
   sections?: SettingsSection[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

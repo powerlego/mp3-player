@@ -1,6 +1,6 @@
 // Import necessary types from the music-metadata and electron packages.
 import { FileFilter } from "electron";
-import { IAudioMetadata } from "music-metadata/lib/type";
+import { IAudioMetadata } from "music-metadata";
 
 // Defines an interface for internationalized aria labels for various elements of a media player.
 export interface I18nAriaLabels {

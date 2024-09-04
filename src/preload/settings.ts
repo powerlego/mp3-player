@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { contextBridge, ipcRenderer, OpenDialogSyncOptions } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
-import { SettingsSection } from "@/types";
+import { SettingsSection } from "@/types.js";
 
 const api = {
   getStoreKey: (key: string) => ipcRenderer.invoke("getStoreKey", key),
