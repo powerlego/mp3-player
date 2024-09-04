@@ -10,7 +10,6 @@
     "src/preload/*.d.ts",
     "src/types.ts",
     "src/utils.ts",
-    "src/store.ts",
     "src/mainTitleBar.ts"
   ],
   "compilerOptions": {

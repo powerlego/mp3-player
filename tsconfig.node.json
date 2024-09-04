@@ -6,7 +6,6 @@
     "src/preload/*",
     "src/types.ts",
     "src/utils.ts",
-    "src/store.ts",
     "src/mainTitleBar.ts"
   ],
   "compilerOptions": {
