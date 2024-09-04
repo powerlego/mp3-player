@@ -7,4 +7,4 @@ const pinia = createPinia();
 const app = createApp(Settings);
 
 app.use(pinia);
-app.mount("#settings");
+app.mount("#app");
