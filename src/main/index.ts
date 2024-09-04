@@ -14,7 +14,7 @@ import SettingsWindow from "./settings.js";
 import { imageSize as sizeOf } from "image-size";
 import store from "@/store.js";
 // import fetch, { BodyInit, RequestInit, Response } from "node-fetch";
-
+console.log(settingsUi);
 const date = new Date();
 log.transports.file.level = "info";
 log.transports.file.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {processType}: {text}";
@@ -81,7 +81,7 @@ const settingsWindow = new SettingsWindow({
     {
       id: "ui",
       label: "UI",
-      icon: encodeURI(settingsUi),
+      icon: settingsUi,
       form: {
         groups: [
           {

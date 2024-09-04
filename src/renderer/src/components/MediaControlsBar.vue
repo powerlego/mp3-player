@@ -46,8 +46,7 @@ const mediaKeyBindingsStore = useMediaKeyBindings();
 
 const { audio, currentTimeDisplay, durationDisplay, isPlaying, shuffle, isMuted, repeatMode } = storeToRefs(audioStore);
 const { getNextSong, play, pause, skipPrevious,
-  togglePlay, jumpVolume, incrementRepeatMode, toggleMute, toggleShuffle,
-  updateCurrentTimeDisplay, updateDurationDisplay } = audioStore;
+  togglePlay, jumpVolume, incrementRepeatMode, toggleMute, toggleShuffle } = audioStore;
 const { keyBindings } = storeToRefs(mediaKeyBindingsStore);
 const { combineKeyCodes } = mediaKeyBindingsStore;
 

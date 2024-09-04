@@ -5,24 +5,10 @@ import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
   main: {
-    plugins: [
-      externalizeDepsPlugin({
-        exclude: ["music-metadata"],
-      }),
-    ],
-    assetsInclude: ["src/assets/**/*"],
+    plugins: [externalizeDepsPlugin()],
     resolve: {
       alias: {
         "@": resolve("src/"),
-      },
-    },
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            "music-metadata": ["music-metadata"],
-          },
-        },
       },
     },
   },
@@ -56,7 +42,7 @@ export default defineConfig({
     },
   },
   renderer: {
-    assetsInclude: ["src/assets/**/*"],
+    assetsInclude: ["src/renderer/assets/**/*"],
     resolve: {
       alias: {
         "@": resolve("src/"),

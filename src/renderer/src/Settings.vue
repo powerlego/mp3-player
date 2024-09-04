@@ -39,6 +39,7 @@ async function saveAndClose() {
 
 function selectSection(sectionId: string) {
   activeSectionId.value = sectionId;
+  console.log(activeSection.value);
 }
 
 function handleTablistKeyDown(event: KeyboardEvent) {
@@ -119,7 +120,7 @@ onBeforeMount(() => {
         <div
           v-if="section.icon && typeof section.icon === 'string'"
           class="mr-1 w-8 h-8 min-w-[2rem] max-w-[2rem] min-h-[2rem] max-h-[2rem] bg-gray-900 dark:bg-gray-50"
-          :style="{ 'mask': `url(${section.icon}) no-repeat center/contain`, '-webkit-mask': `url(${section.icon}) no-repeat center/contain` }"
+          :style="{ 'mask': `url(&quot;${section.icon}&quot;) no-repeat center/contain`, '-webkit-mask' : `url(&quot;${section.icon}&quot;) no-repeat center/contain` }"
         />
         <div
           v-else-if="section.icon"
