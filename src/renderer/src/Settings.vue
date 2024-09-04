@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, reactive, ref, useTemplateRef, watch } from "vue";
+import { computed, onBeforeMount, reactive, ref, toRaw, useTemplateRef, watch } from "vue";
 import CustomScrollbar from "@components/CustomScrollbar.vue";
 import Group from "@components/settings-fields/Group.vue";
 import lodash from "lodash";
@@ -28,12 +28,12 @@ function close() {
 }
 
 async function apply() {
-  await dSavePreferences(preferences);
-  oldPreferences.value = structuredClone(preferences);
+  await dSavePreferences(toRaw(preferences));
+  oldPreferences.value = structuredClone(toRaw(preferences));
 }
 
 async function saveAndClose() {
-  await dSavePreferences(preferences);
+  await dSavePreferences(toRaw(preferences));
   window.close();
 }
 
@@ -88,7 +88,7 @@ onBeforeMount(() => {
       });
     }
   });
-  oldPreferences.value = structuredClone(preferences);
+  oldPreferences.value = structuredClone(toRaw(preferences));
 });
 
 </script>
