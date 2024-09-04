@@ -870,7 +870,7 @@ function createWindow() {
     titleBarStyle: "hidden",
     // ...(process.platform === "linux" ? { icon } : {}),
     webPreferences: {
-      preload: join(__dirname, "../preload/main.js"),
+      preload: join(__dirname, "../preload/index.js"),
       sandbox: false,
     },
   });
