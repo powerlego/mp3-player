@@ -10,7 +10,7 @@ const queueStore = useQueue();
 const { shuffleQueue } = queueStore;
 
 const recentlyPlayedList = [
-  "G:\\Music\\0-59.mp3",
+  "C:\\Users\\v0391118\\Downloads\\CAN - Chapter 4 - Part 1-0024.mp3",
   "G:\\Music\\Asteroid 2467 - single version.mp3",
   "G:\\Music\\0-59.mp3",
   "G:\\Music\\0-59.mp3",

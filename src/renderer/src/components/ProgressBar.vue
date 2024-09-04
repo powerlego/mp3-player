@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, useTemplateRef } from "vue";
+import { onUnmounted, ref, useTemplateRef, watchEffect } from "vue";
 import { MediaReadyState } from "@/types";
 import { storeToRefs } from "pinia";
 import { useAudio } from "@stores/audio";
@@ -16,7 +16,7 @@ const { getPositionX } = usePositionX();
 const { throttle } = useThrottle();
 
 const aduioStore = useAudio();
-const { audio, readyState, duration, currentTime, isAudioAvailable } = storeToRefs(aduioStore);
+const { audio, duration, currentTime, isAudioAvailable } = storeToRefs(aduioStore);
 const { setCurrentTime } = aduioStore;
 
 const progress = useTemplateRef<HTMLDivElement>("progress");
@@ -59,11 +59,12 @@ function handleMouseOrTouchMove(event: MouseEvent | TouchEvent) {
 function handleMouseOrTouchUp(event: MouseEvent | TouchEvent) {
   event.stopPropagation();
   isDragging.value = false;
-  if (!audio) {
+  if (!audio.value) {
     return;
   }
-  if (readyState.value === MediaReadyState.HAVE_NOTHING
-    || readyState.value === MediaReadyState.HAVE_METADATA
+  const readyState = audio.value.readyState as MediaReadyState;
+  if (readyState === MediaReadyState.HAVE_NOTHING
+    || readyState === MediaReadyState.HAVE_METADATA
     || !isFinite(timeOnMouseMove.value)) {
     currentTimePosition.value = "0.00%";
   }
@@ -109,7 +110,7 @@ const handleAudioTimeUpdate = throttle((_event: Event) => {
   currentTimePosition.value = `${((currentTime.value / duration.value) * 100).toFixed(2)}%`;
 }, props.progressUpdateInterval);
 
-onMounted(() => {
+watchEffect(() => {
   audio.value?.addEventListener("timeupdate", handleAudioTimeUpdate);
 });
 
@@ -150,6 +151,7 @@ onUnmounted(() => {
     </div>
   </div>
   <div
+    v-else
     ref="progress"
     class="flex flex-row items-center justify-center flex-1 w-4/5 h-5 group"
     role="progressbar"

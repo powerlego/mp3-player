@@ -160,15 +160,6 @@ function handleFileOpen(_event: Electron.IpcRendererEvent, file: FilePayload) {
 }
 
 onMounted(() => {
-  if (!audio.value) {
-    return;
-  }
-  audio.value.addEventListener("ended", getNextSong);
-  audio.value.addEventListener("timeupdate", updateCurrentTimeDisplay);
-  audio.value.addEventListener("loadedmetadata", updateCurrentTimeDisplay);
-  audio.value.addEventListener("durationchange", updateDurationDisplay);
-  audio.value.addEventListener("abort", updateDurationDisplay);
-  window.api.on("open-file", handleFileOpen);
   if ("mediaSession" in navigator) {
     navigator.mediaSession.setActionHandler("play", play);
     navigator.mediaSession.setActionHandler("pause", pause);
@@ -178,14 +169,6 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  if (!audio.value) {
-    return;
-  }
-  audio.value.removeEventListener("ended", getNextSong);
-  audio.value.removeEventListener("timeupdate", updateCurrentTimeDisplay);
-  audio.value.removeEventListener("loadedmetadata", updateCurrentTimeDisplay);
-  audio.value.removeEventListener("durationchange", updateDurationDisplay);
-  audio.value.removeEventListener("abort", updateDurationDisplay);
   window.api.off("open-file", handleFileOpen);
 });
 

@@ -1,5 +1,5 @@
-import { computed, ref, watch } from "vue";
-import { defineStore, storeToRefs } from "pinia";
+import { acceptHMRUpdate, defineStore, storeToRefs } from "pinia";
+import { computed, ref, watch, watchEffect } from "vue";
 import { MediaReadyState, RepeatMode } from "@/types";
 import _ from "lodash";
 import log from "electron-log/renderer";
@@ -15,43 +15,51 @@ export const useAudio = defineStore("audio", () => {
     audio.value = audioElement;
   }
 
-  // Audio metadata related reactive properties and methods.
-  const readyState = computed(() => {
+  function updateCurrentTime() {
     if (audio.value) {
-      switch (audio.value.readyState) {
-      case 0:
-        return MediaReadyState.HAVE_NOTHING;
-      case 1:
-        return MediaReadyState.HAVE_METADATA;
-      case 2:
-        return MediaReadyState.HAVE_CURRENT_DATA;
-      case 3:
-        return MediaReadyState.HAVE_FUTURE_DATA;
-      case 4:
-        return MediaReadyState.HAVE_ENOUGH_DATA;
-      default:
-        return MediaReadyState.HAVE_NOTHING;
-      }
+      currentTime.value = audio.value.currentTime;
+      updateCurrentTimeDisplay();
     }
-    else {
-      return MediaReadyState.HAVE_NOTHING;
+  }
+
+  function updateDuration() {
+    if (audio.value) {
+      duration.value = audio.value.duration;
+      updateDurationDisplay();
+    }
+  }
+
+  watch(audio, (newValue, oldValue) => {
+    if (newValue) {
+      newValue.addEventListener("ended", getNextSong);
+      newValue.addEventListener("timeupdate", updateCurrentTime);
+      newValue.addEventListener("loadedmetadata", updateCurrentTime);
+      newValue.addEventListener("durationchange", updateDuration);
+      newValue.addEventListener("abort", updateDuration);
+      newValue.addEventListener("play", () => (isPlaying.value = true));
+      newValue.addEventListener("pause", () => (isPlaying.value = false));
+      newValue.addEventListener("ended", () => (isPlaying.value = false));
+    }
+    if (oldValue) {
+      oldValue.removeEventListener("ended", getNextSong);
+      oldValue.removeEventListener("timeupdate", updateCurrentTime);
+      oldValue.removeEventListener("loadedmetadata", updateCurrentTime);
+      oldValue.removeEventListener("durationchange", updateDuration);
+      oldValue.removeEventListener("abort", updateDuration);
+      oldValue.removeEventListener("play", () => (isPlaying.value = true));
+      oldValue.removeEventListener("pause", () => (isPlaying.value = false));
+      oldValue.removeEventListener("ended", () => (isPlaying.value = false));
     }
   });
 
   // Time related reactive properties and methods.
-  const currentTime = computed({
-    get: () => audio.value?.currentTime ?? -1,
-    set: (value: number) => {
-      if (audio.value) {
-        audio.value.currentTime = value;
-      }
-    },
-  });
+  const currentTime = ref(-1);
   function setCurrentTime(value: number) {
+    audio.value!.currentTime = value;
     currentTime.value = value;
   }
   const currentTimeMs = computed(() => currentTime.value * 1000);
-  const duration = computed(() => audio.value?.duration ?? -1);
+  const duration = ref(-1);
 
   function getTimeDisplay(time: number) {
     if (!isFinite(time)) {
@@ -77,15 +85,9 @@ export const useAudio = defineStore("audio", () => {
     durationDisplay.value = getTimeDisplay(duration.value);
   }
 
-  const looping = computed({
-    get: () => audio.value?.loop ?? false,
-    set: (value: boolean) => {
-      if (audio.value) {
-        audio.value.loop = value;
-      }
-    },
-  });
+  const looping = ref(false);
   function setLooping(value: boolean) {
+    audio.value!.loop = value;
     looping.value = value;
   }
 
@@ -185,8 +187,14 @@ export const useAudio = defineStore("audio", () => {
 
   // Play/Pause related reactive properties and methods.
 
-  const isAudioAvailable = computed(() => audio.value && audio.value.src !== "");
-  const isPlaying = computed(() => audio.value && (!audio.value.paused || !audio.value.ended));
+  const isAudioAvailable = ref(false);
+  watch(
+    () => audio.value?.src,
+    (newValue) => {
+      isAudioAvailable.value = newValue !== "";
+    },
+  );
+  const isPlaying = ref(false);
 
   function loadAndPlay() {
     if (audio.value && audio.value.src !== "") {
@@ -194,7 +202,6 @@ export const useAudio = defineStore("audio", () => {
       if (repeatMode.value === RepeatMode.NONE && repeatCount.value > 0) {
         repeatCount.value = 0;
       }
-
       audio.value.play().catch((err) => {
         log.error(err);
       });
@@ -252,19 +259,16 @@ export const useAudio = defineStore("audio", () => {
 
   // Volume related reactive properties and methods.
   const lastVolume = ref(1);
-  const volume = computed({
-    get: () => audio.value?.volume ?? 1,
-    set: (value: number) => {
-      if (audio.value) {
-        audio.value.volume = value;
-      }
-    },
-  });
+  const volume = ref(1);
+
   function setVolume(value: number) {
     volume.value = value;
   }
 
-  const isMuted = computed(() => volume.value === 0 || (audio.value && audio.value.muted));
+  const isMuted = ref(false);
+  watch([volume, () => audio.value?.muted], ([newVolume, newMuted]) => {
+    isMuted.value = newVolume === 0 || (newMuted ?? false);
+  });
   function toggleMute() {
     if (volume.value > 0) {
       lastVolume.value = volume.value;
@@ -277,6 +281,7 @@ export const useAudio = defineStore("audio", () => {
 
   watch(volume, (newValue) => {
     if (audio.value) {
+      audio.value.volume = newValue;
       if (newValue === 0) {
         audio.value.muted = true;
       }
@@ -341,7 +346,6 @@ export const useAudio = defineStore("audio", () => {
   return {
     audio,
     setAudio,
-    readyState,
     currentTime,
     setCurrentTime,
     currentTimeMs,
@@ -375,3 +379,7 @@ export const useAudio = defineStore("audio", () => {
     skipPrevious,
   };
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useAudio, import.meta.hot));
+}

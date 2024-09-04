@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, useTemplateRef } from "vue";
+import { onUnmounted, ref, useTemplateRef, watchEffect } from "vue";
 import { storeToRefs } from "pinia";
 import { useAudio } from "@stores/audio";
 import { usePositionX } from "@composables/positionX";
@@ -96,7 +96,7 @@ function handleAudioVolumeChange() {
   currentVolumePosition.value = `${((volume.value / 1) * 100).toFixed(2)}%`;
 }
 
-onMounted(() => {
+watchEffect(() => {
   audio.value?.addEventListener("volumechange", handleAudioVolumeChange);
 });
 
