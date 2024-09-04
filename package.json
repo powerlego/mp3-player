@@ -4,26 +4,21 @@
   "main": "./out/main/index.js",
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.7.12",
     "@ckpack/vue-color": "^1.6.0",
     "@ctrl/tinycolor": "^4.1.0",
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
     "custom-electron-titlebar": "^4.2.6",
     "electron-log": "^5.1.7",
-    "electron-store": "^8.1.0",
     "eventemitter3": "^5.0.1",
     "graphql": "^16.6.0",
     "image-size": "^1.0.2",
-    "load-json-file": "^7.0.1",
     "lodash": "^4.17.21",
     "mathjs": "^13.1.1",
     "music-metadata": "^10.3.1",
     "node-fetch": "^3.3.2",
     "pinia": "^2.2.2",
-    "serialize-javascript": "^6.0.1",
-    "url": "^0.11.0",
-    "write-json-file": "^5.0.0"
+    "url": "^0.11.0"
   },
   "scripts": {
     "format": "prettier --write .",
