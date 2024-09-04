@@ -11,11 +11,11 @@ const darkMode = useDarkMode();
   <div>
     <Sun
       v-if="darkMode"
-      class="w-6 h-6 ml-4 mr-3 text-gray-500 transition duration-300 ease-in-out cursor-pointer hover:text-stone-400"
+      class="w-6 h-6 ml-4 mr-3 transition duration-300 ease-in-out cursor-pointer fill-gray-500 hover:fill-stone-400"
     />
     <Moon
       v-else
-      class="w-6 h-6 ml-4 mr-3 text-gray-500 transition duration-300 ease-in-out cursor-pointer hover:text-stone-400"
+      class="w-6 h-6 ml-4 mr-3 transition duration-300 ease-in-out cursor-pointer fill-gray-500 hover:fill-stone-400"
     />
   </div>
 </template>
