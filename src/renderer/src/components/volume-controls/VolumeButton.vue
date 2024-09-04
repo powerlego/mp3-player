@@ -20,6 +20,7 @@ const { toggleMute } = audioStore;
     <VolumeMute class="m-0 fill-gray-350 dark:fill-gray-750" />
   </div>
   <div
+    v-else
     class="flex items-center justify-center h-8 aspect-square"
     @click="toggleMute"
   >
