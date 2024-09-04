@@ -17,7 +17,7 @@ const { toggleMute } = audioStore;
     v-if="!isAudioAvailable"
     class="flex items-center justify-center h-8 aspect-square"
   >
-    <VolumeMute class="m-0 fill-gray-350 dark:fill-gray-750" />
+    <VolumeMute class="w-4 h-4 m-0 fill-gray-350 dark:fill-gray-750" />
   </div>
   <div
     v-else
@@ -26,19 +26,19 @@ const { toggleMute } = audioStore;
   >
     <VolumeMute
       v-if="isMuted"
-      class="m-0 transition-all duration-300 ease-in-out cursor-pointer non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
+      class="w-4 h-4 m-0 transition-all duration-300 ease-in-out cursor-pointer non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
     />
     <VolumeLow
       v-else-if="volume <= 1 / 3"
-      class="m-0 transition-all duration-300 ease-in-out cursor-pointer non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
+      class="w-4 h-4 m-0 transition-all duration-300 ease-in-out cursor-pointer non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
     />
     <VolumeMedium
       v-else-if="volume <= 2 / 3"
-      class="m-0 transition-all duration-300 ease-in-out cursor-pointer non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
+      class="w-4 h-4 m-0 transition-all duration-300 ease-in-out cursor-pointer non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
     />
     <VolumeHigh
       v-else
-      class="m-0 transition-all duration-300 ease-in-out cursor-pointer non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
+      class="w-4 h-4 m-0 transition-all duration-300 ease-in-out cursor-pointer non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
     />
   </div>
 </template>

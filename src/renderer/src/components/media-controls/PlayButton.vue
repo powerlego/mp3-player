@@ -16,17 +16,17 @@ const { togglePlay } = useAudio();
   >
     <PlayIcon
       v-if="!isPlaying"
-      class="w-8 h-8 m-0 fill-white dark:fill-black"
+      class="w-4 h-4 m-0 fill-white dark:fill-black"
     />
     <PauseIcon
       v-else
-      class="w-8 h-8 m-0 fill-white dark:fill-black"
+      class="w-4 h-4 m-0 fill-white dark:fill-black"
     />
   </div>
   <div
     v-else
     class="flex items-center justify-center h-8 rounded-full aspect-square bg-gray-350 dark:bg-gray-750"
   >
-    <PlayIcon class="w-8 h-8 m-0 fill-gray-220 dark:fill-gray-880" />
+    <PlayIcon class="w-4 h-4 m-0 fill-gray-220 dark:fill-gray-880" />
   </div>
 </template>

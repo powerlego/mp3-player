@@ -17,17 +17,17 @@ const { incrementRepeatMode } = useAudio();
     <RepeatAllIcon
       v-if="repeatMode === RepeatMode.ALL"
       id="repeat-all"
-      class="m-0 transition-all duration-300 ease-in-out fill-green-700 hover:fill-green-800 dark:fill-green-600 hover:dark:fill-green-700"
+      class="w-4 h-4 m-0 transition-all duration-300 ease-in-out fill-green-700 hover:fill-green-800 dark:fill-green-600 hover:dark:fill-green-700"
     />
     <RepeatOnceIcon
       v-else-if="repeatMode === RepeatMode.ONCE"
       id="repeat-once"
-      class="m-0 transition-all duration-300 ease-in-out fill-green-700 hover:fill-green-800 dark:fill-green-600 hover:dark:fill-green-700"
+      class="w-4 h-4 m-0 transition-all duration-300 ease-in-out fill-green-700 hover:fill-green-800 dark:fill-green-600 hover:dark:fill-green-700"
     />
     <RepeatAllIcon
       v-else
       id="repeat-none"
-      class="m-0 transition-all duration-300 ease-in-out non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
+      class="w-4 h-4 m-0 transition-all duration-300 ease-in-out non-scale-stroke fill-gray-750 hover:fill-gray-600 dark:fill-gray-300 hover:dark:fill-gray-150"
     />
   </div>
 </template>

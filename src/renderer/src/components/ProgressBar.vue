@@ -134,12 +134,12 @@ onUnmounted(() => {
   >
     <div class="box-border relative w-full h-1 rounded-full bg-gray-350 dark:bg-gray-750 ">
       <div
-        class="box-border absolute z-20 rounded-full h-13/4 aspect-square group-hover:scale-100"
+        class="box-border absolute z-20 rounded-full h-13/4 aspect-square group-hover:scale-100 translate-x-[calc(50%*-1)]"
         :class="{ 'scale-100': isDragging, 'scale-0': !isDragging }"
         :style="{ 'left': currentTimePosition }"
       >
         <div
-          class="absolute h-full w-full top-[calc((50%*-1)+1px)] ml-[calc(50%*-1)] box-border rounded-full group-hover:bg-gray-550 dark:group-hover:bg-gray-250 shadow shadow-gray-800 dark:shadow-gray-250"
+          class="absolute h-full w-full top-[calc((50%*-1)+1px)] translate-x-1 box-border rounded-full group-hover:bg-gray-550 dark:group-hover:bg-gray-250 shadow shadow-gray-800 dark:shadow-gray-250"
           :class="{ 'bg-gray-550 dark:bg-gray-250': isDragging, 'bg-gray-450 dark:bg-gray-600': !isDragging }"
         />
       </div>

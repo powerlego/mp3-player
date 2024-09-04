@@ -108,27 +108,7 @@ onUnmounted(() => {
 
 <template>
   <div
-    v-if="volume === -1"
-    ref="volumeBar"
-    class="flex flex-row items-center justify-center flex-1 w-full h-5"
-    role="progressbar"
-  >
-    <div class="box-border relative w-full h-1 rounded-full bg-gray-350 dark:bg-gray-750">
-      <div class="box-border absolute z-10 h-full bg-gray-300 rounded-full dark:bg-gray-600" />
-    </div>
-  </div>
-  <div
-    v-else-if="!isAudioAvailable"
-    ref="volumeBar"
-    class="flex flex-row items-center justify-center flex-1 w-full h-5"
-    role="progressbar"
-  >
-    <div class="box-border relative w-full h-1 rounded-full bg-gray-350 dark:bg-gray-750">
-      <div class="box-border absolute z-10 h-full bg-gray-300 rounded-full dark:bg-gray-600" />
-    </div>
-  </div>
-  <div
-    v-else
+    v-if="isAudioAvailable"
     ref="volumeBar"
     class="flex flex-row items-center justify-center flex-1 w-full h-5 group"
     role="progressbar"
@@ -141,12 +121,12 @@ onUnmounted(() => {
   >
     <div class="box-border relative w-full h-1 rounded-full bg-gray-350 dark:bg-gray-750">
       <div
-        class="box-border absolute z-20 rounded-full h-13/4 aspect-square group-hover:scale-100"
+        class="box-border absolute z-20 rounded-full h-13/4 aspect-square group-hover:scale-100 translate-x-[calc(50%*-1)]"
         :class="{ 'scale-100': isDragging, 'scale-0': !isDragging }"
         :style="{ 'left': currentVolumePosition }"
       >
         <div
-          class="absolute h-full w-full top-[calc((50%*-1)+1px)] ml-[calc(50%*-1)] box-border rounded-full shadow shadow-gray-800 dark:shadow-gray-250 group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250"
+          class="absolute h-full aspect-square top-[calc((50%*-1)+1px)] translate-x-1 box-border rounded-full shadow shadow-gray-800 dark:shadow-gray-250 group-hover:scale-100 group-hover:bg-gray-550 dark:group-hover:bg-gray-250"
           :class="{ 'bg-gray-550 dark:bg-gray-250': isDragging, 'bg-gray-450 dark:bg-gray-600': !isDragging }"
         />
         />
@@ -154,7 +134,18 @@ onUnmounted(() => {
       <div
         class="box-border absolute z-10 h-full rounded-full group-hover:bg-green-700 dark:group-hover:bg-green-600"
         :class="{ 'bg-green-700 dark:bg-green-600': isDragging, 'bg-gray-600 dark:bg-gray-250': !isDragging }"
+        :style="{ 'width': currentVolumePosition }"
       />
+    </div>
+  </div>
+  <div
+    v-else
+    ref="volumeBar"
+    class="flex flex-row items-center justify-center flex-1 w-full h-5"
+    role="progressbar"
+  >
+    <div class="box-border relative w-full h-1 rounded-full bg-gray-350 dark:bg-gray-750">
+      <div class="box-border absolute z-10 h-full bg-gray-300 rounded-full dark:bg-gray-600" />
     </div>
   </div>
 </template>
