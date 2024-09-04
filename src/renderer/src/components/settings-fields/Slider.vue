@@ -58,18 +58,41 @@ watch(value, (newValue) => {
 
 <style>
 .slider-field::-webkit-slider-runnable-track {
-  @apply rounded-md w-full h-3 cursor-pointer bg-black bg-opacity-10 focus:bg-opacity-[0.15]dark:bg-white dark:bg-opacity-5 border-all-0;
+  border-radius: 0.375rem;
+  width: 100%;
+  height: 0.75rem;
+  --tw-bg-opacity: 0.1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+  border: 0;
+}
+
+.slider-field:is(.dark *)::-webkit-slider-runnable-track {
+  --tw-bg-opacity: 0.05;
+  background-color: rgb(255 255 255/ var(--tw-bg-opacity));
 }
 
 .slider-field:focus::-webkit-slider-runnable-track {
-  @apply bg-opacity-[0.15] dark:bg-opacity-10;
+  --tw-bg-opacity: 0.15;
+}
+
+.slider-field:is(.dark *):focus::-webkit-slider-runnable-track {
+  --tw-bg-opacity: 0.1;
 }
 
 .slider-field::-webkit-slider-thumb {
-  @apply w-4 h-8 -mt-3 bg-blue-500 cursor-pointer rounded-xl border-all-0 webkit-appear-none;
+  width: 1rem;
+  height: 2rem;
+  margin-top: -0.75rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(71 98 184 / var(--tw-bg-opacity));
+  cursor: pointer;
+  border-radius: 0.75rem;
+  border: 0;
+  -webkit-appearance: none;
 }
 
 .slider-field:focus::-webkit-slider-thumb {
-  @apply bg-blue-300;
+  --tw-bg-opacity: 1;
+  background-color: rgb(145 161 212 / var(--tw-bg-opacity));
 }
 </style>

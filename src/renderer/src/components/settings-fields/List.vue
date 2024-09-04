@@ -143,9 +143,11 @@ function cancel() {
     </Tooltip>
     <dialog
       ref="modal"
-      class="modal"
+      class="bg-transparent text-[inherit] duration-200 ease-out modal"
     >
-      <div class="modal-box">
+      <div
+        class="bg-gray-180 dark:bg-gray-860 rounded-2xl col-start-1 row-start-1 w-11/12 max-w-[91.666667%] scale-90 transform p-6 transition duration-200 ease-out modal-box"
+      >
         <label
           :for="'field-list-add-' + props.field.key"
           class="block font-bold text-black dark:text-white"
@@ -161,7 +163,7 @@ function cancel() {
           class="block w-full text-sm rounded-lg m-0.5 p-2 bg-gray-100 dark:bg-gray-800 border border-solid border-gray-350 dark:border-gray-700 transition-[border-color] duration-300 ease-out focus:m-0 focus:border-blue-500 dark:focus:border-blue-400 focus:border-2 text-black dark:text-white outline-nothing"
           type="text"
         >
-        <div class="modal-action">
+        <div class="justify-end mt-6 space-x-2">
           <form
             method="dialog"
             class="flex flex-row"
@@ -186,7 +188,7 @@ function cancel() {
       </div>
       <form
         method="dialog"
-        class="modal-backdrop"
+        class="-z-[1] col-start-1 row-start-1 grid self-stretch justify-self-stretch text-transparent"
       >
         <button>close</button>
       </form>
@@ -196,7 +198,6 @@ function cancel() {
 
 <style>
 .modal {
-  @apply bg-transparent text-[inherit] duration-200 ease-out;
   overflow-y: hidden;
   overscroll-behavior: contain;
 
@@ -207,12 +208,7 @@ function cancel() {
   }
 }
 
-.modal-backdrop {
-  @apply -z-[1] col-start-1 row-start-1 grid self-stretch justify-self-stretch text-transparent;
-}
-
 .modal-box {
-  @apply bg-gray-180 dark:bg-gray-860 rounded-2xl col-start-1 row-start-1 w-11/12 max-w-[91.666667%] scale-90 transform p-6 transition duration-200 ease-out;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -222,12 +218,12 @@ function cancel() {
 .modal-toggle:checked+.modal .modal-box,
 .modal:target .modal-box,
 .modal[open] .modal-box {
-  @apply translate-y-0 scale-100;
+  --tw-translate-y: 0px;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.modal-action {
-  @apply mt-6 justify-end space-x-2;
-}
 
 @keyframes modal-pop {
   0% {
