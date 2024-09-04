@@ -1,6 +1,6 @@
+import { acceptHMRUpdate, defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { cloneDeep } from "lodash";
-import { defineStore } from "pinia";
 import { Track } from "@/types";
 
 export const useQueue = defineStore("queue", () => {
@@ -170,3 +170,7 @@ export const useQueue = defineStore("queue", () => {
     shuffleQueue,
   };
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useQueue, import.meta.hot));
+}

@@ -1,6 +1,5 @@
-
+import { acceptHMRUpdate, defineStore } from "pinia";
 import { altKeyName, codeToChar, metaKeyName, specialKeyCodes } from "@renderer/constants";
-import { defineStore } from "pinia";
 import { reactive } from "vue";
 
 export const useMediaKeyBindings = defineStore("mediaKeyBindings", () => {
@@ -32,3 +31,7 @@ export const useMediaKeyBindings = defineStore("mediaKeyBindings", () => {
 
   return { keyBindings, combineKeyCodes };
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useMediaKeyBindings, import.meta.hot));
+}

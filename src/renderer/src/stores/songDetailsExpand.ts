@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { acceptHMRUpdate, defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useSongDetailsExpand = defineStore("songDetailsExpand", () => {
@@ -13,3 +13,7 @@ export const useSongDetailsExpand = defineStore("songDetailsExpand", () => {
     expandSongDetails,
   };
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useSongDetailsExpand, import.meta.hot));
+}
