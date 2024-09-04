@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, reactive, ref, useTemplateRef, watch } from "vue";
 import CustomScrollbar from "@components/CustomScrollbar.vue";
-import Group from "@components/settings/fields/Group.vue";
+import Group from "@components/settings-fields/Group.vue";
 import lodash from "lodash";
 import { useDarkMode } from "@composables/darkMode";
 import { useDebounce } from "@composables/debounce";
