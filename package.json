@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "main": "./out/main/index.js",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@ckpack/vue-color": "^1.6.0",
     "@ctrl/tinycolor": "^4.1.0",

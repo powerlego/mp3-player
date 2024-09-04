@@ -181,7 +181,7 @@ export default class SettingsWindow extends EventEmitter {
       show: true,
       frame: false,
       webPreferences: {
-        preload: path.join(__dirname, "../preload/settings.js"),
+        preload: path.join(__dirname, "../preload/settings.mjs"),
         sandbox: false,
       },
     } as Electron.BrowserWindowConstructorOptions;

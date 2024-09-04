@@ -2,6 +2,7 @@ import { app, BrowserWindow, dialog, ipcMain, Menu, shell } from "electron";
 import { attachTitlebarToWindow, setupTitlebar } from "custom-electron-titlebar/main";
 import { CheckboxOption, SettingsAcceleratorField, SettingsRadioField } from "@/types";
 import { electronApp, is, optimizer, platform } from "@electron-toolkit/utils";
+import installExtension, { VUEJS3_DEVTOOLS } from "electron-devtools-installer";
 import fs from "fs";
 import { join } from "path";
 import log from "electron-log";
@@ -870,7 +871,7 @@ function createWindow() {
     titleBarStyle: "hidden",
     // ...(process.platform === "linux" ? { icon } : {}),
     webPreferences: {
-      preload: join(__dirname, "../preload/index.js"),
+      preload: join(__dirname, "../preload/index.mjs"),
       sandbox: false,
     },
   });
@@ -921,6 +922,13 @@ app
         folderPaths.push(musicPath);
       }
       storeInstance.set("folderPaths", folderPaths);
+    }
+
+    if (is.dev) {
+      installExtension(VUEJS3_DEVTOOLS)
+        .then((name) => log.info(`Added Extension: ${name}`))
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+        .catch((err) => log.error(`Error: ${err.toString()}`));
     }
 
     // Set app user model id for windows

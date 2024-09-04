@@ -10,6 +10,8 @@
     "src/mainTitleBar.ts"
   ],
   "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "composite": true,
     "types": ["electron-vite/node"],
     "baseUrl": ".",
