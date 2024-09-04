@@ -46,7 +46,7 @@ export default defineConfig({
     build: {
       rollupOptions: {
         input: {
-          main: resolve(__dirname, "src/preload/main.ts"),
+          index: resolve(__dirname, "src/preload/index.ts"),
           settings: resolve(__dirname, "src/preload/settings.ts"),
         },
         output: {
@@ -65,6 +65,7 @@ export default defineConfig({
       alias: {
         "@": resolve("src/"),
         "@renderer": resolve("src/renderer/src"),
+        "@stores": resolve("src/renderer/src/stores"),
         "@utils": resolve("src/renderer/src/utils"),
         "@components": resolve("src/renderer/src/components"),
         "@icons": resolve("src/renderer/src/assets/icons"),
