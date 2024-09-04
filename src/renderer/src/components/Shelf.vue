@@ -66,14 +66,14 @@ function updateColumns(newWidth: number) {
 }
 
 function onResize() {
-  if (container.value) {
-    updateColumns(container.value.offsetWidth);
-  }
+  updateColumns(container.value!.offsetWidth);
 }
 
 onMounted(() => {
-  onResize();
   window.addEventListener("resize", onResize);
+  setTimeout(() => {
+    onResize();
+  }, 10);
 });
 
 onUnmounted(() => {
@@ -85,7 +85,7 @@ onUnmounted(() => {
 <template>
   <section
     ref="container"
-    class="min-w-[var(--min-container-width)] "
+    class="min-w-[var(--min-container-width)] w-full"
     style="--shelf-min-height: 300px; contain-intrinsic-size: var(--shelf-min-height); content-visibility: auto;"
   >
     <div class="mb-4">
