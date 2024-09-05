@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ColorInput, TinyColor } from "@ctrl/tinycolor";
+import { Chrome, Payload } from "@ckpack/vue-color";
+import { ColorInput, RGBA, TinyColor } from "@ctrl/tinycolor";
 import { computed, onMounted, onUnmounted, ref, useId, useTemplateRef, watch } from "vue";
-import { Chrome } from "@ckpack/vue-color";
 import { SettingsColorField } from "@/types";
 import Tooltip from "@components/Tooltip.vue";
 
@@ -20,19 +20,19 @@ const color = ref(new TinyColor(props.value));
 watch(color, (value) => {
   switch (props.field.format) {
   case "hex":
-    emit("change", new TinyColor(value).toHex());
+    emit("change", value.toHex());
     break;
   case "rgb":
-    emit("change", new TinyColor(value).toRgb());
+    emit("change", value.toRgb());
     break;
   case "hsl":
-    emit("change", new TinyColor(value).toHsl());
+    emit("change", value.toHsl());
     break;
   case "hsv":
-    emit("change", new TinyColor(value).toHsv());
+    emit("change", value.toHsv());
     break;
   default:
-    emit("change", new TinyColor(value).toHex());
+    emit("change", value.toHex());
     break;
   }
 });
@@ -40,28 +40,9 @@ watch(color, (value) => {
 const wrapper = useTemplateRef<HTMLDivElement>("wrapper");
 const show = ref(false);
 const colorDisplayStyle = computed(() => {
-  switch (props.field.format) {
-  case "hex":
-    return {
-      backgroundColor: new TinyColor(props.value).toHexString(),
-    };
-  case "rgb":
-    return {
-      backgroundColor: new TinyColor(props.value).toRgbString(),
-    };
-  case "hsl":
-    return {
-      backgroundColor: new TinyColor(props.value).toHslString(),
-    };
-  case "hsv":
-    return {
-      backgroundColor: new TinyColor(props.value).toHsvString(),
-    };
-  default:
-    return {
-      backgroundColor: new TinyColor(props.value).toHexString(),
-    };
-  }
+  return {
+    backgroundColor: color.value.toRgbString(),
+  };
 });
 
 function handleClick() {
@@ -110,7 +91,10 @@ onUnmounted(() => {
           v-show="show"
           class="absolute top-0 z-10 left-12"
         >
-          <Chrome v-model="color" />
+          <Chrome
+            v-model="color"
+            @update:model-value="($event) => color = new TinyColor($event.rgba)"
+          />
         </div>
       </div>
     </Tooltip>
