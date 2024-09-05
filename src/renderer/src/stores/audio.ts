@@ -1,8 +1,8 @@
 import { acceptHMRUpdate, defineStore, storeToRefs } from "pinia";
-import { computed, ref, watch, watchEffect } from "vue";
-import { MediaReadyState, RepeatMode } from "@/types";
-import _ from "lodash";
+import { computed, ref, watch } from "vue";
+import lodash from "lodash";
 import log from "electron-log/renderer";
+import { RepeatMode } from "@/types";
 import { useQueue } from "@stores/queue";
 
 export const useAudio = defineStore("audio", () => {
@@ -147,13 +147,13 @@ export const useAudio = defineStore("audio", () => {
       return;
     }
     if (newValue) {
-      if (_.isEqual(originalQueue.value, queue.value)) {
+      if (lodash.isEqual(originalQueue.value, queue.value)) {
         const newQueue = shuffleQueue();
         setQueue(newQueue);
       }
     }
     else {
-      if (_.isEqual(originalQueue.value, queue.value)) {
+      if (lodash.isEqual(originalQueue.value, queue.value)) {
         return;
       }
       const currentTrackIndex = originalQueue.value.findIndex((track) => track.id === peek.value!.id);
@@ -170,13 +170,13 @@ export const useAudio = defineStore("audio", () => {
       return;
     }
     if (shuffle.value) {
-      if (_.isEqual(newOriginalQueue, queue.value)) {
+      if (lodash.isEqual(newOriginalQueue, queue.value)) {
         const newQueue = shuffleQueue();
         setQueue(newQueue);
       }
     }
     else {
-      if (_.isEqual(newOriginalQueue, queue.value)) {
+      if (lodash.isEqual(newOriginalQueue, queue.value)) {
         return;
       }
       const currentTrackIndex = newOriginalQueue.findIndex((track) => track.id === peek.value!.id);
