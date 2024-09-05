@@ -141,63 +141,59 @@ function cancel() {
         </template>
       </div>
     </Tooltip>
-    <dialog
-      ref="modal"
-      class="bg-transparent text-[inherit] duration-200 ease-out modal"
-    >
-      <div
-        class="bg-gray-180 dark:bg-gray-860 rounded-2xl col-start-1 row-start-1 w-11/12 max-w-[91.666667%] scale-90 transform p-6 transition duration-200 ease-out modal-box"
-      >
-        <label
-          :for="'field-list-add-' + props.field.key"
-          class="block font-bold text-black dark:text-white"
-        >
-          {{ props.field.addItemLabel ?? "Add Item" }}
-        </label>
-        <input
-          :id="'field-list-add-' + props.field.key"
-          v-model="itemToAdd"
-          :name="'field-list-add-' + props.field.key"
-          :aria-label="props.field.addItemLabel ?? 'Add Item'"
-          :autofocus="true"
-          class="block w-full text-sm rounded-lg m-0.5 p-2 bg-gray-100 dark:bg-gray-800 border border-solid border-gray-350 dark:border-gray-700 transition-[border-color] duration-300 ease-out focus:m-0 focus:border-blue-500 dark:focus:border-blue-400 focus:border-2 text-black dark:text-white outline-nothing"
-          type="text"
-        >
-        <div class="justify-end mt-6 space-x-2">
-          <form
-            method="dialog"
-            class="flex flex-row"
-          >
-            <button
-              aria-label="Cancel"
-              class="bg-gray-50 dark:bg-gray-800 flex-auto flex-grow-0 rounded-lg p-1.5 m-1 border-2 border-solid border-gray-400 dark:border-gray-600 text-black dark:text-white disabled:border-gray-300 dark:disabled:opacity-70 enabled:active:border-blue-500 dark:enabled:active:border-blue-400 enabled:hover:bg-gray-100 dark:enabled:hover:bg-gray-700 transition ease-in-out disabled:cursor-default"
-              @click="cancel"
-            >
-              Cancel
-            </button>
-            <button
-              aria-label="Save"
-              class="bg-gray-50 dark:bg-gray-800 flex-auto flex-grow-0 rounded-lg p-1.5 m-1 border-2 border-solid border-gray-400 dark:border-gray-600 text-black dark:text-white disabled:border-gray-300 dark:disabled:opacity-70 enabled:active:border-blue-500 dark:enabled:active:border-blue-400 enabled:hover:bg-gray-100 dark:enabled:hover:bg-gray-700 transition ease-in-out disabled:cursor-default"
-              :disabled="addItemValidator.test(itemToAdd) === false"
-              @click="saveItem"
-            >
-              Save
-            </button>
-          </form>
-        </div>
-      </div>
-      <form
-        method="dialog"
-        class="-z-[1] col-start-1 row-start-1 grid self-stretch justify-self-stretch text-transparent"
-      >
-        <button>close</button>
-      </form>
-    </dialog>
   </div>
+  <dialog
+    ref="modal"
+    class="modal"
+  >
+    <div class="modal-box">
+      <label
+        :for="'field-list-add-' + props.field.key"
+        class="block font-bold text-black dark:text-white"
+      >
+        {{ props.field.addItemLabel ?? "Add Item" }}
+      </label>
+      <input
+        :id="'field-list-add-' + props.field.key"
+        v-model="itemToAdd"
+        :name="'field-list-add-' + props.field.key"
+        :aria-label="props.field.addItemLabel ?? 'Add Item'"
+        :autofocus="true"
+        class="block w-full text-sm rounded-lg m-0.5 p-2 bg-gray-100 dark:bg-gray-800 border border-solid border-gray-350 dark:border-gray-700 transition-[border-color] duration-300 ease-out focus:m-0 focus:border-blue-500 dark:focus:border-blue-400 focus:border-2 text-black dark:text-white outline-nothing"
+        type="text"
+      >
+      <div class="modal-action">
+        <form method="dialog">
+          <button
+            aria-label="Cancel"
+            class="bg-gray-50 dark:bg-gray-800 flex-auto flex-grow-0 rounded-lg p-1.5 m-1 border-2 border-solid border-gray-400 dark:border-gray-600 text-black dark:text-white disabled:border-gray-300 dark:disabled:opacity-70 enabled:active:border-blue-500 dark:enabled:active:border-blue-400 enabled:hover:bg-gray-100 dark:enabled:hover:bg-gray-700 transition ease-in-out disabled:cursor-default"
+            @click="cancel"
+          >
+            Cancel
+          </button>
+          <button
+            aria-label="Save"
+            class="bg-gray-50 dark:bg-gray-800 flex-auto flex-grow-0 rounded-lg p-1.5 m-1 border-2 border-solid border-gray-400 dark:border-gray-600 text-black dark:text-white disabled:border-gray-300 dark:disabled:opacity-70 enabled:active:border-blue-500 dark:enabled:active:border-blue-400 enabled:hover:bg-gray-100 dark:enabled:hover:bg-gray-700 transition ease-in-out disabled:cursor-default"
+            :disabled="addItemValidator.test(itemToAdd) === false"
+            @click="saveItem"
+          >
+            Save
+          </button>
+        </form>
+      </div>
+    </div>
+    <form
+      method="dialog"
+      class="-z-[1] col-start-1 row-start-1 grid self-stretch justify-self-stretch text-transparent"
+    >
+      <button>close</button>
+    </form>
+  </dialog>
 </template>
 
 <style>
 .modal {
+  @apply bg-transparent text-[inherit] duration-200 ease-out pointer-events-none fixed inset-0 m-0 grid h-full max-h-none w-full max-w-none justify-items-center p-0 opacity-0;
   overflow-y: hidden;
   overscroll-behavior: contain;
 
@@ -206,24 +202,41 @@ function cancel() {
     background-color: #0006;
     animation: modal-pop 0.2s ease-out;
   }
+
+  z-index: 999;
 }
 
+:where(.modal) {
+  @apply items-center;
+}
+
+.modal-open,
+.modal:target,
+.modal-toggle:checked+.modal,
+.modal[open] {
+  @apply pointer-events-auto visible opacity-100;
+}
+
+
 .modal-box {
+  @apply bg-gray-180 dark:bg-gray-860 rounded-2xl col-start-1 row-start-1 w-3/4 max-w-[75%] scale-90 transform p-6 transition duration-200 ease-out;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
   overflow-y: auto;
+  overflow-x: hidden;
   overscroll-behavior: contain;
+  max-height: calc(100vh - 5em);
 }
 
 .modal-open .modal-box,
 .modal-toggle:checked+.modal .modal-box,
 .modal:target .modal-box,
 .modal[open] .modal-box {
-  --tw-translate-y: 0px;
-  --tw-scale-x: 1;
-  --tw-scale-y: 1;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  @apply translate-y-0 scale-100;
 }
 
+.modal-action {
+  @apply mt-6 justify-end space-x-2 flex;
+}
 
 @keyframes modal-pop {
   0% {

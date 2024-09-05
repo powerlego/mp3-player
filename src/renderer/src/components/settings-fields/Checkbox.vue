@@ -83,21 +83,80 @@ function handleChange(event: Event) {
       <label
         v-for="option in options"
         :key="option.id"
-        :for="option.id"
+        class="inline-flex items-center gap-2 px-1 py-2 select-none"
       >
-        {{ option.label }}
+        <span>{{ option.label }}</span>
+
         <input
           :id="option.id"
-          class="absolute w-0 h-0 opacity-0 cursor-pointer peer"
+          class="w-5 h-5 cursor-pointer checkbox"
           :aria-label="option.label"
           :checked="option.checked"
           type="checkbox"
           @change="handleChange"
         >
-        <span
-          class="absolute top-0 left-0 w-5 h-5 bg-black dark:bg-white bg-opacity-0 dark:bg-opacity-0 border-gray-650 dark:border-gray-400 border border-solid rounded group-hover:bg-opacity-10 dark:group-hover:bg-opacity-5 peer-checked:bg-blue-500 peer-checked:border-blue-500 dark:peer-checked:bg-blue-500 dark:peer-checked:border-blue-500 peer-checked:border-2 peer-focus:border-2 peer-focus:border-blue-500 dark:peer-focus:border-blue-500 peer-checked:peer-focus:border-blue-300 dark:peer-checked:peer-focus:border-blue-300 group-hover:peer-checked:bg-blue-600 group-hover:peer-checked:border-blue-600 dark:group-hover:peer-checked:bg-blue-600 dark:group-hover:peer-checked:border-blue-600 after:absolute after:hidden peer-checked:after:block after:left-[5px] after:top-0.5 after:w-[5px] after:h-2.5 after:border-solid after:border-white dark:after:border-gray-900 after:border-t-0 after:border-r-2 after:border-b-2 after:border-l-0 after:scale-100 after:rotate-45 after:animation-delay-50 after:animate-zoom-in-check-square "
-        />
       </label>
+      <!-- <span
+          class="absolute top-0 left-0 w-5 h-5 bg-black dark:bg-white bg-opacity-0 dark:bg-opacity-0 border-gray-650 dark:border-gray-400 border border-solid rounded group-hover:bg-opacity-10 dark:group-hover:bg-opacity-5 peer-checked:bg-blue-500 peer-checked:border-blue-500 dark:peer-checked:bg-blue-500 dark:peer-checked:border-blue-500 peer-checked:border-2 peer-focus:border-2 peer-focus:border-blue-500 dark:peer-focus:border-blue-500 peer-checked:peer-focus:border-blue-300 dark:peer-checked:peer-focus:border-blue-300 group-hover:peer-checked:bg-blue-600 group-hover:peer-checked:border-blue-600 dark:group-hover:peer-checked:bg-blue-600 dark:group-hover:peer-checked:border-blue-600 after:absolute after:hidden peer-checked:after:block after:left-[5px] after:top-0.5 after:w-[5px] after:h-2.5 after:border-solid after:border-white dark:after:border-gray-900 after:border-t-0 after:border-r-2 after:border-b-2 after:border-l-0 after:scale-100 after:rotate-45 after:animation-delay-50 after:animate-zoom-in-check-square "
+        /> -->
     </Tooltip>
   </div>
 </template>
+
+<style>
+.checkbox {
+  --chkbg: theme(colors.indigo.500);
+  --chkfg: black;
+  @apply rounded border-gray-650 dark:border-gray-400 border border-solid appearance-none border-opacity-20 flex-shrink-0;
+
+  &:focus {
+    box-shadow: none;
+  }
+
+  &:focus-visible {
+    @apply outline-indigo-500 outline outline-2 outline-offset-2;
+  }
+
+  &:disabled {
+    @apply border-0;
+  }
+
+  &:checked,
+  &[aria-checked="true"] {
+    @apply bg-no-repeat;
+    animation: checkmark var(--animation-input, 0.2s) ease-out;
+    background-color: var(--chkbg);
+    background-image: linear-gradient(-45deg, transparent 65%, var(--chkbg) 65.99%),
+      linear-gradient(45deg, transparent 75%, var(--chkbg) 75.99%),
+      linear-gradient(-45deg, var(--chkbg) 40%, transparent 40.99%),
+      linear-gradient(45deg,
+        var(--chkbg) 30%,
+        var(--chkfg) 30.99%,
+        var(--chkfg) 40%,
+        transparent 40.99%),
+      linear-gradient(-45deg, var(--chkfg) 50%, var(--chkbg) 50.99%);
+  }
+
+  &:indeterminate {
+    @apply bg-indigo-500 bg-no-repeat;
+    animation: checkmark var(--animation-input, 0.2s) ease-out;
+    background-image: linear-gradient(90deg, transparent 80%, var(--chkbg) 80%),
+      linear-gradient(-90deg, transparent 80%, var(--chkbg) 80%),
+      linear-gradient(0deg, var(--chkbg) 43%, var(--chkfg) 43%, var(--chkfg) 57%, var(--chkbg) 57%);
+  }
+}
+
+@keyframes checkmark {
+  0% {
+    background-position-y: 5px;
+  }
+
+  50% {
+    background-position-y: -2px;
+  }
+
+  100% {
+    background-position-y: 0;
+  }
+}
+</style>

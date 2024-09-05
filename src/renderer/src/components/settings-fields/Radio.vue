@@ -39,7 +39,7 @@ function handleChange(event: Event) {
       <label
         v-for="(option, idx) in props.field.options"
         :key="`${fieldId}_${idx}`"
-        class="relative block pl-8 mb-3 transition-all duration-300 ease-out cursor-pointer select-none group"
+        class="inline-flex items-center gap-2 px-1 py-2 select-none"
         :for="`${fieldId}_${idx}`"
       >
         {{ option.label }}
@@ -47,15 +47,69 @@ function handleChange(event: Event) {
           :id="`${fieldId}_${idx}`"
           :aria-label="option.label"
           :checked="value === option.value"
-          class="absolute opacity-0 cursor-pointer peer"
+          class="radio w-6 h-6"
           :name="fieldId"
           type="radio"
           @change="handleChange"
         >
-        <span
-          class="absolute top-0 left-0 w-5 h-5 bg-black dark:bg-white  bg-opacity-0 dark:bg-opacity-0 border-gray-650 dark:border-gray-400 border border-solid rounded-full transition-all duration-300 ease-out group-hover:bg-opacity-5 dark:group-hover:bg-opacity-10 peer-checked:bg-blue-500 peer-checked:border-blue-500 dark:peer-checked:bg-blue-500 dark:peer-checked:border-blue-500 peer-focus:bg-blue-400 peer-focus:border-blue-400 dark:peer-focus:bg-blue-400 dark:peer-focus:border-blue-400 group-hover:peer-checked:bg-blue-600 group-hover:peer-checked:border-blue-600 dark:group-hover:peer-checked:bg-blue-600 dark:group-hover:peer-checked:border-blue-600 after:absolute after:hidden after:scale-100 after:animation-delay-50 after:animate-zoom-in-check-circle after:top-[3px] after:left-[3px] after:w-3 after:h-3 after:rounded-full after:bg-transparent after:border-2 after:border-solid after:border-white dark:after:border-gray-900 peer-checked:after:block"
-        />
       </label>
     </Tooltip>
   </div>
 </template>
+
+<style>
+.radio {
+  --chkbg: theme(colors.indigo.500);
+  @apply border-gray-650 dark:border-gray-400 cursor-pointer appearance-none rounded-full border border-opacity-20 flex-shrink-0;
+
+  &:focus {
+    box-shadow: none;
+  }
+
+  &:is(.dark *) {
+    --shdw: theme(colors.gray.860);
+  }
+
+  &:not(:is(.dark *)) {
+    --shdw: theme(colors.gray.180);
+  }
+
+  &:focus-visible {
+    @apply outline-gray-650 dark:outline-gray-400 outline outline-2 outline-offset-2;
+  }
+
+  &:checked,
+  &[aria-checked="true"] {
+    @apply bg-indigo-500;
+    background-image: none;
+    animation: radiomark var(--animation-input, 0.2s) ease-out;
+    box-shadow:
+      0 0 0 4px var(--shdw) inset,
+      0 0 0 4px var(--shdw) inset;
+  }
+
+  &:disabled {
+    @apply cursor-not-allowed opacity-20;
+  }
+}
+
+@keyframes radiomark {
+  0% {
+    box-shadow:
+      0 0 0 12px var(--shdw) inset,
+      0 0 0 12px var(--shdw) inset;
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 3px var(--shdw) inset,
+      0 0 0 3px var(--shdw) inset;
+  }
+
+  100% {
+    box-shadow:
+      0 0 0 4px var(--shdw) inset,
+      0 0 0 4px var(--shdw) inset;
+  }
+}
+</style>
