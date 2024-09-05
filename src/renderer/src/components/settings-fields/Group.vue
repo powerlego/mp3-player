@@ -28,6 +28,8 @@ const fieldMap = {
   text: Text,
 };
 
+const id = useId();
+
 const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   preferences: { [key: string]: any };
@@ -59,7 +61,7 @@ const fields = computed(() => {
 </script>
 
 <template>
-  <div :id="`group-${props.group.id}-${useId()}`">
+  <div :id="`group-${props.group.id}-${id}`">
     <div
       v-if="props.group.label"
       class="mb-3 text-xl font-bold text-black dark:text-white"
@@ -68,7 +70,7 @@ const fields = computed(() => {
     </div>
     <template
       v-for="field in fields"
-      :key="field.field.key"
+      :key="id + '-' + field.field.key"
     >
       <component
         :is="field.component"

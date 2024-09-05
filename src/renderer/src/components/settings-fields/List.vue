@@ -13,6 +13,8 @@ const emit = defineEmits<{
   change: [value: any];
 }>();
 
+const id = useId();
+
 const items = ref(props.value || []);
 const itemToAdd = ref("");
 const selected = ref("");
@@ -78,7 +80,7 @@ function cancel() {
 </script>
 
 <template>
-  <div :id="`field-list-${props.field.key}-${useId()}`">
+  <div :id="`field-list-${props.field.key}-${id}`">
     <div
       :aria-label="props.field.label"
       class="mb-3 text-base font-bold text-black dark:text-white"
@@ -96,7 +98,7 @@ function cancel() {
       >
         <option
           v-for="(item, idx) in items"
-          :key="props.field.key + '-' + idx"
+          :key="id + '-' + idx"
           class="px-1 py-0.5 checked:bg-gray-200 dark:checked:bg-gray-700 text-black dark:text-white group-focus:checked:!bg-blue-500 dark:group-focus:checked:!bg-blue-400"
           :aria-label="item"
           :value="item"
@@ -148,15 +150,15 @@ function cancel() {
   >
     <div class="modal-box">
       <label
-        :for="'field-list-add-' + props.field.key"
+        :for="'field-list-add-' + props.field.key + '-' + id"
         class="block font-bold text-black dark:text-white"
       >
         {{ props.field.addItemLabel ?? "Add Item" }}
       </label>
       <input
-        :id="'field-list-add-' + props.field.key"
+        :id="'field-list-add-' + props.field.key + '-' + id"
         v-model="itemToAdd"
-        :name="'field-list-add-' + props.field.key"
+        :name="'field-list-add-' + props.field.key + '-' + id"
         :aria-label="props.field.addItemLabel ?? 'Add Item'"
         :autofocus="true"
         class="block w-full text-sm rounded-lg m-0.5 p-2 bg-gray-100 dark:bg-gray-800 border border-solid border-gray-350 dark:border-gray-700 transition-[border-color] duration-300 ease-out focus:m-0 focus:border-blue-500 dark:focus:border-blue-400 focus:border-2 text-black dark:text-white outline-nothing"

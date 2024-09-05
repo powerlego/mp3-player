@@ -15,6 +15,7 @@ const emit = defineEmits<{
 }>();
 
 const value = ref(props.value ?? []);
+const id = useId();
 
 const btnLabel = computed(() => {
   if (props.field.buttonLabel) {
@@ -67,7 +68,7 @@ function choose() {
 </script>
 
 <template>
-  <div :id="`field-directory-${props.field.key}-${useId()}`">
+  <div :id="`field-directory-${props.field.key}-${id}`">
     <div
       :aria-label="props.field.label"
       class="mb-3 text-base font-bold text-black dark:text-white"
@@ -87,7 +88,7 @@ function choose() {
         <ul v-if="props.field.multiSelections || value.length > 1">
           <li
             v-for="(val, idx) in value"
-            :key="props.field.key + '-' + idx"
+            :key="id + '-' + idx"
             class="w-full px-2 py-1 bg-gray-100 border-t border-solid border-x-2 last:border-b-2 dark:bg-gray-800 border-gray-350 dark:border-gray-700 last:mb-1 last:rounded-b-lg"
           >
             {{ val }}

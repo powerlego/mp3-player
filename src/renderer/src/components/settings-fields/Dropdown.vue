@@ -13,6 +13,7 @@ const emit = defineEmits<{
   change: [value: any];
 }>(); // Define the emit for the component
 
+const id = useId(); // Generate a unique ID for the component
 const isOpen = ref(false);
 const value = ref(props.value);
 const options = ref(
@@ -65,7 +66,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div :id="`field-dropdown-${props.field.key}-${useId()}`">
+  <div :id="`field-dropdown-${props.field.key}-${id}`">
     <div class="mb-3 text-base font-bold text-black dark:text-white">
       {{ props.field.label }}
     </div>
@@ -85,7 +86,7 @@ onUnmounted(() => {
         >
           <option
             v-for="(opt, idx) in options"
-            :key="props.field.key + '-' + idx + '-option'"
+            :key="id + '-' + idx + '-option'"
             :aria-label="opt.label"
             :value="opt.value"
           >
@@ -98,7 +99,7 @@ onUnmounted(() => {
         >
           <template
             v-for="(opt, idx) in options"
-            :key="props.field.key + '-' + idx"
+            :key="id + '-' + idx"
           >
             <li
               v-if="opt.value === ''"
