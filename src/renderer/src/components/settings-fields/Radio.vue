@@ -13,19 +13,21 @@ const emit = defineEmits<{
   change: [value: any];
 }>();
 
+const id = useId();
+
 const fieldId = ref(`radio_${useId()}`);
 const value = ref(props.value);
 
 function handleChange(event: Event) {
   const target = event.target as HTMLInputElement;
-  value.value = props.field.options[parseInt(target.id.split("_")[2])].value;
-  emit("change", props.field.options[parseInt(target.id.split("_")[2])].value);
+  value.value = props.field.options[parseInt(target.getAttribute("data-idx")!)].value;
+  emit("change", props.field.options[parseInt(target.getAttribute("data-idx")!)].value);
 }
 
 </script>
 
 <template>
-  <div :id="`field-radio-${props.field.key}-${useId()}`">
+  <div :id="`field-radio-${props.field.key}-${id}`">
     <div
       :aria-label="props.field.label"
       class="mb-3 text-base font-bold text-black dark:text-white"
@@ -38,13 +40,14 @@ function handleChange(event: Event) {
     >
       <label
         v-for="(option, idx) in props.field.options"
-        :key="`${fieldId}_${idx}`"
+        :key="`${id}-${idx}`"
         class="inline-flex items-center gap-2 px-1 py-2 select-none"
-        :for="`${fieldId}_${idx}`"
+        :for="`${id}-${idx}`"
       >
         {{ option.label }}
         <input
-          :id="`${fieldId}_${idx}`"
+          :id="`${id}-${idx}`"
+          :data-idx="idx"
           :aria-label="option.label"
           :checked="value === option.value"
           class="radio w-6 h-6"
