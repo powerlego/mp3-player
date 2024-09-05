@@ -66,7 +66,7 @@ function clamp(value: number) {
 }
 
 function evaluateExpression() {
-  const localValue = value.value as string;
+  const localValue = value.value.toString();
   try {
     let result = evaluate(localValue) as number | undefined;
     if (typeof result === "undefined" || isNaN(result)) {
