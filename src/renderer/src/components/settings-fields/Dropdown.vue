@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, useTemplateRef } from "vue";
+import { onMounted, onUnmounted, ref, useId, useTemplateRef } from "vue";
 import { SettingsDropdownField } from "@/types";
 import Tooltip from "@components/Tooltip.vue";
 
@@ -65,7 +65,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div :id="'field-dropdown-' + props.field.key">
+  <div :id="`field-dropdown-${props.field.key}-${useId()}`">
     <div class="mb-3 text-base font-bold text-black dark:text-white">
       {{ props.field.label }}
     </div>

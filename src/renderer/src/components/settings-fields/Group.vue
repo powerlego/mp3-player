@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { computed, useId } from "vue";
 import Accelerator from "./Accelerator.vue";
 import Checkbox from "./Checkbox.vue";
 import Color from "./Color.vue";
-import { computed } from "vue";
 import Directory from "./Directory.vue";
 import Dropdown from "./Dropdown.vue";
 import File from "./File.vue";
@@ -59,7 +59,7 @@ const fields = computed(() => {
 </script>
 
 <template>
-  <div :id="'group-' + props.group.id">
+  <div :id="`group-${props.group.id}-${useId()}`">
     <div
       v-if="props.group.label"
       class="mb-3 text-xl font-bold text-black dark:text-white"

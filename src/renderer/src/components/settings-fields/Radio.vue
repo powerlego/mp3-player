@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, useId } from "vue";
 import { SettingsRadioField } from "@/types";
 import Tooltip from "@components/Tooltip.vue";
-import { useGuid } from "@composables/guid";
 
 const props = defineProps<{
   field: SettingsRadioField;
@@ -14,8 +13,7 @@ const emit = defineEmits<{
   change: [value: any];
 }>();
 
-const { newGuid } = useGuid();
-const fieldId = ref(`radio_${newGuid()}`);
+const fieldId = ref(`radio_${useId()}`);
 const value = ref(props.value);
 
 function handleChange(event: Event) {
@@ -27,7 +25,7 @@ function handleChange(event: Event) {
 </script>
 
 <template>
-  <div :id="'field-radio-' + props.field.key">
+  <div :id="`field-radio-${props.field.key}-${useId()}`">
     <div
       :aria-label="props.field.label"
       class="mb-3 text-base font-bold text-black dark:text-white"

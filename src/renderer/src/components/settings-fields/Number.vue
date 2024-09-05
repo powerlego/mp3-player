@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, useId } from "vue";
 import { evaluate, round } from "mathjs";
 import { SettingsNumberField } from "@/types";
 import Tooltip from "@components/Tooltip.vue";
@@ -114,7 +114,7 @@ function handleMouseDown(dir: "up" | "down") {
 </script>
 
 <template>
-  <div :id="'field-number-' + props.field.key">
+  <div :id="`field-number-${props.field.key}-${useId()}`">
     <div
       :aria-label="props.field.label"
       class="mb-3 text-base font-bold text-black dark:text-white"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ColorInput, TinyColor } from "@ctrl/tinycolor";
-import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, useId, useTemplateRef, watch } from "vue";
 import { Chrome } from "@ckpack/vue-color";
 import { SettingsColorField } from "@/types";
 import Tooltip from "@components/Tooltip.vue";
@@ -85,7 +85,7 @@ onUnmounted(() => {
 </script>
 <template>
   <div
-    :id="'field-color-' + props.field.key"
+    :id="`field-color-${props.field.key}-${useId()}`"
     ref="wrapper"
   >
     <div class="mb-3 text-base font-bold text-black dark:text-white">

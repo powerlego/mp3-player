@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { altKeyName, codeToChar, metaKeyName, modifierKeyCodes, specialKeyCodes } from "@renderer/constants";
-import { ref } from "vue";
+import { ref, useId } from "vue";
 import { SettingsAcceleratorField } from "@/types";
 import Tooltip from "@components/Tooltip.vue";
 
@@ -56,7 +56,7 @@ function handleKeyUp(event: KeyboardEvent) {
 
 </script>
 <template>
-  <div :id="'field-accelerator-' + props.field.key">
+  <div :id="`field-accelerator-${props.field.key}-${useId()}`">
     <div class="mb-3 text-base font-bold text-black dark:text-white">
       {{ props.field.label }}
     </div>

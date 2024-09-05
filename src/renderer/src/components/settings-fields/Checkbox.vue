@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, useId } from "vue";
 import { SettingsCheckboxField } from "@/types";
 import Tooltip from "@components/Tooltip.vue";
-import { useGuid } from "@composables/guid";
 
 const props = defineProps<{
   field: SettingsCheckboxField;
@@ -14,8 +13,7 @@ const emit = defineEmits<{
   change: [value: any];
 }>();
 
-const { newGuid } = useGuid();
-const fieldId = computed(() => `checkbox_${newGuid()}`);
+const fieldId = computed(() => `checkbox_${useId()}`);
 const options = computed(() => {
   if (props.field.options) {
     return props.field.options.map((option, index) => {
@@ -74,7 +72,7 @@ function handleChange(event: Event) {
 </script>
 
 <template>
-  <div :id="'field-checkbox-' + props.field.key">
+  <div :id="`field-checkbox-${props.field.key}-${useId()}`">
     <div class="mb-3 text-base font-bold text-black dark:text-white">
       {{ props.field.label }}
     </div>

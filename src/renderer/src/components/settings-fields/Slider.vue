@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, useId, watch } from "vue";
 import { SettingsSliderField } from "@/types";
 import Tooltip from "@components/Tooltip.vue";
 
@@ -32,7 +32,7 @@ watch(value, (newValue) => {
 </script>
 
 <template>
-  <div :id="'field-slider-' + props.field.key">
+  <div :id="`field-slider-${props.field.key}-${useId()}`">
     <div
       :aria-label="props.field.label"
       class="mb-3 text-base font-bold text-black dark:text-white"

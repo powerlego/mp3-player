@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useTemplateRef } from "vue";
+import { computed, ref, useId, useTemplateRef } from "vue";
 import { SettingsListField } from "@/types";
 import Tooltip from "@components/Tooltip.vue";
 
@@ -78,7 +78,7 @@ function cancel() {
 </script>
 
 <template>
-  <div :id="'field-list-' + props.field.key">
+  <div :id="`field-list-${props.field.key}-${useId()}`">
     <div
       :aria-label="props.field.label"
       class="mb-3 text-base font-bold text-black dark:text-white"
