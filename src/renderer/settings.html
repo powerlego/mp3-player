@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -13,10 +13,10 @@
       class="absolute top-0 left-0 right-0 h-8 w-full select-none z-[9999] bg-gray-100 dark:bg-gray-920 justify-center content-center flex flex-col"
     >
       <div style="-webkit-app-region: drag" class="absolute top-0 left-0 right-0 w-full h-full block -z-[1]"></div>
-      <span class="text-center text-black dark:text-white align-middle w-full leading-none inline-block">Settings</span>
+      <span class="inline-block w-full leading-none text-center text-black align-middle dark:text-white">Settings</span>
     </div>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="settings" class="relative h-full min-h-full w-full min-w-full top-8 overflow-hidden"></div>
-    <script type="module" src="/src/settings.tsx"></script>
+    <div id="app" class="relative w-full h-full min-w-full min-h-full overflow-hidden top-8"></div>
+    <script type="module" src="/src/settings.ts"></script>
   </body>
 </html>

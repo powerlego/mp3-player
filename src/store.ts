@@ -1,16 +1,16 @@
-// Import the ElectronStore class from the "electron-store" package. ElectronStore is a simple data persistence library 
+// Import the ElectronStore class from the "electron-store" package. ElectronStore is a simple data persistence library
 // used in Electron.js applications to store and retrieve data locally on the user's system.
-import ElectronStore from "electron-store";
+import Store from "electron-store";
 
 // Create a singleton object `store` that encapsulates an instance of `ElectronStore`.
 // This singleton pattern is used to ensure that only one instance of ElectronStore is created throughout the application.
 const store = (() => {
   // Store the instance of ElectronStore locally within the scope of the store object.
-  let instance: ElectronStore;
+  let instance: Store;
 
   // A function to create a new instance of ElectronStore, if one doesn't already exist.
   function createInstance() {
-    return new ElectronStore();
+    return new Store();
   }
 
   // Public API of the store object.

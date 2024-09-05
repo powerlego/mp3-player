@@ -1,9 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { contextBridge, ipcRenderer, OpenDialogSyncOptions } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
-import { SettingsSection } from "@/types";
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-const deserializeJson = (serializedJavascript: string) => eval("(" + serializedJavascript + ")");
+import { SettingsSection } from "@/types.js";
 
 const api = {
   getStoreKey: (key: string) => ipcRenderer.invoke("getStoreKey", key),
@@ -13,11 +11,10 @@ const api = {
 };
 
 const settings = {
-  getSections: (): SettingsSection[] =>
-    deserializeJson(ipcRenderer.sendSync("getSections") as string) as SettingsSection[],
+  getSections: (): SettingsSection[] => JSON.parse(ipcRenderer.sendSync("getSections") as string) as SettingsSection[],
   getPreferences: (): { [key: string]: any } => ipcRenderer.sendSync("getPreferences") as { [key: string]: any },
   getDefaults: (): { [key: string]: any } => ipcRenderer.sendSync("getDefaults") as { [key: string]: any },
-  setPreferences: (preferences: any) => ipcRenderer.send("setPreferences", preferences),
+  setPreferences: (preferences: { [key: string]: any }) => ipcRenderer.send("setPreferences", preferences),
   showOpenDialog: (dialogOptions: OpenDialogSyncOptions): string[] | undefined =>
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     ipcRenderer.sendSync("showOpenDialog", dialogOptions),

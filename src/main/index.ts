@@ -1,17 +1,29 @@
-import { app, shell, BrowserWindow, ipcMain, dialog, protocol, Menu } from "electron";
-import { join } from "path";
-import { electronApp, optimizer, is, devTools, platform } from "@electron-toolkit/utils";
-import store from "@/store";
-import { setupTitlebar, attachTitlebarToWindow } from "custom-electron-titlebar/main";
+import { app, BrowserWindow, dialog, ipcMain, Menu, shell } from "electron";
+import { attachTitlebarToWindow, setupTitlebar } from "custom-electron-titlebar/main";
+import { CheckboxOption, SettingsAcceleratorField, SettingsRadioField } from "@/types.js";
+import { electronApp, is, optimizer, platform } from "@electron-toolkit/utils";
+import { default as installExtension, VUEJS3_DEVTOOLS } from "electron-devtools-installer";
 import fs from "fs";
+import { join } from "path";
+import log from "electron-log";
 import os from "os";
-import sizeOf from "image-size";
-// import fetch, { BodyInit, RequestInit, Response } from "node-fetch";
-import { randomUUID } from "crypto";
-import SettingsWindow from "./SettingsWindow";
 import { parseBuffer } from "music-metadata";
-import { CheckboxOption, SettingsAcceleratorField, SettingsRadioField } from "@/types";
-import settingsUi from "@/assets/icons/settings_ui.svg?url";
+import { randomUUID } from "crypto";
+import settingsUi from "./assets/icons/settings_ui.svg?url";
+import SettingsWindow from "./settings.js";
+import { imageSize as sizeOf } from "image-size";
+import store from "@/store.js";
+// import fetch, { BodyInit, RequestInit, Response } from "node-fetch";
+
+const date = new Date();
+log.transports.file.level = "info";
+log.transports.file.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {processType}: {text}";
+log.transports.file.resolvePathFn = (variables) =>
+  join(variables.userData, "logs", `${date.toISOString().slice(0, 10)}.log`);
+log.initialize();
+log.info("App starting...");
+log.info(`App version: ${app.getVersion()}`);
+log.info(`Electron version: ${process.versions.electron}`);
 
 const readFileAndSend = async (window: BrowserWindow, filePath: string, play: boolean) => {
   const buffer = fs.readFileSync(filePath);
@@ -26,7 +38,7 @@ const readFileAndSend = async (window: BrowserWindow, filePath: string, play: bo
     for (const picture of metadata.common.picture) {
       const dimensions = sizeOf(picture.data);
       pictures.push({
-        base64: picture.data.toString("base64"),
+        base64: Buffer.from(picture.data).toString("base64"),
         format: picture.format,
         dimensions: `${dimensions.width ?? 0}x${dimensions.height ?? 0}`,
       });
@@ -40,7 +52,7 @@ const readFileAndSend = async (window: BrowserWindow, filePath: string, play: bo
       picture: pictures[0],
       pictures,
     },
-    play
+    play,
   );
 };
 
@@ -69,7 +81,7 @@ const settingsWindow = new SettingsWindow({
     {
       id: "ui",
       label: "UI",
-      icon: encodeURI(settingsUi),
+      icon: settingsUi,
       form: {
         groups: [
           {
@@ -849,7 +861,7 @@ const menuTemplate: (Electron.MenuItem | Electron.MenuItemConstructorOptions)[] 
 
 setupTitlebar();
 
-async function createWindow(): Promise<void> {
+function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 767,
@@ -859,7 +871,7 @@ async function createWindow(): Promise<void> {
     titleBarStyle: "hidden",
     // ...(process.platform === "linux" ? { icon } : {}),
     webPreferences: {
-      preload: join(__dirname, "../preload/main.js"),
+      preload: join(__dirname, "../preload/index.mjs"),
       sandbox: false,
     },
   });
@@ -873,18 +885,12 @@ async function createWindow(): Promise<void> {
     mainWindow.show();
   });
 
-  mainWindow.webContents.session.protocol.registerFileProtocol("file:", (request, callback) => {
-    console.log(request.url);
-    const url = request.url.replace("file:///", "");
-    callback({ path: url });
-  });
-
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell
       .openExternal(details.url)
       .then(null)
-      .catch((error: Error) => {
-        console.error(error);
+      .catch((error) => {
+        log.error(error);
       });
     return { action: "deny" };
   });
@@ -892,10 +898,14 @@ async function createWindow(): Promise<void> {
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env["ELECTRON_RENDERER_URL"]) {
-    await mainWindow.loadURL(process.env["ELECTRON_RENDERER_URL"]);
+    mainWindow.loadURL(process.env["ELECTRON_RENDERER_URL"]).catch((error) => {
+      log.error(error);
+    });
   }
   else {
-    await mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
+    mainWindow.loadFile(join(__dirname, "../renderer/index.html")).catch((error) => {
+      log.error(error);
+    });
   }
 }
 
@@ -904,17 +914,22 @@ async function createWindow(): Promise<void> {
 // Some APIs can only be used after this event occurs.
 app
   .whenReady()
-  .then(async () => {
+  .then(() => {
     const folderPaths: string[] = storeInstance.get("folderPaths", []) as string[];
     if (folderPaths.length === 0) {
-      const MusicPath = join(os.homedir(), "Music");
-      if (fs.existsSync(MusicPath)) {
-        folderPaths.push(MusicPath);
+      const musicPath = join(os.homedir(), "Music");
+      if (fs.existsSync(musicPath)) {
+        folderPaths.push(musicPath);
       }
       storeInstance.set("folderPaths", folderPaths);
     }
-    // Install react devtools
-    await devTools.install("REACT_DEVELOPER_TOOLS", { allowFileAccess: true });
+
+    if (is.dev) {
+      installExtension(VUEJS3_DEVTOOLS)
+        .then((name) => log.info(`Added Extension: ${name}`))
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+        .catch((err) => log.error(`Error: ${err.toString()}`));
+    }
 
     // Set app user model id for windows
     electronApp.setAppUserModelId("com.electron");
@@ -926,26 +941,19 @@ app
       optimizer.watchWindowShortcuts(window);
     });
 
-    await createWindow();
+    createWindow();
 
     app.on("activate", () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
       if (BrowserWindow.getAllWindows().length === 0) {
-        createWindow().catch(console.error);
+        createWindow();
       }
     });
   })
   .catch((error) => {
     console.error(error);
   });
-
-app.on("ready", () => {
-  protocol.registerFileProtocol("file", (request, callback) => {
-    const url = request.url.replace("file:///", "app:///");
-    callback({ path: url });
-  });
-});
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -1027,7 +1035,7 @@ ipcMain.handle("getAudioInfo", async (_, file: string) => {
   let pictureFormat = "";
   if (metadata.common.picture && metadata.common.picture.length > 0) {
     const picture = metadata.common.picture[0];
-    pictureBase64 = picture.data.toString("base64");
+    pictureBase64 = Buffer.from(picture.data).toString("base64");
     pictureFormat = picture.format;
   }
   return {

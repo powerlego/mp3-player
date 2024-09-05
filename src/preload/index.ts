@@ -1,32 +1,21 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
-import { Titlebar } from "custom-electron-titlebar";
-import { FilePayload } from "@/types";
+import electronTitlebar from "custom-electron-titlebar";
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
+const { Titlebar, TitlebarColor } = electronTitlebar;
+
 window.addEventListener("DOMContentLoaded", () => {
-  const titleBar = new Titlebar({
+  new Titlebar({
     // menu,
     containerOverflow: "hidden",
+    backgroundColor: TitlebarColor.BLACK,
+    titleHorizontalAlignment: "center",
   });
-  titleBar._title.classList.remove("cet-center");
-  titleBar._title.style.removeProperty("max-width");
-  const replaceText = (selector: string, text: string | undefined) => {
-    const element = document.getElementById(selector);
-    if (element) {
-      element.innerText = text ?? "";
-    }
-  };
-
-  for (const type of ["chrome", "node", "electron"]) {
-    replaceText(`${type}-version`, process.versions[type]);
-  }
 });
 
 // Custom APIs for renderer
 const api = {
-  onFileOpen: (callback: (_event: Electron.IpcRendererEvent, file: FilePayload, play: boolean) => void) =>
-    ipcRenderer.on("open-file", callback),
   getAudioFile: () => ipcRenderer.invoke("getAudioFile"),
   loadAudioFile: (file: string, play: boolean) => ipcRenderer.invoke("loadAudioFile", file, play),
   readDir: () => ipcRenderer.invoke("readDir"),
@@ -39,8 +28,6 @@ const api = {
       pictureBase64: string;
       pictureFormat: string;
     }>,
-  offFileOpen: (callback: (_event: Electron.IpcRendererEvent, file: FilePayload, play: boolean) => void) =>
-    ipcRenderer.removeListener("open-file", callback),
   on: (channel: string, listener: (...args: any[]) => void) => ipcRenderer.on(channel, listener),
   off: (channel: string, listener: (...args: any[]) => void) => ipcRenderer.removeListener(channel, listener),
 };
@@ -55,8 +42,8 @@ const settings = {
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld("electron", electronAPI);
-    contextBridge.exposeInMainWorld("settings", settings);
     contextBridge.exposeInMainWorld("api", api);
+    contextBridge.exposeInMainWorld("settings", settings);
   }
   catch (error) {
     console.error(error);

@@ -1,6 +1,6 @@
 // Import necessary types from the music-metadata and electron packages.
 import { FileFilter } from "electron";
-import { IAudioMetadata } from "music-metadata/lib/type";
+import { IAudioMetadata } from "music-metadata";
 
 // Defines an interface for internationalized aria labels for various elements of a media player.
 export interface I18nAriaLabels {
@@ -12,7 +12,6 @@ export interface I18nAriaLabels {
   play?: string;
   pause?: string;
   previous?: string;
-  rewind?: string;
   shuffle?: string;
   shuffleOn?: string;
   next?: string;
@@ -60,8 +59,8 @@ export interface CoverArt {
 
 // Enum for iteration type.
 export enum IterationType {
-  single = "single", // Single iteration.
-  infinite = "infinite", // Infinite iteration.
+  SINGLE, // Single iteration.
+  INFINITE, // Infinite iteration.
 }
 
 // Interface for scrolling animation properties.
@@ -85,22 +84,24 @@ export type SettingsSection = {
   };
 };
 
+type Field =
+  | SettingsTextField
+  | SettingsNumberField
+  | SettingsSliderField
+  | SettingsRadioField
+  | SettingsDropdownField
+  | SettingsListField
+  | SettingsFileField
+  | SettingsDirectoryField
+  | SettingsColorField
+  | SettingsCheckboxField
+  | SettingsAcceleratorField;
+
 // Type for a group within a settings section, which has an id, optional label, and a list of fields.
 export type Group = {
   id: string;
   label?: string;
-  fields:
-    | SettingsTextField[]
-    | SettingsNumberField[]
-    | SettingsSliderField[]
-    | SettingsRadioField[]
-    | SettingsDropdownField[]
-    | SettingsListField[]
-    | SettingsFileField[]
-    | SettingsDirectoryField[]
-    | SettingsColorField[]
-    | SettingsCheckboxField[]
-    | SettingsAcceleratorField[];
+  fields: Field[];
 };
 
 // Base type for a settings item, including type, label, key, and an optional description.
@@ -152,7 +153,6 @@ export type SettingsListField = SettingsItem & {
   size?: number;
   addItemValidator?: string;
   addItemLabel?: string;
-  modalCloseTimeoutMS?: number;
   min?: number;
   max?: number;
 };
@@ -177,7 +177,7 @@ export type SettingsDirectoryField = SettingsItem & {
 };
 
 export type SettingsColorField = SettingsItem & {
-  format?: "hex" | "rgb" | "hsl";
+  format?: "rgb" | "hsl" | "hex" | "hsv";
 };
 
 export type SettingsCheckboxField = SettingsItem & {
@@ -238,17 +238,19 @@ export type MediaControlKeyBindings = {
   volumeDown: string;
   mute: string;
   repeat: string;
-  repeatOne: string;
   shuffle: string;
 };
 
-export type Settings = {
-  ui: {
-    themes: {
-      theme: string;
-    };
-  };
-  keyBindings: {
-    mediaControls: MediaControlKeyBindings;
-  };
-};
+export enum RepeatMode {
+  NONE,
+  ALL,
+  ONCE,
+}
+
+export enum MediaReadyState {
+  HAVE_NOTHING,
+  HAVE_METADATA,
+  HAVE_CURRENT_DATA,
+  HAVE_FUTURE_DATA,
+  HAVE_ENOUGH_DATA,
+}

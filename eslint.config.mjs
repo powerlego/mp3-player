@@ -121,6 +121,7 @@ export default tseslint.config(
         {
           argsIgnorePattern: "^_",
           varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
           ignoreRestSiblings: true,
         },
       ],
@@ -144,6 +145,7 @@ export default tseslint.config(
         { selector: "interface", format: ["PascalCase"] },
         { selector: "function", format: ["camelCase", "PascalCase"] },
         { selector: "import", format: ["camelCase", "PascalCase"] },
+        { selector: "enumMember", format: ["UPPER_CASE"] },
       ],
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",

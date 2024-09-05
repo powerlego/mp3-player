@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, onUnmounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, onUnmounted, ref, useTemplateRef } from "vue";
 
 const props = defineProps<{
   scrollHostClass?: string;
@@ -8,7 +8,7 @@ const props = defineProps<{
 const SCROLL_BOX_MIN_HEIGHT = 20;
 
 const observer = ref<MutationObserver | null>(null);
-const scrollHost = ref<HTMLDivElement | null>(null);
+const scrollHost = useTemplateRef<HTMLDivElement>("scrollHost");
 const hovering = ref(false);
 const scrollBoxHeight = ref(SCROLL_BOX_MIN_HEIGHT);
 const scrollBoxTop = ref(0);

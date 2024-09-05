@@ -5,63 +5,39 @@ import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
   main: {
-    plugins: [
-      externalizeDepsPlugin({
-        exclude: ["music-metadata"],
-      }),
-    ],
-    assetsInclude: ["src/assets/**/*"],
+    plugins: [externalizeDepsPlugin()],
     resolve: {
       alias: {
         "@": resolve("src/"),
       },
     },
     build: {
-      rollupOptions: {
-        output: {
-          manualChunks(id) {
-            if (id.includes("music-metadata")) {
-              return "music-metadata";
-            }
-          },
-        },
-      },
+      minify: true,
     },
   },
   preload: {
-    plugins: [
-      externalizeDepsPlugin({
-        exclude: ["music-metadata"],
-      }),
-    ],
+    plugins: [externalizeDepsPlugin()],
     resolve: {
       alias: {
-        "@icons": resolve("src/renderer/src/assets/icons"),
         "@": resolve("src/"),
       },
     },
     build: {
       rollupOptions: {
         input: {
-          main: resolve(__dirname, "src/preload/main.ts"),
+          index: resolve(__dirname, "src/preload/index.ts"),
           settings: resolve(__dirname, "src/preload/settings.ts"),
         },
-        output: {
-          manualChunks(id) {
-            if (id.includes("music-metadata")) {
-              return "music-metadata";
-            }
-          },
-        },
       },
+      minify: true,
     },
   },
   renderer: {
-    assetsInclude: ["src/assets/**/*"],
     resolve: {
       alias: {
         "@": resolve("src/"),
         "@renderer": resolve("src/renderer/src"),
+        "@stores": resolve("src/renderer/src/stores"),
         "@utils": resolve("src/renderer/src/utils"),
         "@components": resolve("src/renderer/src/components"),
         "@icons": resolve("src/renderer/src/assets/icons"),
@@ -75,6 +51,7 @@ export default defineConfig({
           settings: resolve(__dirname, "src/renderer/settings.html"),
         },
       },
+      minify: true,
     },
     plugins: [
       vue(),

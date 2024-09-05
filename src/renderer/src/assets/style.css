@@ -19,7 +19,7 @@ body {
   --tooltip-arrow-size: 8px;
 }
 
-#root {
+#app {
   position: relative;
   isolation: isolate;
   z-index: 0;
@@ -95,61 +95,6 @@ body {
 
 mnemonic {
   @apply underline;
-}
-
-@layer components {
-  .tooltip-tip {
-    @apply absolute rounded left-1/2 -translate-x-1/2 p-2
-      bg-gray-850 dark:bg-gray-800 text-white dark:text-white text-sm leading-none whitespace-nowrap z-50
-      before:left-1/2 before:border-solid before:border-transparent before:h-0 before:w-0 before:absolute
-      before:pointer-events-none before:border-[calc(1*var(--tooltip-arrow-size))]
-      before:ml-[calc(-1*var(--tooltip-arrow-size))];
-  }
-
-  .tooltip-tip.top {
-    @apply before:top-full before:border-t-gray-850 dark:before:border-t-gray-800
-      top-[calc(-1*var(--tooltip-margin))];
-  }
-
-  .tooltip-tip.right {
-    @apply before:left-[calc(-1*var(--tooltip-arrow-size))] before:top-1/2 
-      before:translate-x-0 before:-translate-y-1/2 before:border-r-gray-850 dark:before:border-r-gray-800
-      left-[calc(100%+var(--tooltip-margin))] top-1/2 translate-x-0 -translate-y-1/2;
-  }
-
-  .tooltip-tip.bottom {
-    @apply before:bottom-full before:border-b-gray-850 dark:before:border-b-gray-800
-      bottom-[calc(-1*var(--tooltip-margin))];
-  }
-
-  .tooltip-tip.left {
-    @apply before:left-auto before:right-[calc(-2*var(--tooltip-arrow-size))] before:top-1/2 
-      before:translate-x-0 before:-translate-y-1/2 before:border-l-gray-850 dark:before:border-l-gray-800
-      left-auto right-[calc(100%+var(--tooltip-margin))] top-1/2 translate-x-0 -translate-y-1/2;
-  }
-
-  .slider-field {
-    @apply w-11/12 my-3 mx-0 bg-transparent transition-opacity ease-[ease] duration-200 opacity-[0.85]
-      dark:opacity-100 hover:opacity-100 dark:hover:opacity-[0.85]
-      outline-nothing webkit-appear-none webkit-animation-0-2s;
-  }
-
-  .slider-field::-webkit-slider-runnable-track {
-    @apply rounded-md w-full h-3 cursor-pointer bg-black bg-opacity-10 focus:bg-opacity-[0.15]
-      dark:bg-white dark:bg-opacity-5 border-all-0;
-  }
-
-  .slider-field:focus::-webkit-slider-runnable-track {
-    @apply bg-opacity-[0.15] dark:bg-opacity-10;
-  }
-
-  .slider-field::-webkit-slider-thumb {
-    @apply w-4 h-8 -mt-3 bg-blue-500 cursor-pointer rounded-xl border-all-0 webkit-appear-none;
-  }
-
-  .slider-field:focus::-webkit-slider-thumb {
-    @apply bg-blue-300;
-  }
 }
 
 @layer utilities {

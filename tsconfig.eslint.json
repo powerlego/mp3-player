@@ -1,5 +1,5 @@
 {
-  "files": ["src/renderer/src/env.d.ts", "src/preload/index.d.ts", "src/preload/settings.d.ts"],
+  "files": ["src/renderer/src/env.d.ts", "src/preload/index.d.ts"],
   "include": [
     "electron.vite.config.*",
     "src/main/**/*",
@@ -32,13 +32,14 @@
     "composite": true,
     "baseUrl": ".",
     "paths": {
+      "@icons/*": ["src/renderer/src/assets/icons/*"],
+      "@components/*": ["src/renderer/src/components/*"],
+      "@composables/*": ["src/renderer/src/composables/*"],
+      "@stores/*": ["src/renderer/src/stores/*"],
       "@/*": ["src/*"],
       "@renderer/*": ["src/renderer/src/*"],
       "@settings/*": ["src/settings/src/*"],
-      "@utils/*": ["src/renderer/src/utils/*"],
-      "@icons/*": ["src/renderer/src/assets/icons/*"],
-      "@components/*": ["src/renderer/src/components/*"],
-      "@composables/*": ["src/renderer/src/composables/*"]
+      "@utils/*": ["src/renderer/src/utils/*"]
     },
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "types": ["node", "electron-vite/node"]

@@ -1,14 +1,16 @@
 import { onMounted, onUnmounted, ref } from "vue";
-import { Settings } from "@/types";
 
 export function useDarkMode() {
   const darkTheme = ref(false);
 
-  function handlePreferencesUpdated(_event: Electron.IpcRendererEvent, preferences: Settings) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function handlePreferencesUpdated(_event: Electron.IpcRendererEvent, preferences: { [key: string]: any }) {
     const className = "dark";
     const bodyClass = window.document.body.classList;
     if (preferences["ui"]) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (preferences["ui"]["themes"]) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         if (preferences["ui"]["themes"]["theme"] === "dark") {
           bodyClass.add(className);
           darkTheme.value = true;
@@ -26,7 +28,9 @@ export function useDarkMode() {
     const className = "dark";
     const bodyClass = window.document.body.classList;
     if (preferences["ui"]) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (preferences["ui"]["themes"]) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         if (preferences["ui"]["themes"]["theme"] === "dark") {
           bodyClass.add(className);
           darkTheme.value = true;
