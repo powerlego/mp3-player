@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, useId } from "vue";
-import { evaluate, round } from "mathjs";
 import { SettingsNumberField } from "@/types";
 import Tooltip from "@components/Tooltip.vue";
+
+const { evaluate, round } = await import("mathjs").then((m) => ({ evaluate: m.evaluate, round: m.round }));
 
 const props = defineProps<{
   field: SettingsNumberField;
