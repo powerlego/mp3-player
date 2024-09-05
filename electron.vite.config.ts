@@ -11,19 +11,14 @@ export default defineConfig({
         "@": resolve("src/"),
       },
     },
+    build: {
+      minify: true,
+    },
   },
   preload: {
-    plugins: [
-      externalizeDepsPlugin({
-        exclude: ["music-metadata"],
-      }),
-    ],
+    plugins: [externalizeDepsPlugin()],
     resolve: {
       alias: {
-        "@icons": resolve("src/renderer/src/assets/icons"),
-        "@components": resolve("src/renderer/src/components"),
-        "@composables": resolve("src/renderer/src/composables"),
-        "@stores": resolve("src/renderer/src/stores"),
         "@": resolve("src/"),
       },
     },
@@ -33,16 +28,11 @@ export default defineConfig({
           index: resolve(__dirname, "src/preload/index.ts"),
           settings: resolve(__dirname, "src/preload/settings.ts"),
         },
-        output: {
-          manualChunks: {
-            "music-metadata": ["music-metadata"],
-          },
-        },
       },
+      minify: true,
     },
   },
   renderer: {
-    assetsInclude: ["src/renderer/assets/**/*"],
     resolve: {
       alias: {
         "@": resolve("src/"),
@@ -61,6 +51,7 @@ export default defineConfig({
           settings: resolve(__dirname, "src/renderer/settings.html"),
         },
       },
+      minify: true,
     },
     plugins: [
       vue(),
