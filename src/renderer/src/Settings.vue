@@ -77,17 +77,15 @@ onBeforeMount(() => {
     if (!preferences[section.id]) {
       preferences[section.id] = {};
     }
-    else {
-      section.form.groups.forEach((group) => {
-        group.fields.forEach(() => {
+    section.form.groups.forEach((group) => {
+      group.fields.forEach(() => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if (!preferences[section.id][group.id]) {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          if (!preferences[section.id][group.id]) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            preferences[section.id][group.id] = {};
-          }
-        });
+          preferences[section.id][group.id] = {};
+        }
       });
-    }
+    });
   });
   oldPreferences.value = structuredClone(toRaw(preferences));
 });
