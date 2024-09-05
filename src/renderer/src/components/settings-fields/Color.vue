@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Chrome, Payload } from "@ckpack/vue-color";
-import { ColorInput, RGBA, TinyColor } from "@ctrl/tinycolor";
+import { ColorInput, TinyColor } from "@ctrl/tinycolor";
 import { computed, onMounted, onUnmounted, ref, useId, useTemplateRef, watch } from "vue";
+import { Chrome } from "@ckpack/vue-color";
 import { SettingsColorField } from "@/types";
 import Tooltip from "@components/Tooltip.vue";
 
