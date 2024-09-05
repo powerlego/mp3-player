@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useTemplateRef } from "vue";
+import { computed, onMounted, useTemplateRef } from "vue";
 import Shelf from "./Shelf.vue";
 import SongCoverCard from "@components/cards/SongCoverCard.vue";
 // import { storeToRefs } from "pinia";
@@ -19,10 +19,14 @@ const recentlyPlayedList = [
   "G:\\Music\\0-59.mp3",
 ];
 
-const recentlyPlayedShelf = useTemplateRef<InstanceType<typeof Shelf>>("shelf");
+const recentlyPlayedShelf = useTemplateRef<InstanceType<typeof Shelf>>("recentlyPlayedShelf");
 const recentlyPlayedColumnCount = computed(() => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
   return recentlyPlayedShelf.value?.columns.count ?? 2;
+});
+
+onMounted(() => {
+  console.log(recentlyPlayedShelf.value);
 });
 
 </script>
@@ -36,7 +40,10 @@ const recentlyPlayedColumnCount = computed(() => {
             class="flex flex-row gap-6 px-4"
             style="flex-flow: row wrap;"
           >
-            <Shelf title="Recently Played">
+            <Shelf
+              ref="recentlyPlayedShelf"
+              title="Recently Played"
+            >
               <template v-for="(file, index) in recentlyPlayedList">
                 <SongCoverCard
                   v-if="index < recentlyPlayedColumnCount"
