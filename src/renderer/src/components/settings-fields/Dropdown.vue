@@ -115,7 +115,9 @@ onUnmounted(() => {
               tabindex="0"
               :data-value="opt.value"
               @click="handleOptionClick"
-            />
+            >
+              {{ opt.label }}
+            </li>
           </template>
         </ul>
         <div
